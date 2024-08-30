@@ -1,17 +1,33 @@
 using CSharpFunctionalExtensions;
+using static System.String;
 
 namespace PetFamily.Domain.Models.Pets;
 
-public class Pet
+public class Pet : Shared.Entity<PetId>
 {
     //ef core
-    private Pet()
+    private Pet(PetId id) : base(id)
     {
     }
 
-    private Pet(string nickname, string description, string breed,string healthInformation, Address address,
-        double weight, double height, string phoneNumber, bool infertility,DateOnly birthday, bool vaccinated,
-        StatusForHelp status, List<Requisites> requisites, Colour colour, Species species)
+    private Pet(
+        PetId petId,
+        string nickname,
+        string description,
+        Breed breed,
+        string healthInformation,
+        Address address,
+        double weight,
+        double height,
+        string phoneNumber,
+        bool isInfertility,
+        DateOnly birthday,
+        bool isVaccinated,
+        StatusForHelp status,
+        List<Requisite> requisites,
+        Colour colour,
+        Species species) 
+        : base (petId)
     {
         Nickname = nickname;
         Status = status;
@@ -23,64 +39,91 @@ public class Pet
         Weight = weight;
         Height = height;
         PhoneNumber = phoneNumber;
-        Infertility = infertility;
+        IsInfertility = isInfertility;
         Birthday = birthday;
-        Vaccinated = vaccinated;
+        IsVaccinated = isVaccinated;
         Status = status;
         Requisites = requisites;
     }
     
-    public Guid Id { get; private set; }
-
     public string? Nickname { get; private set; }
-
     public Species Species { get; private set; }
-
     public string? Description { get; private set; }
-
-    public string Breed { get; private set; }
-
-    public Colour Colour { get; private set; }
-
+    public Breed Breed { get; private set; }
+    public Colour Colour { get; private set; } = default!;
     public string HealthInformation { get; private set; }
-
     public Address Address { get; private set; } = null!;
-
     public double Weight { get; private set; }
-
     public double Height { get; private set; }
-
     public string PhoneNumber { get; private set; } = null!;
-
-    public bool Infertility { get; private set; }
-
+    public bool IsInfertility { get; private set; }
     public DateOnly? Birthday { get; private set; }
-
-    public bool Vaccinated { get; private set; }
-
-    public StatusForHelp Status { get; private set; }
-
-    public List<Requisites> Requisites { get; private set; } = null!;
-
-    public List<PetPhoto> PetPhotos { get; set; } = null!;
-
+    public bool IsVaccinated { get; private set; }
+    public StatusForHelp Status { get; private set; } = default!;
+    public List<Requisite> Requisites { get; private set; } = null!;
     public DateTime CreatedAt => DateTime.Now;
+    public List<PetPhoto> PetPhotos { get; set; } = null!;
     
     //Result Pattern
-    public static Result<Pet> Create(string nickname, string description, string breed,string healthInformation,
-        Address address, double weight, double height, string phoneNumber, bool infertility,DateOnly birthday,
-        bool vaccinated, StatusForHelp status, List<Requisites> requisites, Colour colour = default, Species species = default)
+    public static Result<Pet> Create(
+        PetId id,
+        string nickname,
+        string description,
+        Breed breed,
+        string healthInformation,
+        Address address,
+        double weight,
+        double height, 
+        string phoneNumber,
+        bool isInfertility,
+        DateOnly birthday,
+        bool isVaccinated, 
+        StatusForHelp status, 
+        List<Requisite> requisites, 
+        Colour colour,
+        Species species)
     {
         if (nickname.Length > 50)
             return Result.Failure<Pet>($"'{nameof(Nickname)}' must be less than 50 characters.");
-        if(description.Length > 250)
-            return Result.Failure<Pet>($"'{nameof(Description)}' must be less than 250 characters.");
-        //...
-        //...
         
-        var pet = new Pet(nickname, description, breed, healthInformation, address, weight, height,
-            phoneNumber, infertility, birthday, vaccinated, status, requisites, colour, species);
+        if (description.Length > 2000)
+            return Result.Failure<Pet>($"'{nameof(Description)}' must be less than 2000 characters.");
+        //TODO Validation
+        
+        if (IsNullOrEmpty(healthInformation))
+            return Result.Failure<Pet>($"'{nameof(HealthInformation)}' cannot be null or empty.");
+        
+        if (weight <= 0)
+            return Result.Failure<Pet>($"'{nameof(Weight)}' must be greater than 0.");
+        
+        if (height <= 0)
+            return Result.Failure<Pet>($"'{nameof(Height)}' must be greater than 0.");
+        
+        if (!phoneNumber.Contains(@"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$"))
+            return Result.Failure<Pet>("Invalid phone number.");
+ 
+        
+                
+        
+        var pet = new Pet(
+            id,
+            nickname,
+            description, 
+            breed, 
+            healthInformation, 
+            address,
+            weight, 
+            height,
+            phoneNumber, 
+            isInfertility, 
+            birthday, 
+            isVaccinated,
+            status, 
+            requisites, 
+            colour, 
+            species);
         
         return Result.Success(pet);
     }
 }
+

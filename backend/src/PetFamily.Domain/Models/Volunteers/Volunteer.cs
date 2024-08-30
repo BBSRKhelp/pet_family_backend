@@ -1,16 +1,25 @@
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Models.Pets;
+using static System.String;
 
 namespace PetFamily.Domain.Models.Volunteers;
 
-public class Volunteer
+public class Volunteer : Shared.Entity<VolunteerId>
 {
     //ef core
-    public Volunteer()
+    private Volunteer(VolunteerId volunteerId) : base(volunteerId)
     {
     }
 
-    public Volunteer(string fullname, string email, string description, byte workExperience, string phoneNumber, Requisites requisites)
+    private Volunteer(
+        VolunteerId volunteerId,
+        string fullname, 
+        string email, 
+        string description,
+        byte workExperience, 
+        string phoneNumber, 
+        List<Requisite> requisites)
+        : base(volunteerId)
     {
         Fullname = fullname;
         Email = email;
@@ -20,39 +29,50 @@ public class Volunteer
         Requisites = requisites;
     }
 
-    public Guid Id { get; set; }
-
-    public string Fullname { get; set; }
-
-    public string Email { get; set; }
-
-    public string Description { get; set; }
-
-    public byte WorkExperience { get; set; }
-
-    public string PhoneNumber { get; set; }
-
-    public Requisites Requisites { get; set; }
-
+    public string Fullname { get; private set; }
+    public string Email { get; private set; }
+    public string Description { get; private set; }
+    public byte WorkExperience { get; private set; }
+    public string PhoneNumber { get; private set; }
+    public List<Requisite> Requisites  { get; private set; }
     private List<Pet> Pets { get; set; } = [];
 
     public int PetsFoundHome() => Pets.Count(p => p.Status == StatusForHelp.FoundHome);
-
     public int PetsLookingForHome() => Pets.Count(p => p.Status == StatusForHelp.LookingForHome);
-    
     public int PetsNeedHelp() => Pets.Count(p => p.Status == StatusForHelp.NeedsHelp);
 
-    public Result<Volunteer> Create(string fullname, string email, string description, byte workExperience,
-        string phoneNumber, Requisites requisites)
+    public static Result<Volunteer> Create(
+        VolunteerId volunteerId,
+        string fullname, 
+        string email, 
+        string description, 
+        byte workExperience,
+        string phoneNumber,
+        List<Requisite> requisites)
     {
-        if (fullname.Length > 50)
+        if (fullname.Length > 50 || IsNullOrWhiteSpace(fullname))
             return Result.Failure<Volunteer>("Full name must be less than 50 characters.");
-        if (!email.Contains("@"))
-            return Result.Failure<Volunteer>("Invalid email address.");
-        //...
-        //...
         
-        var volunteer = new Volunteer(fullname, email, description, workExperience, phoneNumber, requisites);
+        if (!email.Contains(@"^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$"))
+            return Result.Failure<Volunteer>("Invalid email address.");
+        
+        if (description.Length > 2000)
+            return Result.Failure<Volunteer>("Description must be less than 2000 characters.");
+        
+        if (IsNullOrWhiteSpace(workExperience.ToString()))
+            return Result.Failure<Volunteer>("Invalid work experience.");
+        
+        if (!phoneNumber.Contains(@"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$"))
+            return Result.Failure<Volunteer>("Invalid phone number.");
+        
+        var volunteer = new Volunteer(
+            volunteerId,
+            fullname, 
+            email, 
+            description,
+            workExperience,
+            phoneNumber, 
+            requisites);
         
         return Result.Success(volunteer);
     }
