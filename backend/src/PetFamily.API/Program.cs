@@ -13,5 +13,4 @@ if (app.Environment.IsDevelopment())
 
 
 app.MapGet("/home", () => "Hello, World!");
-
 app.Run();
