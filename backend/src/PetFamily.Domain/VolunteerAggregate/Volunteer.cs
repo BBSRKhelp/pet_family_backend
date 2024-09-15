@@ -1,58 +1,59 @@
 using CSharpFunctionalExtensions;
-using PetFamily.Domain.Models.Pets;
+using PetFamily.Domain.VolunteerAggregate.Entities;
+using PetFamily.Domain.VolunteerAggregate.Enums;
+using PetFamily.Domain.VolunteerAggregate.ValueObjects;
+using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
 using static System.String;
 
-namespace PetFamily.Domain.Models.Volunteers;
+namespace PetFamily.Domain.VolunteerAggregate;
 
-public class Volunteer : Shared.Entity<VolunteerId>
+public class Volunteer : Shared.Models.Entity<VolunteerId>
 {
     //ef core
-    private Volunteer(VolunteerId volunteerId) : base(volunteerId)
+    private Volunteer() : base(VolunteerId.NewId())
     {
     }
 
     private Volunteer(
-        VolunteerId volunteerId,
-        string fullname, 
+        Fullname fullname, 
         string email, 
         string description,
         byte workExperience, 
-        string phoneNumber, 
-        List<Requisite> requisites)
-        : base(volunteerId)
+        string phoneNumber,
+        VolunteerDetails volunteerDetails,
+        List<Pet> pets)
+        : base(VolunteerId.NewId())
     {
         Fullname = fullname;
         Email = email;
         Description = description;
         WorkExperience = workExperience;
         PhoneNumber = phoneNumber;
-        Requisites = requisites;
+        Details = volunteerDetails;
+        Pets = pets;
     }
 
-    public string Fullname { get; private set; }
+    public Fullname Fullname { get; private set; }
     public string Email { get; private set; }
-    public string Description { get; private set; }
+    public string? Description { get; private set; }
     public byte WorkExperience { get; private set; }
     public string PhoneNumber { get; private set; }
-    public List<Requisite> Requisites  { get; private set; }
-    private List<Pet> Pets { get; set; } = [];
+    public VolunteerDetails Details { get; private set; }
+    public List<Pet>? Pets { get; }
 
-    public int PetsFoundHome() => Pets.Count(p => p.Status == StatusForHelp.FoundHome);
-    public int PetsLookingForHome() => Pets.Count(p => p.Status == StatusForHelp.LookingForHome);
-    public int PetsNeedHelp() => Pets.Count(p => p.Status == StatusForHelp.NeedsHelp);
+    public int PetsFoundHome() => Pets!.Count(p => p.Status == StatusForHelp.FoundHome);
+    public int PetsLookingForHome() => Pets!.Count(p => p.Status == StatusForHelp.LookingForHome);
+    public int PetsNeedHelp() => Pets!.Count(p => p.Status == StatusForHelp.NeedsHelp);
 
     public static Result<Volunteer> Create(
-        VolunteerId volunteerId,
-        string fullname, 
+        Fullname fullname, 
         string email, 
         string description, 
         byte workExperience,
         string phoneNumber,
-        List<Requisite> requisites)
+        VolunteerDetails volunteerDetails,
+        List<Pet> pets)
     {
-        if (fullname.Length > 50 || IsNullOrWhiteSpace(fullname))
-            return Result.Failure<Volunteer>("Full name must be less than 50 characters.");
-        
         if (!email.Contains(@"^([\\w\\.\\-]+)@([\\w\\-]+)((\\.(\\w){2,3})+)$"))
             return Result.Failure<Volunteer>("Invalid email address.");
         
@@ -66,13 +67,13 @@ public class Volunteer : Shared.Entity<VolunteerId>
             return Result.Failure<Volunteer>("Invalid phone number.");
         
         var volunteer = new Volunteer(
-            volunteerId,
             fullname, 
             email, 
             description,
             workExperience,
             phoneNumber, 
-            requisites);
+            volunteerDetails,
+            pets);
         
         return Result.Success(volunteer);
     }

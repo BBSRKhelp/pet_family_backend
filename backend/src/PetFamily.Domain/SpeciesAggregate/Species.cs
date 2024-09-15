@@ -1,23 +1,27 @@
 using CSharpFunctionalExtensions;
+using PetFamily.Domain.SpeciesAggregate.Entities;
+using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 using static System.String;
 
-namespace PetFamily.Domain.Models.Pets;
+namespace PetFamily.Domain.SpeciesAggregate;
 
-public class Species
+public class Species : Shared.Models.Entity<SpeciesId>
 {
-    private Species()
+    private Species() : base(SpeciesId.NewId())
     {
     }
 
-    private Species(string nameOfSpecies, IReadOnlyList<Breed> breed)
+    private Species(
+        string nameOfSpecies, 
+        IReadOnlyList<Breed> breed)
+        : base(SpeciesId.NewId())
     {
         NameOfSpecies = nameOfSpecies;
         Breeds = breed;
     }
     
-    public Guid Id { get; private set; }
     public string NameOfSpecies { get; private set; }
-    public IReadOnlyList<Breed> Breeds { get; } = null!;
+    public IReadOnlyList<Breed> Breeds { get; }
 
     public static Result<Species> Create(string name, IReadOnlyList<Breed>? breeds)
     {

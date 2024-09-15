@@ -1,10 +1,14 @@
 using CSharpFunctionalExtensions;
 using static System.String;
 
-namespace PetFamily.Domain.Models;
+namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 public record Requisite
 {
+    //ef core
+    private Requisite()
+    {
+    }
     private Requisite(string title, string description)
     {
         Title = title;

@@ -1,4 +1,4 @@
-namespace PetFamily.Domain.Models.Pets;
+namespace PetFamily.Domain.VolunteerAggregate.Enums;
 
 public enum Colour
 {
