@@ -9,21 +9,12 @@ public record VolunteerDetails
     {
     }
     
-    private VolunteerDetails(List<SocialNetwork> socialNetworks, List<Requisite> requisites)
+    public VolunteerDetails(IEnumerable<SocialNetwork> socialNetworks, IEnumerable<Requisite> requisites)
     {
         SocialNetworks = socialNetworks;
         Requisites = requisites;
     }
     
-    public List<SocialNetwork> SocialNetworks { get; init; }
-    public List<Requisite> Requisites { get; init; }
-
-    public static Result<VolunteerDetails> Create(
-        List<SocialNetwork> socialNetworks,
-        List<Requisite> requisites)
-    {
-        //TODO Валидация нужна?
-        var volunteerDetails = new VolunteerDetails(socialNetworks, requisites);
-        return Result.Success(volunteerDetails);
-    }
+    public IEnumerable<SocialNetwork> SocialNetworks { get; }
+    public IEnumerable<Requisite> Requisites { get; }
 }

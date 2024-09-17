@@ -20,9 +20,8 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
                 id => id.Value,
                 value => SpeciesId.Create(value));
         
-        builder.Property(s => s.NameOfSpecies)
+        builder.Property(s => s.Name)
             .IsRequired()
-            .HasColumnName("species")
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
         builder.HasMany(s => s.Breeds)

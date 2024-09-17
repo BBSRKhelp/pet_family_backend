@@ -11,19 +11,19 @@ public class Breed : Shared.Models.Entity<BreedId>
     {
     }
     
-    private Breed(string breedPet) : base(BreedId.NewId())
+    private Breed(string name) : base(BreedId.NewId())
     {
-        BreedPet = breedPet;
+        Name = name;
     }
 
-    public string BreedPet { get; }
+    public string Name { get; }
 
-    public static Result<Breed> Create(string breedPet)
+    public static Result<Breed> Create(string name)
     {
-        if (IsNullOrWhiteSpace(breedPet))
+        if (IsNullOrWhiteSpace(name))
             return Result.Failure<Breed>($"\"name\" cannot be null or empty.");
         
-        var breed = new Breed(breedPet);
+        var breed = new Breed(name);
 
         return Result.Success(breed);
     }

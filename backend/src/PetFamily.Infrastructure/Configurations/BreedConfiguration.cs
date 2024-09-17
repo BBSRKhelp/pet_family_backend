@@ -19,9 +19,8 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
             .HasConversion(id => id.Value,
                 value => BreedId.Create(value));
         
-        builder.Property(b => b.BreedPet)
+        builder.Property(b => b.Name)
             .IsRequired()
-            .HasColumnName("breed")
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
     }
 }

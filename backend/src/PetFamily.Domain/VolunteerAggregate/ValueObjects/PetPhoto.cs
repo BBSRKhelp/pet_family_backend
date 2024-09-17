@@ -15,7 +15,7 @@ public record PetPhoto
         IsMainPhoto = isMainPhoto;
     }
     
-    public string? Path { get; }
+    public string Path { get; }
     public bool? IsMainPhoto { get; }
 
     public static Result<PetPhoto> Create(string path, bool isMainPhoto)
