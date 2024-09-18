@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
 using static System.String;
 
-namespace PetFamily.Domain.Models.Pets;
+namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 public record Address
 {
@@ -9,24 +9,24 @@ public record Address
         string country, 
         string city, 
         string street, 
-        string? postcode)
+        string? postalcode)
     {
         Country = country;
         City = city;
         Street = street;
-        Postcode = postcode;
+        Postalcode = postalcode;
     }
 
     public string Country { get; }
     public string City { get; }
     public string Street { get; }
-    public string? Postcode { get; }
+    public string? Postalcode { get; }
 
     public static Result<Address> Create(
         string country,
         string city,
         string street,
-        string? postcode)
+        string? postalcode)
     {
         if (IsNullOrWhiteSpace(country))
             return Result.Failure<Address>("Country is required");
@@ -37,13 +37,13 @@ public record Address
         if (IsNullOrWhiteSpace(street))
             return Result.Failure<Address>("Street is required");
         
-        if (IsNullOrWhiteSpace(postcode))
+        if (IsNullOrWhiteSpace(postalcode))
             return Result.Failure<Address>("Postcode is required");
         
         var address = new Address(country,
             city,
             street,
-            postcode);
+            postalcode);
         
         return Result.Success(address);
     }
