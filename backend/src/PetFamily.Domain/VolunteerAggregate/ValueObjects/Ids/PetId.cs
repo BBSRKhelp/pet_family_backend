@@ -2,10 +2,6 @@ namespace PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
 
 public record PetId
 {
-    //ef core
-    private PetId()
-    {
-    }
     private PetId(Guid value)
     {
         Value = value;

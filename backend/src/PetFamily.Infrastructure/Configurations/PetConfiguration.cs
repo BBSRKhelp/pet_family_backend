@@ -1,6 +1,7 @@
 using PetFamily.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
@@ -32,20 +33,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.ComplexProperty(p => p.AppearanceDetails, ab =>
         {
-            ab.Property(ad => ad.SpeciesId)
-                .IsRequired()
-                .HasColumnName("species_id")
-                .HasConversion(
-                    id => id.Value,
-                    value => SpeciesId.Create(value));
-            
-            ab.Property(ad => ad.BreedId)
-                .IsRequired()
-                .HasColumnName("breed_id")
-                .HasConversion(
-                    id => id.Value,
-                    value => BreedId.Create(value));
-            
             ab.Property(ad => ad.Coloration)
                 .IsRequired()
                 .HasColumnName("coloration")
@@ -80,7 +67,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasDefaultValue(false);
         });
         
-        builder.OwnsOne(p => p.Address, ab =>
+        builder.ComplexProperty(p => p.Address, ab =>
         {
             ab.Property(p => p.Country)
                 .IsRequired()
@@ -102,15 +89,34 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("postalcode")
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
         });
-        
-        builder.Property(p => p.PhoneNumber)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_VERY_LOW_TEXT_LENGTH);
+
+        builder.OwnsOne(p => p.PhoneNumber, pb =>
+        {
+            pb.Property(pn => pn.Value)
+                .IsRequired()
+                .HasColumnName("phone_number")
+                .HasMaxLength(PhoneNumber.MAX_LENGTH);
+        });
+            
         
         builder.Property(p => p.Status)
             .IsRequired()
             .HasDefaultValue(StatusForHelp.Unknown);
 
+        builder.ComplexProperty(p => p.BreedAndSpeciesId, bsb =>
+        {
+            bsb.Property(ad => ad.SpeciesId)
+                .IsRequired()
+                .HasColumnName("species_id")
+                .HasConversion(
+                    id => id.Value,
+                    value => SpeciesId.Create(value));
+
+            bsb.Property(ad => ad.BreedId)
+                .IsRequired()
+                .HasColumnName("breed_id");
+        });
+        
         builder.OwnsOne(p => p.Details, db =>
         {
             db.ToJson("details");

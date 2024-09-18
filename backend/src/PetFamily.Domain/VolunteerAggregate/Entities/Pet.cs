@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
@@ -21,10 +22,11 @@ public class Pet : Shared.Models.Entity<PetId>
         AppearanceDetails appearanceDetails,
         HealthDetails healthDetails,
         Address address,
-        string phoneNumber,
+        PhoneNumber phoneNumber,
         DateOnly birthday,
         StatusForHelp status,
-        PetDetails details) 
+        PetDetails details,
+        BreedAndSpeciesId breedAndSpeciesId) 
         : base (PetId.NewId())
     {
         Nickname = nickname;
@@ -36,17 +38,19 @@ public class Pet : Shared.Models.Entity<PetId>
         Birthday = birthday;
         Status = status;
         Details = details;
+        BreedAndSpeciesId = breedAndSpeciesId;
     }
 
     public string? Nickname { get; private set; }
     public string? Description { get; private set; }
-    public AppearanceDetails AppearanceDetails { get; private set; }
-    public HealthDetails HealthDetails { get; private set; }
-    public Address Address { get; private set; }
-    public string PhoneNumber { get; private set; }
+    public AppearanceDetails AppearanceDetails { get; private set; } = null!;
+    public HealthDetails HealthDetails { get; private set; } = null!;
+    public Address Address { get; private set; } = null!;
+    public PhoneNumber PhoneNumber { get; private set; } = null!;
     public DateOnly? Birthday { get; private set; }
     public StatusForHelp Status { get; private set; }
-    public PetDetails Details { get; private set; }
+    public PetDetails Details { get; private set; } = null!;
+    public BreedAndSpeciesId BreedAndSpeciesId { get; private set; } = null!;
     public DateTime CreatedAt => DateTime.Now;
     
     //Result Pattern
@@ -56,34 +60,17 @@ public class Pet : Shared.Models.Entity<PetId>
         AppearanceDetails appearanceDetails,
         HealthDetails healthDetails,
         Address address,
-        string phoneNumber,
+        PhoneNumber phoneNumber,
         DateOnly birthday,
         StatusForHelp status,
-        PetDetails details)
+        PetDetails details,
+        BreedAndSpeciesId breedAndSpeciesId)
     {
         if (nickname.Length > 50)
             return Result.Failure<Pet>($"'{nameof(Nickname)}' must be less than 50 characters.");
         
         if (description.Length > 2000)
             return Result.Failure<Pet>($"'{nameof(Description)}' must be less than 2000 characters.");
-        
-        if (appearanceDetails.SpeciesId == SpeciesId.Empty())
-            return Result.Failure<Pet>($"'{nameof(SpeciesId)}' cannot be null or empty.");
-        
-        if (appearanceDetails.BreedId == BreedId.Empty())
-            return Result.Failure<Pet>($"'{nameof(BreedId)}' cannot be null or empty.");
-
-        if (appearanceDetails.Weight <= 0 || appearanceDetails.Weight > Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
-            return Result.Failure<Pet>("Weight must be between 0 and 1000");
-        
-        if (appearanceDetails.Height <= 0 || appearanceDetails.Height > Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
-            return Result.Failure<Pet>("Height must be between 0 and 1000");
-        
-        if (IsNullOrEmpty(healthDetails.HealthInformation))
-            return Result.Failure<Pet>("Health information cannot be null or empty.");
-        
-        if (!phoneNumber.Contains(@"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$"))
-            return Result.Failure<Pet>("Invalid phone number.");
         
         var pet = new Pet(
             nickname,
@@ -92,9 +79,10 @@ public class Pet : Shared.Models.Entity<PetId>
             healthDetails,
             address,
             phoneNumber, 
-            birthday, 
+            birthday,  
             status, 
-            details);
+            details,
+            breedAndSpeciesId);
         
         return Result.Success(pet);
     }

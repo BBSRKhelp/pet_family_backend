@@ -16,17 +16,17 @@ public class Species : Shared.Models.Entity<SpeciesId>
 
     private Species(
         string name,
-        List<Breed> breeds)
+        IEnumerable<Breed> breeds)
         : base(SpeciesId.NewId())
     {
         Name= name;
-        _breeds = breeds;
+        _breeds.AddRange(breeds);
     }
     
-    public string Name { get; private set; }
+    public string Name { get; private set; } = null!;
     public IReadOnlyList<Breed> Breeds => _breeds.AsReadOnly();
 
-    public static Result<Species> Create(string name, List<Breed>? breeds )
+    public static Result<Species> Create(string name, IEnumerable<Breed>? breeds )
     {
         if (IsNullOrWhiteSpace(name))
             return Result.Failure<Species>("Species name cannot be null or empty.");

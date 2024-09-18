@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
 
@@ -50,9 +51,13 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .IsRequired()
             .HasDefaultValue(0);
         
-        builder.Property(v => v.PhoneNumber)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_VERY_LOW_TEXT_LENGTH);
+        builder.OwnsOne(p => p.PhoneNumber, pb =>
+        {
+            pb.Property(pn => pn.Value)
+                .IsRequired()
+                .HasColumnName("phone_number")
+                .HasMaxLength(PhoneNumber.MAX_LENGTH);
+        });
 
         builder.OwnsOne(v => v.Details, db =>
         {

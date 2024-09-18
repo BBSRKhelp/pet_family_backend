@@ -1,16 +1,13 @@
 using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using static System.String;
 
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 public record HealthDetails
 {
-    //ef core
-    private HealthDetails()
-    {
-    }
-
-    private HealthDetails(string healthInformation,
+    private HealthDetails(
+        string healthInformation,
         bool isCastrated,
         bool isVaccinated)
     {
@@ -28,8 +25,8 @@ public record HealthDetails
         bool isCastrated,
         bool isVaccinated)
     {
-        if (IsNullOrEmpty(healthInformation))
-            return Result.Failure<HealthDetails>($"'{nameof(HealthInformation)}' cannot be null or empty.");
+        if (IsNullOrEmpty(healthInformation) || healthInformation.Length > Constants.MAX_MEDIUM_TEXT_LENGTH)
+            return Result.Failure<HealthDetails>("Health information is invalid");
         
         var healthDetails = new HealthDetails(
             healthInformation,

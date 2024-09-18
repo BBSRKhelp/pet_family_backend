@@ -2,10 +2,6 @@ namespace PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 
 public record BreedId
 {
-    //ef core
-    private BreedId()
-    {
-    }
     private BreedId(Guid value)
     {
         Value = value;

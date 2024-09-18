@@ -9,13 +9,14 @@ public record PetPhoto
     private PetPhoto()
     {
     }
+    
     private PetPhoto(string path, bool isMainPhoto)
     {
         Path = path;
         IsMainPhoto = isMainPhoto;
     }
     
-    public string Path { get; }
+    public string Path { get; } = null!;
     public bool? IsMainPhoto { get; }
 
     public static Result<PetPhoto> Create(string path, bool isMainPhoto)

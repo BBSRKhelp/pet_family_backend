@@ -4,10 +4,6 @@ namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 public record Fullname
 {
-    //ef core
-    private Fullname()
-    {
-    }
     private Fullname(string firstName, string lastName, string patronymic)
     {
         FirstName = firstName;

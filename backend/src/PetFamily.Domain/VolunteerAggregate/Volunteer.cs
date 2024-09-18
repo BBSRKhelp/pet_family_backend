@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
@@ -19,7 +20,7 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>
         string email, 
         string description,
         byte workExperience, 
-        string phoneNumber,
+        PhoneNumber phoneNumber,
         VolunteerDetails volunteerDetails,
         List<Pet> pets)
         : base(VolunteerId.NewId())
@@ -33,12 +34,12 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>
         Pets = pets;
     }
 
-    public Fullname Fullname { get; private set; }
-    public string Email { get; private set; }
+    public Fullname Fullname { get; private set; } = null!;
+    public string Email { get; private set; } = null!;
     public string? Description { get; private set; }
     public byte WorkExperience { get; private set; }
-    public string PhoneNumber { get; private set; }
-    public VolunteerDetails Details { get; private set; }
+    public PhoneNumber PhoneNumber { get; private set; } = null!;
+    public VolunteerDetails Details { get; private set; } = null!;
     public List<Pet>? Pets { get; }
 
     public int PetsFoundHome() => Pets!.Count(p => p.Status == StatusForHelp.FoundHome);
@@ -50,7 +51,7 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>
         string email, 
         string description, 
         byte workExperience,
-        string phoneNumber,
+        PhoneNumber phoneNumber,
         VolunteerDetails volunteerDetails,
         List<Pet> pets)
     {
@@ -62,9 +63,6 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>
         
         if (IsNullOrWhiteSpace(workExperience.ToString()))
             return Result.Failure<Volunteer>("Invalid work experience.");
-        
-        if (!phoneNumber.Contains(@"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$"))
-            return Result.Failure<Volunteer>("Invalid phone number.");
         
         var volunteer = new Volunteer(
             fullname, 

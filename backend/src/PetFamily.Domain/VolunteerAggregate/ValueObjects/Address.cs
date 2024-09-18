@@ -5,10 +5,6 @@ namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 public record Address
 {
-    //ef core
-    private Address()
-    {
-    }
     private Address(
         string country, 
         string city, 

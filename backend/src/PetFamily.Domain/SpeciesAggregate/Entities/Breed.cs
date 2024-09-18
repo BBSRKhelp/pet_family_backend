@@ -16,7 +16,7 @@ public class Breed : Shared.Models.Entity<BreedId>
         Name = name;
     }
 
-    public string Name { get; }
+    public string Name { get; } = null!;
 
     public static Result<Breed> Create(string name)
     {
