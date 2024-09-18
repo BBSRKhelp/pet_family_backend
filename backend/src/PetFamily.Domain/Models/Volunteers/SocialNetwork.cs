@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
 using static System.String;
 
-namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
+namespace PetFamily.Domain.Models.Volunteers;
 
 public record SocialNetwork
 {
@@ -11,8 +11,8 @@ public record SocialNetwork
         Url = url;
     }
     
-    public string Title { get; init; }
-    public string Url { get; init; }
+    public string Title { get; }
+    public string Url { get; }
 
     public static Result<SocialNetwork> Create(string title, string url)
     {

@@ -11,9 +11,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/", () =>
-{
 
-});
-
+app.MapGet("/home", () => "Hello, World!");
 app.Run();

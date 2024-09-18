@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
 using static System.String;
 
-namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
+namespace PetFamily.Domain.Models;
 
 public record Requisite
 {
