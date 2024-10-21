@@ -11,14 +11,12 @@ namespace PetFamily.Application.Commands.Volunteer.Create;
 public class VolunteerCreateHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
-    private readonly IValidator<VolunteerCreateCommand> _validator;
 
     public VolunteerCreateHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<VolunteerCreateCommand> validator)
     {
         _volunteersRepository = volunteersRepository;
-        _validator = validator;
     }
 
     public async Task<Result<Guid, Error>> HandleAsync(

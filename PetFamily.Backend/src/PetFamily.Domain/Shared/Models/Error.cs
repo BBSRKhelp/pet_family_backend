@@ -2,7 +2,7 @@ namespace PetFamily.Domain.Shared.Models;
 
 public record Error
 {
-    public const string SEPARATOR = "||";
+    private const string SEPARATOR = "||";
     
     private Error(string code, string message, ErrorType type)
     {
@@ -32,7 +32,7 @@ public record Error
         return string.Join(SEPARATOR, Code, Message, Type);
     }
 
-    public static Error Deserialise(string serialized)
+    public static Error Deserialize(string serialized)
     {
         var parts = serialized.Split(SEPARATOR);
         
