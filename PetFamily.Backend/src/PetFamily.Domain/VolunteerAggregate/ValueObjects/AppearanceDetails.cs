@@ -15,7 +15,7 @@ public record AppearanceDetails
     private AppearanceDetails()
     {
     }
-    
+
     private AppearanceDetails(
         Colour colouration,
         float weight,
@@ -25,7 +25,7 @@ public record AppearanceDetails
         Weight = weight;
         Height = height;
     }
-    
+
     public Colour Coloration { get; }
     public float Weight { get; }
     public float Height { get; }
@@ -38,11 +38,12 @@ public record AppearanceDetails
     {
         if (weight is <= 0 or > Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
             return Errors.General.MaxLengthExceeded(nameof(weight));
+        
         if (height is <= 0 or > Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
             return Errors.General.MaxLengthExceeded(nameof(height));
-        
+
         return new AppearanceDetails(
-            colouration, 
+            colouration,
             weight,
             height);
     }

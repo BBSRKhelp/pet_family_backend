@@ -2,23 +2,23 @@ using PetFamily.Domain.Shared.Models;
 
 namespace PetFamily.API.Contracts.Shared;
 
-public class Envelope
+public record ResponseError(string? ErrorCode, string? ErrorMessage, string? InvalidField);
+
+public record Envelope
 {
-    private Envelope(object? result, Error? error)
+    private Envelope(object? result, IEnumerable<ResponseError> errors)
     {
         Result = result;
-        ErrorCode = error?.Code;
-        ErrorMessage = error?.Message;
+        Errors = errors;
     }
 
     public object? Result { get; }
-    public string? ErrorCode { get; }
-    public string? ErrorMessage { get; }
+    public IEnumerable<ResponseError> Errors { get; }
     public DateTimeOffset Created => DateTimeOffset.UtcNow;
 
     public static Envelope Ok(object? result = null) =>
-        new (result, null);
+        new(result, []);
 
-    public static Envelope Error(Error? error = null) =>
-        new(null, error);
+    public static Envelope Error(IEnumerable<ResponseError> errors) =>
+        new(null, errors);
 }

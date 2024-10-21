@@ -28,7 +28,7 @@ public record HealthDetails
     {
         if (IsNullOrEmpty(healthInformation) || healthInformation.Length > Constants.MAX_MEDIUM_TEXT_LENGTH)
             return Errors.General.MaxLengthExceeded(nameof(healthInformation));
-        
+
         return new HealthDetails(
             healthInformation,
             isCastrated,

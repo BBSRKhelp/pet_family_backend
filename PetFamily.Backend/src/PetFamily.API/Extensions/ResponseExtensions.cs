@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts.Shared;
 using PetFamily.Domain.Shared.Models;
@@ -11,7 +12,7 @@ public static class ResponseExtensions
     {
         if (result.IsSuccess)
             return new OkObjectResult(Envelope.Ok(result.Value));
-        
+
         var statusCode = result.Error.Type switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
@@ -20,12 +21,34 @@ public static class ResponseExtensions
             ErrorType.Failure => StatusCodes.Status500InternalServerError,
             _ => StatusCodes.Status500InternalServerError
         };
-        
-        var envelope = Envelope.Error(result.Error);
-        
+
+        var responseError = new ResponseError(result.Error.Code, result.Error.Message, null);
+
+        var envelope = Envelope.Error([responseError]);
+
         return new ObjectResult(envelope)
         {
             StatusCode = statusCode
+        };
+    }
+
+    public static ActionResult ToValidationErrorResponse(this ValidationResult result)
+    {
+        if (result.IsValid)
+            throw new InvalidOperationException("Result can not be successfully validated");
+
+        var validationErrors = result.Errors;
+
+        var responseErrors = from validationError in validationErrors
+            let errorMessage = validationError.ErrorMessage
+            let error = Error.Deserialise(errorMessage)
+            select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+        var envelope = Envelope.Error(responseErrors);
+
+        return new ObjectResult(envelope)
+        {
+            StatusCode = StatusCodes.Status400BadRequest
         };
     }
 }

@@ -4,9 +4,9 @@ using static System.String;
 
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
-public record Fullname
+public record FullName
 {
-    private Fullname(string firstName, string lastName, string? patronymic)
+    private FullName(string firstName, string lastName, string? patronymic)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -17,7 +17,7 @@ public record Fullname
     public string LastName { get; }
     public string? Patronymic { get; }
 
-    public static Result<Fullname, Error> Create(
+    public static Result<FullName, Error> Create(
         string firstName,
         string lastName,
         string? patronymic = null)
@@ -27,7 +27,7 @@ public record Fullname
 
         if (IsNullOrWhiteSpace(lastName))
             return Errors.General.IsRequired(nameof(lastName));
-        
-        return new Fullname(firstName, lastName, patronymic);
+
+        return new FullName(firstName, lastName, patronymic);
     }
 }

@@ -11,20 +11,20 @@ public record BreedAndSpeciesId
         SpeciesId = speciesId;
         BreedId = breedId;
     }
-    
+
     public SpeciesId SpeciesId { get; } = null!;
     public Guid BreedId { get; }
 
     public static Result<BreedAndSpeciesId, Error> Create(
-        SpeciesId speciesId, 
+        SpeciesId speciesId,
         Guid breedId)
     {
         if (speciesId == SpeciesId.Empty())
             return Errors.General.IsRequired(nameof(speciesId));
-        
+
         if (breedId == Guid.Empty)
             return Errors.General.IsRequired(nameof(breedId));
-        
+
         return new BreedAndSpeciesId(speciesId, breedId);
     }
 }

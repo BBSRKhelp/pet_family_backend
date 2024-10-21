@@ -18,25 +18,21 @@ public class SpeciesRepository
     public async Task<Guid> AddAsync(Species species, CancellationToken cancellationToken = default)
     {
         await _dbContext.Species.AddAsync(species, cancellationToken);
-        
+
         await _dbContext.SaveChangesAsync(cancellationToken);
-        
+
         return species.Id;
     }
 
     public async Task<Result<Species, Error>> GetByIdAsync(SpeciesId speciesId,
         CancellationToken cancellationToken = default)
     {
-        var species = await 
-            _dbContext.
-            Species.
-            Include(s => s.Breeds).
-            FirstOrDefaultAsync(s => s.Id == speciesId, cancellationToken);
-        
+        var species = await
+            _dbContext.Species.Include(s => s.Breeds).FirstOrDefaultAsync(s => s.Id == speciesId, cancellationToken);
+
         if (species is null)
             return Errors.General.NotFound(speciesId);
 
         return species;
-
     }
 }
