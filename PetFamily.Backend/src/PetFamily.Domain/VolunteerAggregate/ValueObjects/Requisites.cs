@@ -8,8 +8,10 @@ namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 public record Requisite
 {
     [JsonConstructor]
-    private Requisite(){}
-    
+    private Requisite()
+    {
+    }
+
     private Requisite(string title, string description)
     {
         Title = title;
@@ -23,10 +25,10 @@ public record Requisite
     {
         if (IsNullOrWhiteSpace(title))
             return Errors.General.IsRequired(nameof(title));
-        
+
         if (IsNullOrWhiteSpace(description))
             return Errors.General.IsRequired(nameof(description));
-        
+
         return new Requisite(title, description);
     }
 }

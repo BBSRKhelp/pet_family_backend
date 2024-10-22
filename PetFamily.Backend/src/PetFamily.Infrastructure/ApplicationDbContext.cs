@@ -2,16 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PetFamily.Domain.SpeciesAggregate;
-using PetFamily.Domain.SpeciesAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate;
-using PetFamily.Domain.VolunteerAggregate.Entities;
 
 namespace PetFamily.Infrastructure;
 
 public class ApplicationDbContext(IConfiguration configuration) : DbContext
 {
     private const string DATABASE = "Database";
-    
+
     public DbSet<Volunteer> Volunteers => Set<Volunteer>();
     public DbSet<Species> Species => Set<Species>();
 
@@ -28,6 +26,6 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 
-    private ILoggerFactory CreateLoggerFactory() => 
-        LoggerFactory.Create(builder => {builder.AddConsole();}); 
+    private ILoggerFactory CreateLoggerFactory() =>
+        LoggerFactory.Create(builder => { builder.AddConsole(); });
 }

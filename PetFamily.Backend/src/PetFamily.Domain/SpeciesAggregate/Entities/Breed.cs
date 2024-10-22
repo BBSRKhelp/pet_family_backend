@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared.Models;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 using static System.String;
 
@@ -11,19 +12,12 @@ public class Breed : Shared.Models.Entity<BreedId>
     private Breed() : base(BreedId.NewId())
     {
     }
-    
-    private Breed(string name) : base(BreedId.NewId())
+
+    public Breed(Name name) :
+        base(BreedId.NewId())
     {
         Name = name;
     }
 
-    public string Name { get; } = null!;
-
-    public static Result<Breed, Error> Create(string name)
-    {
-        if (IsNullOrWhiteSpace(name))
-            return Errors.General.IsRequired(nameof(name));
-        
-        return new Breed(name);
-    }
+    public Name Name { get; } = null!;
 }

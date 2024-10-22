@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate;
+using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
 
 namespace PetFamily.Infrastructure.Configurations;
@@ -12,7 +13,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
         builder.ToTable("volunteer");
-        
+
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id)
@@ -21,20 +22,20 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 id => id.Value,
                 value => VolunteerId.Create(value));
 
-        builder.OwnsOne(v => v.Fullname, fb =>
+        builder.OwnsOne(v => v.FullName, fb =>
         {
             fb.Property(f => f.FirstName)
                 .IsRequired()
                 .HasColumnName("first_name")
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-            
+
             fb.Property(f => f.LastName)
                 .IsRequired()
                 .HasColumnName("last_name")
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
-            
+
             fb.Property(f => f.Patronymic)
-                .IsRequired()
+                .IsRequired(false)
                 .HasColumnName("patronymic")
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
         });
@@ -46,15 +47,23 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("email")
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
         });
-        
-        builder.Property(v => v.Description)
-            .IsRequired(false)
-            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
-        builder.Property(v => v.WorkExperience)
-            .IsRequired()
-            .HasDefaultValue(0);
-        
+        builder.OwnsOne(v => v.Description, db =>
+        {
+            db.Property(d => d.Value)
+                .IsRequired(false)
+                .HasColumnName("description")
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+        });
+
+        builder.ComplexProperty(v => v.WorkExperience, web =>
+        {
+            web.Property(we => we.Value)
+                .IsRequired()
+                .HasColumnName("work_experience")
+                .HasMaxLength(WorkExperience.MAX_NUMBER);
+        });
+
         builder.ComplexProperty(p => p.PhoneNumber, pb =>
         {
             pb.Property(pn => pn.Value)
@@ -63,37 +72,43 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(PhoneNumber.MAX_LENGTH);
         });
 
-        builder.OwnsOne(v => v.Details, db =>
+        builder.OwnsOne(v => v.SocialNetwork, socialNetworkBuilder =>
         {
-            db.ToJson("details");
+            socialNetworkBuilder.ToJson();
 
-            db.OwnsMany(r => r.Requisites, rb =>
-            {
-                rb.Property(r => r.Title)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_VERY_LOW_TEXT_LENGTH);
-                
-                rb.Property(r => r.Description)
-                    .IsRequired()
-                    .HasMaxLength(Constants.MAX_MEDIUM_LOW_TEXT_LENGTH);
-            });
-
-            db.OwnsMany(sn => sn.SocialNetworks, snb =>
+            socialNetworkBuilder.OwnsMany(sn => sn.SocialNetworks, snb =>
             {
                 snb.Property(sn => sn.Title)
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_VERY_LOW_TEXT_LENGTH);
-                
+
                 snb.Property(sn => sn.Url)
                     .IsRequired()
                     .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
             });
         });
-        
+        builder.OwnsOne(v => v.Requisite, requisiteBuilder =>
+        {
+            requisiteBuilder.ToJson();
+
+            requisiteBuilder.OwnsMany(r => r.Requisites, rb =>
+            {
+                rb.Property(r => r.Title)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_VERY_LOW_TEXT_LENGTH);
+
+                rb.Property(r => r.Description)
+                    .IsRequired()
+                    .HasMaxLength(Constants.MAX_MEDIUM_LOW_TEXT_LENGTH);
+            });
+        });
+
         builder.HasMany(v => v.Pets)
             .WithOne()
             .HasForeignKey("volunteer_id")
             .IsRequired()
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(v => v.Pets).AutoInclude();
     }
 }

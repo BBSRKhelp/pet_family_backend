@@ -10,6 +10,7 @@ public record Email
     {
         Value = value;
     }
+
     public string Value { get; }
 
     public static Result<Email, Error> Create(string email)
@@ -18,7 +19,7 @@ public record Email
         {
             return Errors.General.IsInvalid(nameof(email));
         }
-        
+
         return new Email(email);
     }
 }

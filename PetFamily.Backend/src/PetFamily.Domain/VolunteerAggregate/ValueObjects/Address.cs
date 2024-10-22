@@ -7,9 +7,9 @@ namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 public record Address
 {
     private Address(
-        string country, 
-        string city, 
-        string street, 
+        string country,
+        string city,
+        string street,
         string? postalcode)
     {
         Country = country;
@@ -37,10 +37,10 @@ public record Address
 
         if (IsNullOrWhiteSpace(street))
             return Errors.General.IsRequired(nameof(street));
-        
+
         if (IsNullOrWhiteSpace(postalcode))
             return Errors.General.IsRequired(nameof(postalcode));
-        
+
         return new Address(country,
             city,
             street,

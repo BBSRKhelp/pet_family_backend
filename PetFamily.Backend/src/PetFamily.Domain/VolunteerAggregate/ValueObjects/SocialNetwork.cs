@@ -11,12 +11,13 @@ public record SocialNetwork
     private SocialNetwork()
     {
     }
+
     private SocialNetwork(string title, string url)
     {
         Title = title;
         Url = url;
     }
-    
+
     public string Title { get; } = null!;
     public string Url { get; } = null!;
 
@@ -24,10 +25,10 @@ public record SocialNetwork
     {
         if (IsNullOrWhiteSpace(title))
             return Errors.General.IsRequired(nameof(title));
-        
+
         if (IsNullOrWhiteSpace(url))
             return Errors.General.IsRequired(nameof(url));
-        
+
         return new SocialNetwork(title, url);
     }
 }

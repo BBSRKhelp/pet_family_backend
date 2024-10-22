@@ -7,7 +7,7 @@ namespace PetFamily.Domain.Shared.ValueObjects;
 public record PhoneNumber
 {
     public const int MAX_LENGTH = 11;
-    
+
     private PhoneNumber(string value)
     {
         Value = value;
@@ -15,10 +15,12 @@ public record PhoneNumber
 
     public string Value { get; } = null!;
 
-    public static Result<PhoneNumber, Error> Create(string phone)
+    public static Result<PhoneNumber, Error> Create(string value)
     {
+        var phone = value.Trim();
+        
         if (phone.Length != MAX_LENGTH || !Regex.IsMatch(phone, @"^[0-9]+$"))
-            return Errors.General.IsInvalid(nameof(PhoneNumber));
+            return Errors.General.IsInvalid(nameof(phone));
 
         return new PhoneNumber(phone);
     }
