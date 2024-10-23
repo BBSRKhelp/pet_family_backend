@@ -12,12 +12,12 @@ public record WorkExperience
         Value = value;
     }
 
-    public byte Value { get; } = 0;
+    public byte Value { get; }
 
     public static Result<WorkExperience, Error> Create(byte workExperience)
     {
         if (workExperience > MAX_NUMBER)
-            return Errors.General.MaxLengthExceeded(nameof(WorkExperience));
+            return Errors.General.MaxLengthExceeded(nameof(workExperience));
 
         return new WorkExperience(workExperience);
     }
