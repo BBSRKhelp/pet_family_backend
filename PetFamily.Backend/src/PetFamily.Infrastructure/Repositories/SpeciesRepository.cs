@@ -31,7 +31,7 @@ public class SpeciesRepository
             _dbContext.Species.Include(s => s.Breeds).FirstOrDefaultAsync(s => s.Id == speciesId, cancellationToken);
 
         if (species is null)
-            return Errors.General.NotFound(speciesId);
+            return Errors.General.NotFound(nameof(speciesId));
 
         return species;
     }

@@ -14,7 +14,7 @@ public record Envelope
 
     public object? Result { get; }
     public IEnumerable<ResponseError> Errors { get; }
-    public DateTimeOffset Created => DateTimeOffset.UtcNow;
+    public DateTimeOffset Execute => DateTimeOffset.UtcNow;
 
     public static Envelope Ok(object? result = null) =>
         new(result, []);

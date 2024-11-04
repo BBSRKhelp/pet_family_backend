@@ -65,11 +65,11 @@ public class VolunteerCreateHandler
                 phoneNumber,
                 socialNetworks,
                 requisites);
-
-        _logger.LogInformation("The volunteer was created with the ID: {volunteerId}", volunteer.Id.Value);
         
-        await _volunteersRepository.AddAsync(volunteer, cancellationToken);
+        var result = await _volunteersRepository.AddAsync(volunteer, cancellationToken);
         
-        return (Guid)volunteer.Id;
+        _logger.LogInformation("The volunteer was created with the ID: {volunteerId}", result);
+        
+        return result;
     }
 }

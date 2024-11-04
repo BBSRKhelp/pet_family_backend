@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using PetFamily.Domain.Shared;
+using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
@@ -6,8 +8,10 @@ using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
 
 namespace PetFamily.Domain.VolunteerAggregate.Entities;
 
-public class Pet : Shared.Models.Entity<PetId>
+public class Pet : Shared.Models.Entity<PetId>//, ISoftDeletable
 {
+    private bool _isDeleted = false;
+    
     //ef core
     [JsonConstructor]
     private Pet() : base(PetId.NewId())
@@ -50,4 +54,7 @@ public class Pet : Shared.Models.Entity<PetId>
     public PetDetails Details { get; private set; } = null!;
     public BreedAndSpeciesId BreedAndSpeciesId { get; private set; } = null!;
     public static DateTime CreatedAt => DateTime.Now;
+    
+    public void IsDeactivate() => _isDeleted = true;
+    public void IsActivate() => _isDeleted = false;
 }

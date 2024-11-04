@@ -2,6 +2,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Interfaces.Repositories;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate;
@@ -27,9 +28,25 @@ public class VolunteersRepository : IVolunteersRepository
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Volunteer with Id = {VolunteerId} has been added to the database", volunteer.Id.Value);
+        return volunteer.Id.Value;
+    }
 
-        return volunteer.Id;
+    public async Task<Guid> SaveChangesAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Volunteers.Attach(volunteer);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return volunteer.Id.Value;
+    }
+
+    public async Task<Guid> DeleteAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+    {
+        _dbContext.Volunteers.Remove(volunteer);
+        
+        await _dbContext.SaveChangesAsync(cancellationToken);
+
+        return volunteer.Id.Value;
     }
 
     public async Task<Result<Volunteer, Error>> GetByIdAsync(VolunteerId volunteerId,
@@ -42,6 +59,7 @@ public class VolunteersRepository : IVolunteersRepository
         if (volunteer is null)
         {
             _logger.LogInformation("A volunteer with Id = {volunteerId} was not found", volunteerId.Value);
+
             return Errors.General.NotFound(nameof(volunteerId));
         }
 
@@ -60,6 +78,7 @@ public class VolunteersRepository : IVolunteersRepository
         if (volunteer is null)
         {
             _logger.LogInformation("A volunteer with Phone = {phoneNumber} was not found", phoneNumber.Value);
+
             return Errors.General.NotFound(nameof(phoneNumber));
         }
 
@@ -77,6 +96,7 @@ public class VolunteersRepository : IVolunteersRepository
         if (volunteer is null)
         {
             _logger.LogInformation("A volunteer with Email = {email} was not found", email.Value);
+
             return Errors.General.NotFound(nameof(email));
         }
 

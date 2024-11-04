@@ -13,11 +13,17 @@ public static class CustomValidators
         return ruleBuilder.Custom((value, context) =>
         {
             var result = factoryMethod(value);
-            
-            if(result.IsSuccess)
+
+            if (result.IsSuccess)
                 return;
-            
+
             context.AddFailure(result.Error.Serialize());
         });
+    }
+    
+    public static IRuleBuilderOptions<T, TProperty> WithError<T, TProperty>(
+        this IRuleBuilderOptions<T, TProperty> rule, Error error)
+    {
+        return rule.WithMessage(error.Serialize());
     }
 }
