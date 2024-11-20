@@ -1,6 +1,4 @@
-using PetFamily.Domain.Shared.Models;
-
-namespace PetFamily.API.Contracts.Shared;
+namespace PetFamily.API.Response.Shared;
 
 public record ResponseError(string? ErrorCode, string? ErrorMessage, string? InvalidField);
 

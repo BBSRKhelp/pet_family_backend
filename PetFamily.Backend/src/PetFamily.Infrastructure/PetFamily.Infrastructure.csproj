@@ -10,6 +10,7 @@
       <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
       <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0-rc.1.24431.7" />
       <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0-rc.1.24431.7" />
+      <PackageReference Include="Minio.AspNetCore" Version="6.0.1" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0-preview.7" />
     </ItemGroup>
 

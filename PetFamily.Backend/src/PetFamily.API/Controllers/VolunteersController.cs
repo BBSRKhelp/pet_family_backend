@@ -1,13 +1,15 @@
-using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Contracts.Pet;
 using PetFamily.API.Contracts.Volunteer;
 using PetFamily.API.Extensions;
+using PetFamily.API.Processors;
+using PetFamily.Application.Commands.Volunteer.AddPet;
 using PetFamily.Application.Commands.Volunteer.Create;
 using PetFamily.Application.Commands.Volunteer.Delete;
 using PetFamily.Application.Commands.Volunteer.UpdateMainInfo;
 using PetFamily.Application.Commands.Volunteer.UpdateRequisites;
 using PetFamily.Application.Commands.Volunteer.UpdateSocialNetworks;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Application.Commands.Volunteer.UploadFilesToPet;
 
 namespace PetFamily.API.Controllers;
 
@@ -59,17 +61,18 @@ public class VolunteersController : ControllerBase
         [FromServices] VolunteerUpdateRequisitesHandler handler,
         [FromServices] VolunteerUpdateRequisitesCommandValidator validator,
         [FromBody] VolunteerUpdateRequisitesRequest request,
-        [FromRoute] Guid id)
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand(id);
 
-        var validationResult = await validator.ValidateAsync(command);
-        
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+
         if (!validationResult.IsValid)
             return validationResult.ToValidationErrorResponse();
-        
-        var result = await handler.HandleAsync(command);
-        
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
         return result.ToResponse();
     }
 
@@ -109,6 +112,49 @@ public class VolunteersController : ControllerBase
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
+        return result.ToResponse();
+    }
+
+    [HttpPost("{id:guid}/pets")]
+    public async Task<ActionResult<Guid>> AddAsync(
+        [FromServices] PetCreateHandler handler,
+        [FromServices] PetCreateCommandValidator validator,
+        [FromBody] PetCreateRequest request,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(id);
+
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToValidationErrorResponse();
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPost("{volunteerId:guid}/pets{petId:guid}")]
+    public async Task<ActionResult<Guid>> UploadFilesToPetAsync(
+        [FromServices] UploadFilesToPetHandler handler,
+        [FromServices] UploadFilesToPetCommandValidator validator,
+        [FromForm] IFormFileCollection files,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken = default)
+    {
+        await using var fileProcessor = new FormFileProcessor();
+        var fileDtos = fileProcessor.Process(files);
+
+        var command = new UploadFilesToPetCommand(volunteerId, petId, fileDtos);
+        
+        var validationResult = await validator.ValidateAsync(command, cancellationToken);
+        if (!validationResult.IsValid)
+            return validationResult.ToValidationErrorResponse();
+        
+        var result = await handler.HandleAsync(command, cancellationToken);
+        
         return result.ToResponse();
     }
 }

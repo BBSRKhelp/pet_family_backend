@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using PetFamily.API.Contracts.Shared;
+using PetFamily.API.Response.Shared;
 using PetFamily.Domain.Shared.Models;
 
 namespace PetFamily.API.Extensions;

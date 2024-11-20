@@ -1,4 +1,4 @@
-using PetFamily.API.Contracts.Shared;
+using PetFamily.API.Response.Shared;
 
 namespace PetFamily.API.Middlewares;
 

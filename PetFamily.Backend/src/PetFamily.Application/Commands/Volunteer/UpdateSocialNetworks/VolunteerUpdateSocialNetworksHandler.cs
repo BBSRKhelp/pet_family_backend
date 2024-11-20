@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Database;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
@@ -11,35 +12,55 @@ public class VolunteerUpdateSocialNetworksHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly ILogger<VolunteerUpdateSocialNetworksHandler> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public VolunteerUpdateSocialNetworksHandler(
         IVolunteersRepository volunteersRepository,
-        ILogger<VolunteerUpdateSocialNetworksHandler> logger)
+        ILogger<VolunteerUpdateSocialNetworksHandler> logger,
+        IUnitOfWork unitOfWork)
     {
         _volunteersRepository = volunteersRepository;
         _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<Guid, Error>> HandleAsync(
         VolunteerUpdateSocialNetworksCommand command,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Updating the volunteer's social networks");
+        var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
 
-        var volunteerResult = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
+        try
+        {
+            _logger.LogInformation("Updating the volunteer's social networks");
 
-        if (volunteerResult.IsFailure)
-            return volunteerResult.Error;
+            var volunteerResult = await _volunteersRepository.GetByIdAsync(command.Id, cancellationToken);
+            if (volunteerResult.IsFailure)
+            {
+                _logger.LogWarning("Volunteer update failed");
+                return volunteerResult.Error;
+            }
 
-        var socialNetworks = new SocialNetworkShell(command.SocialNetworks
-            .Select(x => SocialNetwork.Create(x.Title, x.Url).Value));
-        
-        volunteerResult.Value.UpdateSocialNetwork(socialNetworks);
-        
-        var result = await _volunteersRepository.SaveChangesAsync(volunteerResult.Value, cancellationToken);
-        
-        _logger.LogInformation("Volunteer with Id = {VolunteerId} has been update", result);
+            var socialNetworks = new SocialNetworksShell(command.SocialNetworks
+                .Select(x => SocialNetwork.Create(x.Title, x.Url).Value));
 
-        return result;
+            volunteerResult.Value.UpdateSocialNetwork(socialNetworks);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            _logger.LogInformation("Volunteer with Id = {VolunteerId} has been update", command.Id);
+
+            transaction.Commit();
+
+            return volunteerResult.Value.Id.Value;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update volunteer's social networks");
+
+            transaction.Rollback();
+
+            return Error.Failure("update.social.networks.volunteer", "Failed to update volunteer's social networks");
+        }
     }
 }

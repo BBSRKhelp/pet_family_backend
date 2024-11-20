@@ -1,3 +1,5 @@
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 
@@ -9,8 +11,14 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
-        
+        services.AddSwaggerGen(options =>
+            options.MapType<DateOnly>(() => new OpenApiSchema
+            {
+                Type = "string",
+                Format = "date",
+                Example = new OpenApiString("yyyy-MM-dd")
+            })
+        );
         return services;
     }
 
@@ -31,7 +39,7 @@ public static class DependencyInjection
             .CreateLogger();
 
         services.AddSerilog();
-        
+
         return services;
     }
 }

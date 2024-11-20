@@ -33,5 +33,7 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
             .HasForeignKey("species_id")
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Navigation(s => s.Breeds).AutoInclude();
     }
 }

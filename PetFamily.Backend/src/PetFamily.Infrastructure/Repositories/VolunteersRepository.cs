@@ -2,7 +2,6 @@ using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Interfaces.Repositories;
-using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate;
@@ -31,20 +30,16 @@ public class VolunteersRepository : IVolunteersRepository
         return volunteer.Id.Value;
     }
 
-    public async Task<Guid> SaveChangesAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+    public Guid SaveChanges(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
         _dbContext.Volunteers.Attach(volunteer);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id.Value;
     }
 
-    public async Task<Guid> DeleteAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+    public Guid Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
     {
         _dbContext.Volunteers.Remove(volunteer);
-        
-        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return volunteer.Id.Value;
     }

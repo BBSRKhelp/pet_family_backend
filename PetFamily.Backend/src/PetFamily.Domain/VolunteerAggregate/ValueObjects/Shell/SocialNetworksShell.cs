@@ -1,13 +1,13 @@
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
-public record SocialNetworkShell
+public record SocialNetworksShell
 {
     //ef core
-    private SocialNetworkShell()
+    private SocialNetworksShell()
     {
     }
 
-    public SocialNetworkShell(IEnumerable<SocialNetwork> socialNetworks)
+    public SocialNetworksShell(IEnumerable<SocialNetwork> socialNetworks)
     {
         SocialNetworks = socialNetworks.ToList();
     }

@@ -12,6 +12,7 @@ public class VolunteerCreateHandler
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly ILogger<VolunteerCreateHandler> _logger;
+
     public VolunteerCreateHandler(
         IVolunteersRepository volunteersRepository,
         ILogger<VolunteerCreateHandler> logger)
@@ -41,7 +42,7 @@ public class VolunteerCreateHandler
 
         var socialNetwork = command.SocialNetworks
             ?.Select(x => SocialNetwork.Create(x.Title, x.Url).Value) ?? [];
-        var socialNetworks = new SocialNetworkShell(socialNetwork);
+        var socialNetworks = new SocialNetworksShell(socialNetwork);
 
         var requisite = command.Requisites
             ?.Select(x => Requisite.Create(x.Title, x.Description).Value) ?? [];
@@ -49,11 +50,17 @@ public class VolunteerCreateHandler
 
         var volunteerEmail = await _volunteersRepository.GetByEmailAsync(email, cancellationToken);
         if (volunteerEmail.IsSuccess)
+        {
+            _logger.LogWarning("Volunteer creation failed");
             return Errors.General.IsExisted(nameof(email));
+        }
 
         var volunteerPhone = await _volunteersRepository.GetByPhoneAsync(phoneNumber, cancellationToken);
         if (volunteerPhone.IsSuccess)
+        {
+            _logger.LogWarning("Volunteer creation failed");
             return Errors.General.IsExisted(nameof(phoneNumber));
+        }
 
         var volunteer = new Domain
             .VolunteerAggregate
@@ -65,11 +72,11 @@ public class VolunteerCreateHandler
                 phoneNumber,
                 socialNetworks,
                 requisites);
-        
+
         var result = await _volunteersRepository.AddAsync(volunteer, cancellationToken);
-        
+
         _logger.LogInformation("The volunteer was created with the ID: {volunteerId}", result);
-        
+
         return result;
     }
 }
