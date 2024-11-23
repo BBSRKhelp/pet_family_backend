@@ -17,15 +17,15 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<VolunteerCreateHandler>();
-        services.AddScoped<VolunteerDeleteHandler>();
-        services.AddScoped<VolunteerUpdateMainInfoHandler>();
-        services.AddScoped<VolunteerUpdateRequisitesHandler>();
-        services.AddScoped<VolunteerUpdateSocialNetworksHandler>();
+        services.AddScoped<CreateVolunteerHandler>();
+        services.AddScoped<DeleteVolunteerHandler>();
+        services.AddScoped<UpdateMainInfoVolunteerHandler>();
+        services.AddScoped<UpdateRequisitesVolunteerHandler>();
+        services.AddScoped<UpdateSocialNetworksVolunteerHandler>();
         services.AddScoped<UploadFilesToPetHandler>();
-        services.AddScoped<SpeciesCreateHandler>();
-        services.AddScoped<BreedCreateHandler>();
-        services.AddScoped<PetCreateHandler>();
+        services.AddScoped<CreateSpeciesHandler>();
+        services.AddScoped<CreateBreedHandler>();
+        services.AddScoped<CreatePetHandler>();
 
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 

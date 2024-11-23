@@ -14,17 +14,11 @@ public class SpeciesController : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateAsync(
-       [FromServices] SpeciesCreateHandler handler,
-       [FromServices] SpeciesCreateCommandValidator commandValidator,
-       [FromBody] SpeciesCreateRequest request,
+       [FromServices] CreateSpeciesHandler handler,
+       [FromBody] CreateSpeciesRequest request,
        CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand();
-        
-        var validationResult = await commandValidator.ValidateAsync(command, cancellationToken);
-        
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorResponse();
 
         var result = await handler.HandleAsync(command, cancellationToken);
         
@@ -33,18 +27,12 @@ public class SpeciesController : ControllerBase
 
     [HttpPost("{id:guid}/breeds")]
     public async Task<ActionResult<Guid>> AddBreedAsync(
-        [FromServices] BreedCreateHandler handler,
-        [FromServices] BreedCreateCommandValidator validator,
-        [FromBody] BreedCreateRequest request,
+        [FromServices] CreateBreedHandler handler,
+        [FromBody] CreateBreedRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand(id);
-        
-        var validationResult = await validator.ValidateAsync(command, cancellationToken);
-        
-        if (!validationResult.IsValid)
-            return validationResult.ToValidationErrorResponse();
         
         var result = await handler.HandleAsync(command, cancellationToken);
         
