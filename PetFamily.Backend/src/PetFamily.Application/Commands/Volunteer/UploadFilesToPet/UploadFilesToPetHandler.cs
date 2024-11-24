@@ -65,32 +65,32 @@ public class UploadFilesToPetHandler
 
                 filesData.Add(fileData);
             }
+            
+            var filePathsResult = await _fileProvider.UploadFilesAsync(filesData, cancellationToken);
+            if (filePathsResult.IsFailure)
+                return (ErrorList)filePathsResult.Error;
 
             var petPhotos = new PetPhotosShell(
-                filesData
-                    .Select(f => f.PhotoPath)
+                filePathsResult.Value
+                    .Select(p => p)
                     .Select(p => new PetPhoto(p)));
 
-            var pet = volunteerResult.Value.GetPetById(command.PetId);
-            if (pet.IsFailure)
+            var petResult = volunteerResult.Value.GetPetById(command.PetId);
+            if (petResult.IsFailure)
             {
                 _logger.LogError("Upload files to pet failed");
-                return (ErrorList)pet.Error;
+                return (ErrorList)petResult.Error;
             }
 
-            pet.Value.UpdatePhotos(petPhotos);
+            petResult.Value.UpdatePhotos(petPhotos);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            _logger.LogInformation("Upload files to pet with Id = {PetId} success", pet.Value.Id.Value);
-
-            var uploadResult = await _fileProvider.UploadFilesAsync(filesData, cancellationToken);
-            if (uploadResult.IsFailure)
-                return (ErrorList)uploadResult.Error;
+            _logger.LogInformation("Success uploaded files to pet with Id = {PetId}", petResult.Value.Id.Value);
 
             transaction.Commit();
 
-            return pet.Value.Id.Value;
+            return petResult.Value.Id.Value;
         }
         catch (Exception ex)
         {
