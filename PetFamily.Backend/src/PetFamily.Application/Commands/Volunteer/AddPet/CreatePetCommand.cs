@@ -1,4 +1,4 @@
-using PetFamily.Application.Dto;
+using PetFamily.Application.Dtos;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 
 namespace PetFamily.Application.Commands.Volunteer.AddPet;

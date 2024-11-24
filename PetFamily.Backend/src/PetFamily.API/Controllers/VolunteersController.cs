@@ -99,7 +99,7 @@ public class VolunteersController : ControllerBase
         return result.ToResponse();
     }
 
-    [HttpPost("{volunteerId:guid}/pets{petId:guid}")]
+    [HttpPost("{volunteerId:guid}/pets/{petId:guid}/photos")]
     public async Task<ActionResult<Guid>> UploadFilesToPetAsync(
         [FromServices] UploadFilesToPetHandler handler,
         [FromForm] IFormFileCollection files,

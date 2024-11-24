@@ -1,4 +1,4 @@
-using PetFamily.Application.Dto;
+using PetFamily.Application.Dtos;
 
 namespace PetFamily.Application.Commands.Volunteer.UpdateRequisites;
 
