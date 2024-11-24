@@ -1,14 +1,15 @@
 using System.Text.Json.Serialization;
-using PetFamily.Domain.Shared;
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
+using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Domain.VolunteerAggregate.Entities;
 
-public class Pet : Shared.Models.Entity<PetId>//, ISoftDeletable
+public class  Pet : Shared.Models.Entity<PetId>
 {
     private bool _isDeleted = false;
     
@@ -27,7 +28,8 @@ public class Pet : Shared.Models.Entity<PetId>//, ISoftDeletable
         PhoneNumber phoneNumber,
         DateOnly? birthday,
         StatusForHelp status,
-        PetDetails details,
+        PetPhotosShell petPhotos,
+        RequisitesShell requisites,
         BreedAndSpeciesId breedAndSpeciesId)
         : base(PetId.NewId())
     {
@@ -39,7 +41,8 @@ public class Pet : Shared.Models.Entity<PetId>//, ISoftDeletable
         PhoneNumber = phoneNumber;
         Birthday = birthday;
         Status = status;
-        Details = details;
+        PetPhotos = petPhotos;
+        Requisites = requisites;
         BreedAndSpeciesId = breedAndSpeciesId;
     }
 
@@ -51,9 +54,16 @@ public class Pet : Shared.Models.Entity<PetId>//, ISoftDeletable
     public PhoneNumber PhoneNumber { get; private set; } = null!;
     public DateOnly? Birthday { get; private set; }
     public StatusForHelp Status { get; private set; }
-    public PetDetails Details { get; private set; } = null!;
+    public PetPhotosShell PetPhotos { get; private set; } = null!;
+    public RequisitesShell Requisites { get; private set; } = null!;
     public BreedAndSpeciesId BreedAndSpeciesId { get; private set; } = null!;
     public static DateTime CreatedAt => DateTime.Now;
+    
+    public UnitResult<Error> UpdatePhotos(PetPhotosShell photos)
+    {
+        PetPhotos = photos;
+        return Result.Success<Error>();
+    }
     
     public void IsDeactivate() => _isDeleted = true;
     public void IsActivate() => _isDeleted = false;

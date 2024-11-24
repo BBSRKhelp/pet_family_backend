@@ -18,8 +18,8 @@ public record Requisite
         Description = description;
     }
 
-    public string Title { get; }
-    public string Description { get; }
+    public string Title { get; } = null!;
+    public string Description { get; } = null!;
 
     public static Result<Requisite, Error> Create(string title, string description)
     {

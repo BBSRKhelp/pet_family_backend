@@ -1,4 +1,5 @@
-using PetFamily.API.Contracts.Shared;
+using PetFamily.API.Response.Shared;
+using PetFamily.Domain.Shared.Models;
 
 namespace PetFamily.API.Middlewares;
 
@@ -19,12 +20,12 @@ public class ExceptionMiddleware
         {
             await _next(context);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(ex, ex.Message);
 
-            var responseError = new ResponseError("server.internal", e.Message, null);
-            var envelope = Envelope.Error([responseError]);
+            var error = Error.Failure("server.internal", ex.Message);
+            var envelope = Envelope.Error(error);
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;

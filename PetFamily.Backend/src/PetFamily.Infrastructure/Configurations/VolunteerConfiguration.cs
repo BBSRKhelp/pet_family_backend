@@ -72,9 +72,9 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasMaxLength(PhoneNumber.MAX_LENGTH);
         });
 
-        builder.OwnsOne(v => v.SocialNetwork, socialNetworkBuilder =>
+        builder.OwnsOne(v => v.SocialNetworks, socialNetworkBuilder =>
         {
-            socialNetworkBuilder.ToJson();
+            socialNetworkBuilder.ToJson("social_networks");
 
             socialNetworkBuilder.OwnsMany(sn => sn.SocialNetworks, snb =>
             {
@@ -87,9 +87,10 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                     .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
             });
         });
-        builder.OwnsOne(v => v.Requisite, requisiteBuilder =>
+        
+        builder.OwnsOne(v => v.Requisites, requisiteBuilder =>
         {
-            requisiteBuilder.ToJson();
+            requisiteBuilder.ToJson("requisites");
 
             requisiteBuilder.OwnsMany(r => r.Requisites, rb =>
             {

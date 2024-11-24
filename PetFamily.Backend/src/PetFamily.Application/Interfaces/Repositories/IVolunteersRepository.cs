@@ -10,8 +10,8 @@ namespace PetFamily.Application.Interfaces.Repositories;
 public interface IVolunteersRepository
 { 
     Task<Guid> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default);
-    Task<Guid> SaveChangesAsync(Volunteer volunteer, CancellationToken cancellationToken = default);
-    Task<Guid> DeleteAsync(Volunteer volunteer, CancellationToken cancellationToken = default);
+    Guid SaveChanges(Volunteer volunteer, CancellationToken cancellationToken = default);
+    Guid Delete(Volunteer volunteer, CancellationToken cancellationToken = default);
     Task<Result<Volunteer, Error>> GetByIdAsync(VolunteerId volunteerId, CancellationToken cancellationToken = default);
     Task<Result<Volunteer, Error>> GetByPhoneAsync(PhoneNumber phoneNumber, CancellationToken cancellationToken = default);
     Task<Result<Volunteer, Error>> GetByEmailAsync(Email requestEmail, CancellationToken cancellationToken);

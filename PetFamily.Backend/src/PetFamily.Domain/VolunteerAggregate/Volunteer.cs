@@ -1,3 +1,5 @@
+using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
@@ -7,7 +9,7 @@ using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Domain.VolunteerAggregate;
 
-public class Volunteer : Shared.Models.Entity<VolunteerId>//, ISoftDeletable
+public class Volunteer : Shared.Models.Entity<VolunteerId>
 {
     private bool _isDeleted = false;
     
@@ -24,8 +26,8 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>//, ISoftDeletable
         Description? description,
         WorkExperience workExperience,
         PhoneNumber phoneNumber,
-        SocialNetworkShell? socialNetwork,
-        RequisitesShell? requisite)
+        SocialNetworksShell? socialNetwork,
+        RequisitesShell? requisites)
         : base(VolunteerId.NewId())
     {
         FullName = fullName;
@@ -33,8 +35,8 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>//, ISoftDeletable
         Description = description;
         WorkExperience = workExperience;
         PhoneNumber = phoneNumber;
-        SocialNetwork = socialNetwork;
-        Requisite = requisite;
+        SocialNetworks = socialNetwork;
+        Requisites = requisites;
     }
 
     public FullName FullName { get; private set; } = null!;
@@ -42,8 +44,8 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>//, ISoftDeletable
     public Description? Description { get; private set; }
     public WorkExperience WorkExperience { get; private set; } = null!;
     public PhoneNumber PhoneNumber { get; private set; } = null!;
-    public SocialNetworkShell? SocialNetwork { get; private set; }
-    public RequisitesShell? Requisite { get; private set; }
+    public SocialNetworksShell? SocialNetworks { get; private set; }
+    public RequisitesShell? Requisites { get; private set; }
     public IReadOnlyList<Pet> Pets => _pets.AsReadOnly();
 
     public int PetsFoundHome() => _pets.Count(p => p.Status == StatusForHelp.FoundHome);
@@ -66,20 +68,12 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>//, ISoftDeletable
 
     public void UpdateRequisite(RequisitesShell requisite)
     {
-        Requisite = requisite;
+        Requisites = requisite;
     }
 
-    public void UpdateSocialNetwork(SocialNetworkShell socialNetwork)
+    public void UpdateSocialNetwork(SocialNetworksShell socialNetworkses)
     {
-        SocialNetwork = socialNetwork;
-    }
-
-    public void IsDeactivate()
-    {
-        _isDeleted = true;
-
-        foreach (var pet in _pets)
-            pet.IsDeactivate();
+        SocialNetworks = socialNetworkses;
     }
 
     public void IsActivate()
@@ -90,5 +84,29 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>//, ISoftDeletable
         {
             pet.IsActivate();
         }
+    }
+    
+    public void IsDeactivate()
+    {
+        _isDeleted = true;
+
+        foreach (var pet in _pets)
+            pet.IsDeactivate();
+    }
+
+    public UnitResult<Error> AddPet(Pet pet)
+    {
+        //validation + logic
+        _pets.Add(pet);
+        return Result.Success<Error>();
+    }
+
+    public Result<Pet, Error> GetPetById(PetId id)
+    {
+        var pet = _pets.FirstOrDefault(p => p.Id == id);
+        if (pet is null)
+            return Errors.General.NotFound(nameof(pet));
+
+        return pet;
     }
 }

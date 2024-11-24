@@ -3,7 +3,6 @@ using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate.Entities;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
-using static System.String;
 
 namespace PetFamily.Domain.SpeciesAggregate;
 
@@ -24,4 +23,14 @@ public class Species : Shared.Models.Entity<SpeciesId>
 
     public Name Name { get; private set; } = null!;
     public IReadOnlyList<Breed> Breeds => _breeds.AsReadOnly();
+
+    public UnitResult<Error> AddBreed(Breed breed)
+    {
+        if (_breeds.Any(b => b.Name == breed.Name))
+            return Errors.General.IsExisted(nameof(breed));
+        
+        _breeds.Add(breed);
+        
+        return Result.Success<Error>();
+    }
 }

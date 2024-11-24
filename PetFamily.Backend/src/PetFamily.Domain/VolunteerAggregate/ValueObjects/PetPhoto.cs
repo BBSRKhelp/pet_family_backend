@@ -11,20 +11,12 @@ public record PetPhoto
     {
     }
 
-    private PetPhoto(string path, bool isMainPhoto)
+    public PetPhoto(PhotoPath path, bool isMainPhoto = false)
     {
         Path = path;
         IsMainPhoto = isMainPhoto;
     }
 
-    public string Path { get; } = null!;
+    public PhotoPath Path { get; } = null!;
     public bool? IsMainPhoto { get; }
-
-    public static Result<PetPhoto, Error> Create(string path, bool isMainPhoto)
-    {
-        if (IsNullOrEmpty(path))
-            return Errors.General.IsRequired(nameof(path));
-
-        return new PetPhoto(path, isMainPhoto);
-    }
 }

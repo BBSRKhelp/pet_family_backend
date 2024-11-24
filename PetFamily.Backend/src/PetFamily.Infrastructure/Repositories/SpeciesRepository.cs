@@ -1,18 +1,23 @@
 using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Domain.Shared.Models;
+using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 
 namespace PetFamily.Infrastructure.Repositories;
 
-public class SpeciesRepository
+public class SpeciesRepository : ISpeciesRepository
 {
     private readonly ApplicationDbContext _dbContext;
+    private readonly ILogger<SpeciesRepository> _logger;
 
-    public SpeciesRepository(ApplicationDbContext dbContext)
+    public SpeciesRepository(ApplicationDbContext dbContext, ILogger<SpeciesRepository> logger)
     {
         _dbContext = dbContext;
+        _logger = logger;
     }
 
     public async Task<Guid> AddAsync(Species species, CancellationToken cancellationToken = default)
@@ -21,17 +26,42 @@ public class SpeciesRepository
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
-        return species.Id;
+        return species.Id.Value;
     }
 
     public async Task<Result<Species, Error>> GetByIdAsync(SpeciesId speciesId,
         CancellationToken cancellationToken = default)
     {
-        var species = await
-            _dbContext.Species.Include(s => s.Breeds).FirstOrDefaultAsync(s => s.Id == speciesId, cancellationToken);
+        var species = await _dbContext
+            .Species
+            .FirstOrDefaultAsync(s => s.Id == speciesId, cancellationToken);
 
         if (species is null)
-            return Errors.General.NotFound(nameof(speciesId));
+        {
+            _logger.LogInformation("A species with Id = {speciesId} was not found", speciesId.Value);
+
+            return Errors.General.NotFound(nameof(species));
+        }
+
+        _logger.LogInformation("A species with Id = {speciesId} has been found", speciesId.Value);
+
+        return species;
+    }
+
+    public async Task<Result<Species, Error>> GetByNameAsync(Name name, CancellationToken cancellationToken = default)
+    {
+        var species = await _dbContext
+            .Species
+            .FirstOrDefaultAsync(s => s.Name == name, cancellationToken);
+
+        if (species is null)
+        {
+            _logger.LogInformation("A species with name = {name} was not found", name.Value);
+
+            return Errors.General.NotFound(nameof(species));
+        }
+
+        _logger.LogInformation("A species with name = {name} has been found", name.Value);
 
         return species;
     }
