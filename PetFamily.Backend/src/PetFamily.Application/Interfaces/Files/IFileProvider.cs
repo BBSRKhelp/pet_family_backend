@@ -3,7 +3,7 @@ using PetFamily.Application.Providers;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
-namespace PetFamily.Application.Interfaces.Providers;
+namespace PetFamily.Application.Interfaces.Files;
 
 public interface IFileProvider
 {
@@ -11,7 +11,7 @@ public interface IFileProvider
         IEnumerable<FileData> filesData,
         CancellationToken cancellationToken = default);
 
-    Task<Result<string, Error>> DeleteFileAsync(
+    Task<UnitResult<Error>> RemoveFileAsync(
         FileIdentifier fileIdentifier,
         CancellationToken cancellationToken = default);
 

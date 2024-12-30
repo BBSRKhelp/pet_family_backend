@@ -5,6 +5,7 @@ using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
+using PetFamily.Infrastructure.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations;
 
@@ -21,7 +22,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .HasConversion(
                 id => id.Value,
                 value => VolunteerId.Create(value));
-
+        
         builder.OwnsOne(v => v.FullName, fb =>
         {
             fb.Property(f => f.FirstName)

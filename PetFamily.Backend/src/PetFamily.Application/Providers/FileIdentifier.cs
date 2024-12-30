@@ -1,3 +1,5 @@
+using PetFamily.Domain.VolunteerAggregate.ValueObjects;
+
 namespace PetFamily.Application.Providers;
 
-public record FileIdentifier(string ObjectName, string BucketName);
+public record FileIdentifier(PhotoPath PhotoPath, string BucketName);

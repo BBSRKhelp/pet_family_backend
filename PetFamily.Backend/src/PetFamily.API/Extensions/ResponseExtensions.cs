@@ -8,21 +8,6 @@ namespace PetFamily.API.Extensions;
 
 public static class ResponseExtensions
 {
-    public static ActionResult<T> ToResponse<T>(this Result<T, Error> result)
-    {
-        if (result.IsSuccess)
-            return new OkObjectResult(Envelope.Ok(result.Value));
-
-        var statusCode = GetStatusCodeForErrorType(result.Error.Type);
-    
-        var envelope = Envelope.Error((ErrorList)result.Error);
-    
-        return new ObjectResult(envelope)
-        {
-            StatusCode = statusCode
-        };
-    }
-
     public static ActionResult<T> ToResponse<T>(this Result<T, ErrorList> result)
     {
         if (result.IsSuccess)
