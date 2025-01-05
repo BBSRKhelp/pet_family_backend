@@ -3,8 +3,9 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Database;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.Interfaces.Providers;
+using PetFamily.Application.Interfaces.Files;
 using PetFamily.Application.Interfaces.Repositories;
+using PetFamily.Application.Messaging;
 using PetFamily.Application.Providers;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
@@ -18,6 +19,7 @@ public class UploadFilesToPetHandler
     private readonly IFileProvider _fileProvider;
     private readonly IValidator<UploadFilesToPetCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IMessageQueue<IEnumerable<FileIdentifier>> _messageQueue;
     private readonly ILogger<UploadFilesToPetHandler> _logger;
     private const string BUCKET_NAME = "photos";
 
@@ -26,12 +28,14 @@ public class UploadFilesToPetHandler
         IFileProvider fileProvider,
         IValidator<UploadFilesToPetCommand> validator,
         IUnitOfWork unitOfWork,
+        IMessageQueue<IEnumerable<FileIdentifier>> messageQueue,
         ILogger<UploadFilesToPetHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _fileProvider = fileProvider;
         _validator = validator;
         _unitOfWork = unitOfWork;
+        _messageQueue = messageQueue;
         _logger = logger;
     }
 
@@ -61,14 +65,20 @@ public class UploadFilesToPetHandler
             {
                 var photoPath = PhotoPath.Create(Path.GetExtension(file.FileName)).Value;
 
-                var fileData = new FileData(file.Stream, photoPath, BUCKET_NAME);
+                var fileData = new FileData(file.Stream, new FileIdentifier(photoPath, BUCKET_NAME));
 
                 filesData.Add(fileData);
             }
-            
+
             var filePathsResult = await _fileProvider.UploadFilesAsync(filesData, cancellationToken);
             if (filePathsResult.IsFailure)
+            {
+                _logger.LogError("Upload files to pet failed");
+                _logger.LogInformation("Writing files for cleaning");
+                await _messageQueue.WriteAsync(filesData.Select(f => f.FileIdentifier), cancellationToken);
+
                 return (ErrorList)filePathsResult.Error;
+            }
 
             var petPhotos = new PetPhotosShell(
                 filePathsResult.Value
