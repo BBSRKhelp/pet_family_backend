@@ -6,7 +6,7 @@ using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 
 namespace PetFamily.Domain.SpeciesAggregate;
 
-public class Species : Shared.Models.Entity<SpeciesId>
+public class Species : CSharpFunctionalExtensions.Entity<SpeciesId>
 {
     private readonly List<Breed> _breeds = [];
 

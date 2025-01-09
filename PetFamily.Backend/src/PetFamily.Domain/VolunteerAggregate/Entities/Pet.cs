@@ -9,7 +9,7 @@ using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Domain.VolunteerAggregate.Entities;
 
-public class Pet : Shared.Models.Entity<PetId>
+public class Pet : CSharpFunctionalExtensions.Entity<PetId>
 {
     private bool _isDeleted = false;
 

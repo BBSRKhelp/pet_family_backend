@@ -39,15 +39,19 @@ public class CreatePetHandler
     {
         _logger.LogInformation("Creating Pet");
 
-        var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
-        
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
+        {
+            _logger.LogWarning("Pet creation failed");
             return validationResult.ToErrorList();
+        }
 
         var volunteerResult = await _volunteersRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
         if (volunteerResult.IsFailure)
+        {
+            _logger.LogWarning("Pet creation failed");
             return (ErrorList)volunteerResult.Error;
+        }
 
         var name = Name.Create(command.Name).Value;
 
@@ -115,8 +119,6 @@ public class CreatePetHandler
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("The pet was created and added to the database with an Id: {PetId}", pet.Id.Value);
-
-        transaction.Commit();
 
         return pet.Id.Value;
     }

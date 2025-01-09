@@ -9,7 +9,7 @@ using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Domain.VolunteerAggregate;
 
-public class Volunteer : Shared.Models.Entity<VolunteerId>
+public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
 {
     private bool _isDeleted = false;
 
@@ -120,7 +120,7 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>
         var currentPosition = pet.Position;
 
         if (currentPosition == newPosition || _pets.Count == 1)
-            return Result.Success<Error>();
+            return UnitResult.Success<Error>();
 
         var adjustedPosition = AdjustNewPositionIfOutOfRange(newPosition);
         if (adjustedPosition.IsFailure)
@@ -134,7 +134,7 @@ public class Volunteer : Shared.Models.Entity<VolunteerId>
         
         pet.Move(newPosition);
         
-        return Result.Success<Error>();
+        return UnitResult.Success<Error>();
     }
 
     private Result<Position, Error> AdjustNewPositionIfOutOfRange(Position newPosition)
