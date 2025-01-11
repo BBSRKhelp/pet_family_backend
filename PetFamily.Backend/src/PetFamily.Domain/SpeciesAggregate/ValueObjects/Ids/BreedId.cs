@@ -1,6 +1,8 @@
+using CSharpFunctionalExtensions;
+
 namespace PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 
-public record BreedId
+public class BreedId : ValueObject
 {
     private BreedId(Guid value)
     {
@@ -12,6 +14,11 @@ public record BreedId
     public static BreedId NewId() => new(Guid.NewGuid());
     public static BreedId Empty() => new(Guid.Empty);
     public static BreedId Create(Guid id) => new(id);
+    
+    protected override IEnumerable<IComparable> GetEqualityComponents()
+    {
+        yield return Value;
+    }
     
     public static implicit operator Guid(BreedId id) => id.Value;
     public static implicit operator BreedId(Guid id) => BreedId.Create(id);

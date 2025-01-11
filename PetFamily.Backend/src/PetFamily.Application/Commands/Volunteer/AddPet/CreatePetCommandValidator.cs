@@ -21,12 +21,13 @@ public class CreatePetCommandValidator : AbstractValidator<CreatePetCommand>
 
         RuleFor(c => c.Address)
             .MustBeValueObject(x => Address.Create(x.Country, x.City, x.Street, x.Postalcode));
-        
-        RuleFor(c => c.PhoneNumber).MustBeValueObject(PhoneNumber.Create);
+
+        RuleFor(c => c.PhoneNumber)
+            .MustBeValueObject(PhoneNumber.Create);
         
         RuleForEach(c => c.Requisites)
             .MustBeValueObject(x => Requisite.Create(x.Title, x.Description));
-        
+
         RuleFor(c => c.BreedAndSpeciesId)
             .MustBeValueObject(x => BreedAndSpeciesId.Create(x.SpeciesId, x.BreedId));
     }

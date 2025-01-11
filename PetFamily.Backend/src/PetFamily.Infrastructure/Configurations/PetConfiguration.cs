@@ -182,7 +182,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         {
             snb.Property(sn => sn.Value)
                 .IsRequired()
-                .HasColumnName("serial_number");
+                .HasColumnName("position");
         });
 
         builder.Property<bool>("_isDeleted")

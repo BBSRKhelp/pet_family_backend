@@ -1,10 +1,11 @@
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 
 namespace PetFamily.Domain.SpeciesAggregate.Entities;
 
-public class Breed : Entity<BreedId>
+public class Breed : CSharpFunctionalExtensions.Entity<BreedId>
 {
     //ef core
     private Breed() : base(BreedId.NewId())

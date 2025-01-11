@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Commands.Species.AddBreed;
 using PetFamily.Application.Commands.Species.Create;
 using PetFamily.Application.Commands.Volunteer.AddPet;
+using PetFamily.Application.Commands.Volunteer.ChangePetsPosition;
 using PetFamily.Application.Commands.Volunteer.Create;
 using PetFamily.Application.Commands.Volunteer.Delete;
 using PetFamily.Application.Commands.Volunteer.UpdateMainInfo;
@@ -19,6 +20,7 @@ public static class DependencyInjection
     {
         services.AddScoped<CreateVolunteerHandler>();
         services.AddScoped<DeleteVolunteerHandler>();
+        services.AddScoped<ChangePetsPositionHandler>();
         services.AddScoped<UpdateMainInfoVolunteerHandler>();
         services.AddScoped<UpdateRequisitesVolunteerHandler>();
         services.AddScoped<UpdateSocialNetworksVolunteerHandler>();

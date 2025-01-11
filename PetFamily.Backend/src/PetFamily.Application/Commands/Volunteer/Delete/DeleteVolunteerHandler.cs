@@ -34,8 +34,6 @@ public class DeleteVolunteerHandler
     {
         _logger.LogInformation("Deleting Volunteer");
 
-        var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
-
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
@@ -52,8 +50,6 @@ public class DeleteVolunteerHandler
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("The volunteer with id = {VolunteerId} has been deleted", command.Id);
-
-        transaction.Commit();
 
         return volunteerResult.Value.Id.Value;
     }
