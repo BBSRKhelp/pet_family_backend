@@ -20,5 +20,14 @@ public static class Errors
         
         public static Error MaxLengthExceeded(string? value = null) =>
             Error.Validation("record.exceeded", $"record {value ?? ""} exceeded");
+        
+        public static Error MinLengthLowered(string? value = null) =>
+            Error.Validation("record.lowered", $"record {value ?? ""} lowered");
+    }
+
+    public static class Database
+    {
+        public static Error IsFailure(string? value = null) => 
+            Error.Validation("database.failure", $"database failure");
     }
 }

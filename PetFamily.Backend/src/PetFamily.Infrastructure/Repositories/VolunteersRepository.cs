@@ -7,15 +7,16 @@ using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
+using PetFamily.Infrastructure.DbContexts;
 
 namespace PetFamily.Infrastructure.Repositories;
 
 public class VolunteersRepository : IVolunteersRepository
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly WriteDbContext _dbContext;
     private readonly ILogger<VolunteersRepository> _logger;
 
-    public VolunteersRepository(ApplicationDbContext dbContext, ILogger<VolunteersRepository> logger)
+    public VolunteersRepository(WriteDbContext dbContext, ILogger<VolunteersRepository> logger)
     {
         _dbContext = dbContext;
         _logger = logger;

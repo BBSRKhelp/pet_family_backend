@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Interfaces.Files;
-using PetFamily.Application.Messaging;
+using PetFamily.Application.Interfaces.Messaging;
 using PetFamily.Application.Providers;
 
 namespace PetFamily.Infrastructure.Files;

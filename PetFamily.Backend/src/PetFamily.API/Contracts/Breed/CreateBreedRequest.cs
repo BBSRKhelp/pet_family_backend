@@ -1,11 +1,11 @@
-using PetFamily.Application.Commands.Species.AddBreed;
+using PetFamily.Application.SpeciesAggregate.Commands.AddBreed;
 
 namespace PetFamily.API.Contracts.Breed;
 
 public record CreateBreedRequest(string Name)
 {
-    public CreateBreedCommand ToCommand(Guid id)
+    public AddBreedCommand ToCommand(Guid id)
     {
-        return new CreateBreedCommand(id, Name);
+        return new AddBreedCommand(id, Name);
     }
 }

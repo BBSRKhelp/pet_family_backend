@@ -1,5 +1,5 @@
 using System.Threading.Channels;
-using PetFamily.Application.Messaging;
+using PetFamily.Application.Interfaces.Messaging;
 
 namespace PetFamily.Infrastructure.MessageQueues;
 

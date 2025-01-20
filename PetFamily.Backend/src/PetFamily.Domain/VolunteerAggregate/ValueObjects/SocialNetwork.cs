@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Models;
 using static System.String;
 
@@ -7,11 +8,6 @@ namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 public record SocialNetwork
 {
-    [JsonConstructor]
-    private SocialNetwork()
-    {
-    }
-
     private SocialNetwork(string title, string url)
     {
         Title = title;
@@ -26,8 +22,14 @@ public record SocialNetwork
         if (IsNullOrWhiteSpace(title))
             return Errors.General.IsRequired(nameof(title));
 
+        if (title.Length > Constants.MAX_LOW_TEXT_LENGTH)
+            return Errors.General.MaxLengthExceeded(nameof(title));
+
         if (IsNullOrWhiteSpace(url))
             return Errors.General.IsRequired(nameof(url));
+
+        if (url.Length > Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
+            return Errors.General.MaxLengthExceeded(nameof(url));
 
         return new SocialNetwork(title, url);
     }

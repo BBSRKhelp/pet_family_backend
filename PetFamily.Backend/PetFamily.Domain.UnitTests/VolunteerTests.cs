@@ -12,7 +12,7 @@ namespace PetFamily.Domain.UnitTests;
 public class VolunteerTests
 {
     [Fact]
-    public void AddPet_WithEmptyPet_ShouldSuccessResult()
+    public void AddPet_WithEmptyPets_ShouldSuccessResult()
     {
         //Arrange
         var volunteer = CreateVolunteer();
@@ -31,7 +31,7 @@ public class VolunteerTests
     }
 
     [Fact]
-    public void AddPet_WithOtherPet_ShouldSuccessResult()
+    public void AddPet_WithOtherPets_ShouldSuccessResult()
     {
         //Arrange
         const int PETS_COUNT = 5;
@@ -85,7 +85,7 @@ public class VolunteerTests
     }
 
     [Fact]
-    public void MovePet_WhenNewPositionIsLower_ShouldMoveOtherPetForward()
+    public void MovePet_WhenNewPositionIsLower_ShouldMoveOtherPetsForward()
     {
         //Arrange
         const int PETS_COUNT = 6;
@@ -115,7 +115,7 @@ public class VolunteerTests
     }
 
     [Fact]
-    public void MovePet_WhenNewPositionIsFirst_ShouldMoveOtherPetForward()
+    public void MovePet_WhenNewPositionIsFirst_ShouldMoveOtherPetsForward()
     {
         //Arrange
         const int PETS_COUNT = 6;
@@ -145,7 +145,7 @@ public class VolunteerTests
     }
 
     [Fact]
-    public void MovePet_WhenNewPositionIsGreater_ShouldMoveOtherPetBack()
+    public void MovePet_WhenNewPositionIsGreater_ShouldMoveOtherPetsBack()
     {
         //Arrange
         const int PETS_COUNT = 6;
@@ -175,7 +175,7 @@ public class VolunteerTests
     }
 
     [Fact]
-    public void MovePet_WhenNewPositionIsLast_ShouldMoveOtherPetBack()
+    public void MovePet_WhenNewPositionIsLast_ShouldMoveOtherPetsBack()
     {
         //Arrange
         const int PETS_COUNT = 6;
@@ -203,7 +203,7 @@ public class VolunteerTests
         fifthPet.Position.Value.Should().Be(4);
         sixthPet.Position.Value.Should().Be(5);
     }
-    
+
     [Fact]
     public void MovePet_WhenNewPositionIsOutOfRange_ShouldMoveOtherPetBack()
     {
@@ -241,8 +241,8 @@ public class VolunteerTests
         var description = Description.Create("TestDescription").Value;
         var workExperience = WorkExperience.Create(8).Value;
         var phoneNumber = PhoneNumber.Create("88888888888").Value;
-        var socialNetworks = new SocialNetworksShell([SocialNetwork.Create("TestSocialNetwork", "url").Value]);
-        var requisites = new RequisitesShell([Requisite.Create("TestRequisite", "TestRequisiteUrl").Value]);
+        IReadOnlyList<SocialNetwork> socialNetworks = [SocialNetwork.Create("TestSocialNetwork", "url").Value];
+        IReadOnlyList<Requisite> requisites = [Requisite.Create("TestRequisite", "TestRequisiteUrl").Value];
 
         return new Volunteer(
             fullname,

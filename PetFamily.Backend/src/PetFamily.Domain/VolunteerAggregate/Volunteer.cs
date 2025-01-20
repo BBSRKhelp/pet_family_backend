@@ -5,13 +5,12 @@ using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
-using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Domain.VolunteerAggregate;
 
 public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
 {
-    private bool _isDeleted = false;
+    private bool _isDeleted;
 
     private readonly List<Pet> _pets = [];
 
@@ -23,11 +22,11 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
     public Volunteer(
         FullName fullName,
         Email email,
-        Description? description,
+        Description description,
         WorkExperience workExperience,
         PhoneNumber phoneNumber,
-        SocialNetworksShell? socialNetwork,
-        RequisitesShell? requisites)
+        IReadOnlyList<SocialNetwork> socialNetwork,
+        IReadOnlyList<Requisite> requisites)
         : base(VolunteerId.NewId())
     {
         FullName = fullName;
@@ -41,11 +40,11 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
 
     public FullName FullName { get; private set; } = null!;
     public Email Email { get; private set; } = null!;
-    public Description? Description { get; private set; }
+    public Description Description { get; private set; } = null!;
     public WorkExperience WorkExperience { get; private set; } = null!;
     public PhoneNumber PhoneNumber { get; private set; } = null!;
-    public SocialNetworksShell? SocialNetworks { get; private set; }
-    public RequisitesShell? Requisites { get; private set; }
+    public IReadOnlyList<SocialNetwork> SocialNetworks { get; private set; } = [];
+    public IReadOnlyList<Requisite> Requisites { get; private set; } = [];
     public IReadOnlyList<Pet> Pets => _pets.AsReadOnly();
 
     public int PetsFoundHome() => _pets.Count(p => p.Status == StatusForHelp.FoundHome);
@@ -55,7 +54,7 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
     public void UpdateMainInfo(
         FullName fullName,
         Email email,
-        Description? description,
+        Description description,
         WorkExperience workExperience,
         PhoneNumber phoneNumber)
     {
@@ -66,12 +65,12 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
         PhoneNumber = phoneNumber;
     }
 
-    public void UpdateRequisite(RequisitesShell requisite)
+    public void UpdateRequisite(IReadOnlyList<Requisite> requisite)
     {
         Requisites = requisite;
     }
 
-    public void UpdateSocialNetwork(SocialNetworksShell socialNetworks)
+    public void UpdateSocialNetwork(IReadOnlyList<SocialNetwork> socialNetworks)
     {
         SocialNetworks = socialNetworks;
     }
@@ -131,9 +130,9 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
         var moveResult = MovePetsBetweenPositions(newPosition, currentPosition);
         if (moveResult.IsFailure)
             return moveResult.Error;
-        
+
         pet.Move(newPosition);
-        
+
         return UnitResult.Success<Error>();
     }
 
@@ -148,7 +147,7 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
 
         return lastPosition.Value;
     }
-    
+
     private UnitResult<Error> MovePetsBetweenPositions(Position newPosition, Position currentPosition)
     {
         if (newPosition < currentPosition)
@@ -176,7 +175,7 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
                     return result.Error;
             }
         }
-        
+
         return Result.Success<Error>();
     }
 }

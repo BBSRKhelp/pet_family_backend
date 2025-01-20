@@ -1,7 +1,7 @@
 using System.Collections;
-using PetFamily.Application.Commands.Volunteer.AddPet;
 using PetFamily.Application.Dtos;
 using PetFamily.Application.Providers;
+using PetFamily.Application.VolunteerAggregate.Commands.AddPet;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 
 namespace PetFamily.API.Contracts.Pet;

@@ -6,15 +6,16 @@ using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
+using PetFamily.Infrastructure.DbContexts;
 
 namespace PetFamily.Infrastructure.Repositories;
 
 public class SpeciesRepository : ISpeciesRepository
 {
-    private readonly ApplicationDbContext _dbContext;
+    private readonly WriteDbContext _dbContext;
     private readonly ILogger<SpeciesRepository> _logger;
 
-    public SpeciesRepository(ApplicationDbContext dbContext, ILogger<SpeciesRepository> logger)
+    public SpeciesRepository(WriteDbContext dbContext, ILogger<SpeciesRepository> logger)
     {
         _dbContext = dbContext;
         _logger = logger;

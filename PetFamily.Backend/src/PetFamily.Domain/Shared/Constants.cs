@@ -2,9 +2,11 @@ namespace PetFamily.Domain.Shared;
 
 public static class Constants
 {
-    public const int MAX_VERY_LOW_TEXT_LENGTH = 50;
+    public const byte MAX_NAME_LENGTH = 30;
+    
+    public const byte MAX_VERY_LOW_TEXT_LENGTH = 50;
 
-    public const int MAX_LOW_TEXT_LENGTH = 100;
+    public const byte MAX_LOW_TEXT_LENGTH = 100;
 
     public const int MAX_MEDIUM_LOW_TEXT_LENGTH = 1000;
 

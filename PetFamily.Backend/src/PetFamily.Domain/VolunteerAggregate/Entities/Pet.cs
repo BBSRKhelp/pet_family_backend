@@ -11,7 +11,7 @@ namespace PetFamily.Domain.VolunteerAggregate.Entities;
 
 public class Pet : CSharpFunctionalExtensions.Entity<PetId>
 {
-    private bool _isDeleted = false;
+    private bool _isDeleted;
 
     //ef core
     [JsonConstructor]
@@ -20,8 +20,8 @@ public class Pet : CSharpFunctionalExtensions.Entity<PetId>
     }
 
     public Pet(
-        Name? name,
-        Description? description,
+        Name name,
+        Description description,
         AppearanceDetails appearanceDetails,
         HealthDetails healthDetails,
         Address address,
@@ -46,8 +46,8 @@ public class Pet : CSharpFunctionalExtensions.Entity<PetId>
         BreedAndSpeciesId = breedAndSpeciesId;
     }
 
-    public Name? Name { get; private set; }
-    public Description? Description { get; private set; }
+    public Name Name { get; private set; } = null!;
+    public Description Description { get; private set; } = null!;
     public AppearanceDetails AppearanceDetails { get; private set; } = null!;
     public HealthDetails HealthDetails { get; private set; } = null!;
     public Address Address { get; private set; } = null!;
