@@ -3,14 +3,18 @@ using PetFamily.API.Contracts.Pet;
 using PetFamily.API.Contracts.Volunteer;
 using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
-using PetFamily.Application.Commands.Volunteer.AddPet;
-using PetFamily.Application.Commands.Volunteer.ChangePetsPosition;
-using PetFamily.Application.Commands.Volunteer.Create;
-using PetFamily.Application.Commands.Volunteer.Delete;
-using PetFamily.Application.Commands.Volunteer.UpdateMainInfo;
-using PetFamily.Application.Commands.Volunteer.UpdateRequisites;
-using PetFamily.Application.Commands.Volunteer.UpdateSocialNetworks;
-using PetFamily.Application.Commands.Volunteer.UploadFilesToPet;
+using PetFamily.Application.Dtos;
+using PetFamily.Application.Models;
+using PetFamily.Application.VolunteerAggregate.Commands.AddPet;
+using PetFamily.Application.VolunteerAggregate.Commands.ChangePetsPosition;
+using PetFamily.Application.VolunteerAggregate.Commands.Create;
+using PetFamily.Application.VolunteerAggregate.Commands.Delete;
+using PetFamily.Application.VolunteerAggregate.Commands.UpdateMainInfo;
+using PetFamily.Application.VolunteerAggregate.Commands.UpdateRequisites;
+using PetFamily.Application.VolunteerAggregate.Commands.UpdateSocialNetworks;
+using PetFamily.Application.VolunteerAggregate.Commands.UploadFilesToPet;
+using PetFamily.Application.VolunteerAggregate.Queries.GetFilteredVolunteersWithPagination;
+using PetFamily.Application.VolunteerAggregate.Queries.GetVolunteerById;
 
 namespace PetFamily.API.Controllers;
 
@@ -112,9 +116,9 @@ public class VolunteersController : ControllerBase
         var fileDtos = fileProcessor.Process(files);
 
         var command = new UploadFilesToPetCommand(volunteerId, petId, fileDtos);
-        
+
         var result = await handler.HandleAsync(command, cancellationToken);
-        
+
         return result.ToResponse();
     }
 
@@ -127,10 +131,35 @@ public class VolunteersController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand(volunteerId, petId);
-        
-        var result = await handler.Handle(command, cancellationToken);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
-}
 
+    [HttpGet]
+    public async Task<ActionResult<PagedList<VolunteerDto>>> GetVolunteersAsync(
+        [FromServices] GetFilteredVolunteersWithPaginationHandlerDapper handler,
+        [FromQuery] GetVolunteersWithPaginationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var query = request.ToQuery();
+
+        var result = await handler.HandleAsync(query, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<VolunteerDto>> GetVolunteerAsync(
+        [FromServices] GetVolunteerByIdHandler handler,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetVolunteerByIdQuery(id);
+        
+        var result = await handler.HandleAsync(query, cancellationToken);
+        
+        return result.ToResponse();
+    }
+}

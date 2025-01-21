@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Models;
 using static System.String;
 
@@ -24,9 +25,18 @@ public record FullName
     {
         if (IsNullOrWhiteSpace(firstName))
             return Errors.General.IsRequired(nameof(firstName));
+        
+        if (firstName.Length > Constants.MAX_NAME_LENGTH)
+            return Errors.General.MaxLengthExceeded(nameof(firstName));
 
         if (IsNullOrWhiteSpace(lastName))
             return Errors.General.IsRequired(nameof(lastName));
+        
+        if (lastName.Length > Constants.MAX_NAME_LENGTH)
+            return Errors.General.MaxLengthExceeded(nameof(lastName));
+        
+        if (patronymic?.Length > Constants.MAX_NAME_LENGTH)
+            return Errors.General.MaxLengthExceeded(nameof(patronymic));
 
         return new FullName(firstName, lastName, patronymic);
     }

@@ -1,12 +1,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
-using PetFamily.Application.Database;
+using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Files;
+using PetFamily.Application.Interfaces.Messaging;
 using PetFamily.Application.Interfaces.Repositories;
-using PetFamily.Application.Messaging;
 using PetFamily.Application.Providers;
 using PetFamily.Infrastructure.BackgroundServices;
+using PetFamily.Infrastructure.DbContexts;
 using PetFamily.Infrastructure.Files;
 using PetFamily.Infrastructure.MessageQueues;
 using PetFamily.Infrastructure.Options;
@@ -21,15 +22,40 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddScoped<ApplicationDbContext>();
+        services.AddDatabase()
+            .AddRepositories()
+            .AddBackgroundService()
+            .AddFileProvider(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddDatabase(
+        this IServiceCollection services)
+    {
+        services.AddScoped<WriteDbContext>();
+        services.AddScoped<IReadDbContext, ReadDbContext>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+        return services;
+    }
+    
+    private static IServiceCollection AddRepositories(
+        this IServiceCollection services)
+    {
         services.AddScoped<IVolunteersRepository, VolunteersRepository>();
         services.AddScoped<ISpeciesRepository, SpeciesRepository>();
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<IFilesCleanerService, FilesCleanerService>();
-        services.AddFileProvider(configuration);
+        
+        return services;
+    }
 
+    private static IServiceCollection AddBackgroundService(
+        this IServiceCollection services)
+    {
         services.AddHostedService<FilesCleanerBackgroundService>();
-
+        services.AddScoped<IFilesCleanerService, FilesCleanerService>();
         services.AddSingleton<IMessageQueue<IEnumerable<FileIdentifier>>,
             InMemoryMessageQueue<IEnumerable<FileIdentifier>>>();
 

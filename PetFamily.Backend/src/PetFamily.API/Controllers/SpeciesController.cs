@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts.Breed;
 using PetFamily.API.Contracts.Species;
 using PetFamily.API.Extensions;
-using PetFamily.Application.Commands.Species.AddBreed;
-using PetFamily.Application.Commands.Species.Create;
+using PetFamily.Application.SpeciesAggregate.Commands.AddBreed;
+using PetFamily.Application.SpeciesAggregate.Commands.Create;
 
 namespace PetFamily.API.Controllers;
 
@@ -26,7 +26,7 @@ public class SpeciesController : ControllerBase
 
     [HttpPost("{id:guid}/breeds")]
     public async Task<ActionResult<Guid>> AddBreedAsync(
-        [FromServices] CreateBreedHandler handler,
+        [FromServices] AddBreedHandler handler,
         [FromBody] CreateBreedRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)

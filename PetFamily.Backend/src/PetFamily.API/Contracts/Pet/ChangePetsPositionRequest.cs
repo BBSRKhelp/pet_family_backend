@@ -1,4 +1,4 @@
-using PetFamily.Application.Commands.Volunteer.ChangePetsPosition;
+using PetFamily.Application.VolunteerAggregate.Commands.ChangePetsPosition;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 namespace PetFamily.API.Contracts.Pet;

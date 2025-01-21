@@ -1,4 +1,4 @@
-using PetFamily.Application.Commands.Species.Create;
+using PetFamily.Application.SpeciesAggregate.Commands.Create;
 
 namespace PetFamily.API.Contracts.Species;
 

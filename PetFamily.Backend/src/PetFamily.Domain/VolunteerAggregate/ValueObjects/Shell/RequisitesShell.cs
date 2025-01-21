@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 public record RequisitesShell
