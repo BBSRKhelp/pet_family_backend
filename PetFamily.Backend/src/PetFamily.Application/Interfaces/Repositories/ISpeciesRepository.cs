@@ -9,6 +9,7 @@ namespace PetFamily.Application.Interfaces.Repositories;
 public interface ISpeciesRepository
 {
     Task<Guid> AddAsync(Species species, CancellationToken cancellationToken = default);
+    public Guid Delete(Species species);
     Task<Result<Species, Error>> GetByIdAsync(SpeciesId speciesId, CancellationToken cancellationToken = default);
     Task<Result<Species, Error>> GetByNameAsync(Name name, CancellationToken cancellationToken = default);
 }

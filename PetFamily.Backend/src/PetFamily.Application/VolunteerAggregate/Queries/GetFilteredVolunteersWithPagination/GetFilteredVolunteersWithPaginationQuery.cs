@@ -9,5 +9,5 @@ public record GetFilteredVolunteersWithPaginationQuery(
     string? LastName,
     string? Patronymic,
     byte? WorkExperience, 
-    string SortDirection,
-    string SortBy) : IQuery;
+    string SortBy,
+    string SortDirection) : IQuery;

@@ -32,7 +32,7 @@ public static class FluentApiExtensions
         Func<TDto, TValueObject> selector)
     {
         var dtos = JsonSerializer.Deserialize<IEnumerable<TDto>>(json, JsonSerializerOptions.Default) ?? [];
-        return dtos.Select(selector).ToArray();
+        return dtos.Select(selector).ToList();
     }
     
     private static ValueComparer ValueComparer<TValueObject>()
@@ -40,6 +40,6 @@ public static class FluentApiExtensions
         return new ValueComparer<IReadOnlyList<TValueObject>>(
             (c1, c2) => c1!.SequenceEqual(c2!),
             c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v!.GetHashCode())),
-            c => c.ToArray());
+            c => c.ToList());
     }
 }

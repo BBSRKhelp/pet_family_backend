@@ -4,7 +4,9 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
-using PetFamily.Application.Dtos;
+using PetFamily.Application.DTOs;
+using PetFamily.Application.DTOs.Read;
+using PetFamily.Application.DTOs.Volunteer;
 using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.VolunteerAggregate.Queries.GetFilteredVolunteersWithPagination;
 

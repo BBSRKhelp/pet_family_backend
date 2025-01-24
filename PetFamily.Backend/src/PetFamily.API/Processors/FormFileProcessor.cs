@@ -1,4 +1,4 @@
-using PetFamily.Application.Dtos;
+using PetFamily.Application.DTOs.Pet;
 
 namespace PetFamily.API.Processors;
 
@@ -11,7 +11,12 @@ public class FormFileProcessor : IAsyncDisposable
         foreach (var file in files)
         {
             var stream = file.OpenReadStream();
-            var fileDto = new UploadFileDto(stream, file.FileName);
+
+            var fileName = Path.ChangeExtension(
+                Guid.NewGuid().ToString("N"), 
+                Path.GetExtension(file.FileName));
+            
+            var fileDto = new UploadFileDto(stream, fileName);
             
             _fileDtos.Add(fileDto);
         }

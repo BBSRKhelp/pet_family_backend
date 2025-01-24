@@ -1,42 +1,42 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Dtos;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
-using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.AddPet;
 
-public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
+public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
-    private readonly ISpeciesRepository _speciesRepository;
-    private readonly IValidator<CreatePetCommand> _validator;
+    private readonly IReadDbContext _readDbContext;
+    private readonly IValidator<AddPetCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<CreatePetHandler> _logger;
+    private readonly ILogger<AddPetHandler> _logger;
 
-    public CreatePetHandler(
+    public AddPetHandler(
         IVolunteersRepository volunteersRepository,
-        ISpeciesRepository speciesRepository,
-        IValidator<CreatePetCommand> validator,
+        IReadDbContext readDbContext,
+        IValidator<AddPetCommand> validator,
         IUnitOfWork unitOfWork,
-        ILogger<CreatePetHandler> logger)
+        ILogger<AddPetHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
-        _speciesRepository = speciesRepository;
+        _readDbContext = readDbContext;
         _validator = validator;
         _logger = logger;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<Result<Guid, ErrorList>> HandleAsync(
-        CreatePetCommand command,
+        AddPetCommand command,
         CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating Pet");
@@ -44,14 +44,14 @@ public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
         {
-            _logger.LogWarning("Pet creation failed");
+            _logger.LogError("Pet creation failed");
             return validationResult.ToErrorList();
         }
 
         var volunteerResult = await _volunteersRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
         if (volunteerResult.IsFailure)
         {
-            _logger.LogWarning("Pet creation failed");
+            _logger.LogError("Pet creation failed");
             return (ErrorList)volunteerResult.Error;
         }
 
@@ -77,31 +77,38 @@ public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
 
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
 
-        var requisites = new RequisitesShell(command.Requisites
-            ?.Select(x => Requisite.Create(x.Title, x.Description).Value) ?? []);
+        var requisites = command.Requisites
+            ?.Select(x => Requisite.Create(x.Title, x.Description).Value).ToArray() ?? [];
 
         var speciesId = command.BreedAndSpeciesId.SpeciesId;
 
-        var speciesResult = await _speciesRepository.GetByIdAsync(speciesId, cancellationToken);
-        if (speciesResult.IsFailure)
+        var speciesDto = await _readDbContext
+            .Species
+            .FirstOrDefaultAsync(s => s.Id == speciesId, cancellationToken);
+
+        if (speciesDto is null)
         {
-            _logger.LogWarning("Pet creation failed");
-            return (ErrorList)speciesResult.Error;
+            _logger.LogInformation("Species with id = {SpeciesId} was not found", speciesId.Value);
+            _logger.LogError("Pet creation failed");
+            return (ErrorList)Errors.General.NotFound("species");
         }
 
         var breedId = command.BreedAndSpeciesId.BreedId;
 
-        var isBreedExist = speciesResult.Value.Breeds.Any(b => b.Id.Value == breedId);
-        if (!isBreedExist)
+        var breedDto = await _readDbContext
+            .Breeds
+            .FirstOrDefaultAsync(b => b.Id == breedId, cancellationToken);
+
+        if (breedDto is null)
         {
             _logger.LogInformation("Breed with id = {breedId} was not found", breedId);
-            _logger.LogWarning("Pet creation failed");
+            _logger.LogError("Pet creation failed");
             return (ErrorList)Errors.General.NotFound("breed");
         }
 
         var breedAndSpeciesId = BreedAndSpeciesId.Create(speciesId, breedId).Value;
 
-        var pet = new Domain.VolunteerAggregate.Entities.Pet(
+        var pet = new Pet(
             name,
             description,
             appearanceDetails,
@@ -110,7 +117,6 @@ public class CreatePetHandler : ICommandHandler<Guid, CreatePetCommand>
             phoneNumber,
             command.Birthday,
             command.Status,
-            new PetPhotosShell([]),
             requisites,
             breedAndSpeciesId);
 

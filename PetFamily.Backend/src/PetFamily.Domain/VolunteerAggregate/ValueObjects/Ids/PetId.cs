@@ -20,6 +20,6 @@ public class PetId : ValueObject
         yield return Value;
     }
     
-    public static implicit operator PetId(Guid id) => PetId.Create(id);
+    public static implicit operator PetId(Guid id) => Create(id);
     public static implicit operator Guid(PetId petId) => petId.Value;
 }

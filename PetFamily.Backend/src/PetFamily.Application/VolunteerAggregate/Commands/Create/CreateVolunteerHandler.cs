@@ -6,8 +6,8 @@ using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.VolunteerAggregate;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
-using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Create;
 
@@ -52,11 +52,11 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
 
         var socialNetworks = command.SocialNetworks
             ?.Select(x => SocialNetwork.Create(x.Title, x.Url).Value)
-            .ToList() ?? [];
+            .ToArray() ?? [];
 
         var requisites = command.Requisites
             ?.Select(x => Requisite.Create(x.Title, x.Description).Value)
-            .ToList() ?? [];
+            .ToArray() ?? [];
 
         var volunteerEmailResult = await _volunteersRepository.GetByEmailAsync(email, cancellationToken);
         if (volunteerEmailResult.IsSuccess)
@@ -72,9 +72,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
             return (ErrorList)Errors.General.IsExisted(nameof(phoneNumber));
         }
 
-        var volunteer = new Domain
-            .VolunteerAggregate
-            .Volunteer(
+        var volunteer = new Volunteer(
                 fullname,
                 email,
                 description,

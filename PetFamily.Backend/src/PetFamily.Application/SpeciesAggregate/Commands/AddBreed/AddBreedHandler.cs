@@ -34,11 +34,12 @@ public class AddBreedHandler : ICommandHandler<Guid, AddBreedCommand>
     {
         _logger.LogInformation("Adding Breed");
         
-        var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
-        
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
+        {
+            _logger.LogWarning("Failed to add breed");
             return validationResult.ToErrorList();
+        }
         
         var speciesResult = await _speciesRepository.GetByIdAsync(command.SpeciesId, cancellationToken);
         if (speciesResult.IsFailure)
@@ -60,8 +61,6 @@ public class AddBreedHandler : ICommandHandler<Guid, AddBreedCommand>
         }
         
         await _unitOfWork.SaveChangesAsync(cancellationToken);
-        
-        transaction.Commit();
         
         _logger.LogInformation("Breed with Id = {Id} added", breed.Id.Value);
         

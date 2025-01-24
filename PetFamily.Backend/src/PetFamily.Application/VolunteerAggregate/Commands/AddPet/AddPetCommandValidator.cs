@@ -5,9 +5,9 @@ using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.AddPet;
 
-public class CreatePetCommandValidator : AbstractValidator<CreatePetCommand>
+public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
 {
-    public CreatePetCommandValidator()
+    public AddPetCommandValidator()
     {
         RuleFor(c => c.Name).MustBeValueObject(Name.Create);
 

@@ -3,7 +3,9 @@ using CSharpFunctionalExtensions;
 using Dapper;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Dtos;
+using PetFamily.Application.DTOs;
+using PetFamily.Application.DTOs.Read;
+using PetFamily.Application.DTOs.Volunteer;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Database;
@@ -44,7 +46,7 @@ public class GetFilteredVolunteersWithPaginationHandlerDapper :
 
         try
         {
-            var connection = _sqlConnectionFactory.GetConnection();
+            using var connection = _sqlConnectionFactory.GetConnection();
 
             _logger.LogInformation("Connection with database established");
 

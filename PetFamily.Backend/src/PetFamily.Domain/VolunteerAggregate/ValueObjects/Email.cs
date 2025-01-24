@@ -1,6 +1,6 @@
+using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared.Models;
-using System.Text.RegularExpressions;
 
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 

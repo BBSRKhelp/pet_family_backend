@@ -12,28 +12,35 @@ namespace PetFamily.Infrastructure.Repositories;
 
 public class SpeciesRepository : ISpeciesRepository
 {
-    private readonly WriteDbContext _dbContext;
+    private readonly WriteDbContext _writeDbContext;
     private readonly ILogger<SpeciesRepository> _logger;
 
-    public SpeciesRepository(WriteDbContext dbContext, ILogger<SpeciesRepository> logger)
+    public SpeciesRepository(WriteDbContext writeDbContext, ILogger<SpeciesRepository> logger)
     {
-        _dbContext = dbContext;
+        _writeDbContext = writeDbContext;
         _logger = logger;
     }
 
     public async Task<Guid> AddAsync(Species species, CancellationToken cancellationToken = default)
     {
-        await _dbContext.Species.AddAsync(species, cancellationToken);
+        await _writeDbContext.Species.AddAsync(species, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _writeDbContext.SaveChangesAsync(cancellationToken);
 
+        return species.Id.Value;
+    }
+    
+    public Guid Delete(Species species)
+    {
+        _writeDbContext.Species.Remove(species);
+        
         return species.Id.Value;
     }
 
     public async Task<Result<Species, Error>> GetByIdAsync(SpeciesId speciesId,
         CancellationToken cancellationToken = default)
     {
-        var species = await _dbContext
+        var species = await _writeDbContext
             .Species
             .FirstOrDefaultAsync(s => s.Id == speciesId, cancellationToken);
 
@@ -51,7 +58,7 @@ public class SpeciesRepository : ISpeciesRepository
 
     public async Task<Result<Species, Error>> GetByNameAsync(Name name, CancellationToken cancellationToken = default)
     {
-        var species = await _dbContext
+        var species = await _writeDbContext
             .Species
             .FirstOrDefaultAsync(s => s.Name == name, cancellationToken);
 

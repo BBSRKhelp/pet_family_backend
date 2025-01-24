@@ -1,6 +1,6 @@
 namespace PetFamily.Application.Models;
 
-public class PagedList<T>
+public record PagedList<T>
 {
     public IReadOnlyList<T> Items { get; init; } = [];
     public long TotalCount { get; init; }

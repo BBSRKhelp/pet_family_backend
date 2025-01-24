@@ -1,4 +1,4 @@
-using PetFamily.Application.Dtos;
+using PetFamily.Application.DTOs;
 using PetFamily.Application.VolunteerAggregate.Commands.UpdateRequisites;
 
 namespace PetFamily.API.Contracts.Volunteer;

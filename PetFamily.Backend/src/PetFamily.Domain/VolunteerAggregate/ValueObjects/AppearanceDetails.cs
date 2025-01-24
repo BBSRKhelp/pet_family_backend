@@ -1,10 +1,6 @@
-using System.Drawing;
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Models;
-using PetFamily.Domain.SpeciesAggregate;
-using PetFamily.Domain.SpeciesAggregate.Entities;
-using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;

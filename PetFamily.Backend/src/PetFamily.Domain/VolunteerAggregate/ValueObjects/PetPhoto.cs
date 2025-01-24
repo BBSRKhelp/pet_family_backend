@@ -1,7 +1,3 @@
-using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared.Models;
-using static System.String;
-
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 public record PetPhoto
@@ -18,5 +14,5 @@ public record PetPhoto
     }
 
     public PhotoPath Path { get; } = null!;
-    public bool? IsMainPhoto { get; }
+    public bool IsMainPhoto { get; }
 }

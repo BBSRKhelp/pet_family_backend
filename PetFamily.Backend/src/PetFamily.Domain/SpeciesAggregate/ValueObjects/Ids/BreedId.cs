@@ -21,5 +21,5 @@ public class BreedId : ValueObject
     }
     
     public static implicit operator Guid(BreedId id) => id.Value;
-    public static implicit operator BreedId(Guid id) => BreedId.Create(id);
+    public static implicit operator BreedId(Guid id) => Create(id);
 }
