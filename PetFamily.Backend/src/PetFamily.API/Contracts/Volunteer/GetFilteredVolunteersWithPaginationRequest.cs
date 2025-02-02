@@ -2,15 +2,15 @@ using PetFamily.Application.VolunteerAggregate.Queries.GetFilteredVolunteersWith
 
 namespace PetFamily.API.Contracts.Volunteer;
 
-public record GetVolunteersWithPaginationRequest(
+public record GetFilteredVolunteersWithPaginationRequest(
     int PageNumber,
     int PageSize,
     string? FirstName,
     string? LastName,
     string? Patronymic,
     byte? WorkExperience,
-    string? SortDirection,
-    string? SortBy)
+    string? SortBy,
+    string? SortDirection)
     
 {
     public GetFilteredVolunteersWithPaginationQuery ToQuery()
@@ -22,7 +22,7 @@ public record GetVolunteersWithPaginationRequest(
             LastName,
             Patronymic,
             WorkExperience,
-            SortDirection ?? "ASC",
-            SortBy ?? "id");
+            SortBy ?? "id",
+            SortDirection ?? "ASC");
     }
 }

@@ -1,5 +1,4 @@
 using CSharpFunctionalExtensions;
-using Dapper;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Extensions;
@@ -8,7 +7,6 @@ using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
-using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.UpdateRequisites;
 
@@ -37,8 +35,6 @@ public class UpdateRequisitesVolunteerHandler : ICommandHandler<Guid, UpdateRequ
     {
         _logger.LogInformation("Updating the volunteer's requisites");
 
-        var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
-
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
@@ -52,15 +48,13 @@ public class UpdateRequisitesVolunteerHandler : ICommandHandler<Guid, UpdateRequ
 
         var requisites = command.Requisites
             .Select(r => Requisite.Create(r.Title, r.Description).Value)
-            .ToList();
+            .ToArray();
 
         volunteerResult.Value.UpdateRequisite(requisites);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Volunteer with Id = {VolunteerId} has been update", command.Id);
-
-        transaction.Commit();
 
         return volunteerResult.Value.Id.Value;
     }

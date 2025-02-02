@@ -33,4 +33,19 @@ public class Species : CSharpFunctionalExtensions.Entity<SpeciesId>
         
         return Result.Success<Error>();
     }
+
+    public Result<Breed, Error> GetBreedById(BreedId id)
+    {
+        var breed = _breeds.FirstOrDefault(b => b.Id == id);
+        
+        if (breed is null)
+            return Errors.General.NotFound(nameof(breed));
+        
+        return breed;
+    }
+
+    public void DeleteBreed(Breed breed)
+    {
+        _breeds.Remove(breed);
+    }
 }

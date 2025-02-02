@@ -20,6 +20,6 @@ public class VolunteerId : ValueObject
         yield return Value;
     }
     
-    public static implicit operator VolunteerId(Guid id) => VolunteerId.Create(id);
+    public static implicit operator VolunteerId(Guid id) => Create(id);
     public static implicit operator Guid(VolunteerId volunteerId) => volunteerId.Value;
 }

@@ -6,6 +6,7 @@ using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.SpeciesAggregate;
 
 namespace PetFamily.Application.SpeciesAggregate.Commands.Create;
 
@@ -44,7 +45,7 @@ public class CreateSpeciesHandler : ICommandHandler<Guid, CreateSpeciesCommand>
             return (ErrorList)Errors.General.IsExisted("species");
         }
 
-        var species = new Domain.SpeciesAggregate.Species(name);
+        var species = new Species(name);
 
         var result = await _speciesRepository.AddAsync(species, cancellationToken);
 

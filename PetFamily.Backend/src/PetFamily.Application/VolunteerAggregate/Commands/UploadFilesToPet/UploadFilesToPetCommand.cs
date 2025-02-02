@@ -1,4 +1,4 @@
-using PetFamily.Application.Dtos;
+using PetFamily.Application.DTOs.Pet;
 using PetFamily.Application.Interfaces.Abstractions;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.UploadFilesToPet;

@@ -3,7 +3,7 @@ using PetFamily.API.Contracts.Pet;
 using PetFamily.API.Contracts.Volunteer;
 using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
-using PetFamily.Application.Dtos;
+using PetFamily.Application.DTOs.Read;
 using PetFamily.Application.Models;
 using PetFamily.Application.VolunteerAggregate.Commands.AddPet;
 using PetFamily.Application.VolunteerAggregate.Commands.ChangePetsPosition;
@@ -91,8 +91,8 @@ public class VolunteersController : ControllerBase
     }
 
     [HttpPost("{id:guid}/pets")]
-    public async Task<ActionResult<Guid>> AddAsync(
-        [FromServices] CreatePetHandler handler,
+    public async Task<ActionResult<Guid>> AddPetAsync(
+        [FromServices] AddPetHandler handler,
         [FromBody] CreatePetRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
@@ -138,9 +138,9 @@ public class VolunteersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<PagedList<VolunteerDto>>> GetVolunteersAsync(
+    public async Task<ActionResult<PagedList<VolunteerDto>>> GetAsync(
         [FromServices] GetFilteredVolunteersWithPaginationHandlerDapper handler,
-        [FromQuery] GetVolunteersWithPaginationRequest request,
+        [FromQuery] GetFilteredVolunteersWithPaginationRequest request,
         CancellationToken cancellationToken = default)
     {
         var query = request.ToQuery();
@@ -151,7 +151,7 @@ public class VolunteersController : ControllerBase
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<VolunteerDto>> GetVolunteerAsync(
+    public async Task<ActionResult<VolunteerDto>> GetByIdAsync(
         [FromServices] GetVolunteerByIdHandler handler,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)

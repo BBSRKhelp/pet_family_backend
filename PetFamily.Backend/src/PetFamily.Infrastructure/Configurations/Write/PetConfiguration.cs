@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Application.DTOs;
+using PetFamily.Application.DTOs.Pet;
 using PetFamily.Domain.Shared.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
+using PetFamily.Infrastructure.Extensions;
 
 namespace PetFamily.Infrastructure.Configurations.Write;
 
@@ -24,7 +27,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 value => PetId.Create(value))
             .HasColumnOrder(1);
 
-        builder.OwnsOne(p => p.Name, nb =>
+        builder.ComplexProperty(p => p.Name, nb =>
         {
             nb.Property(n => n.Value)
                 .IsRequired(false)
@@ -33,7 +36,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnOrder(2);
         });
 
-        builder.OwnsOne(p => p.Description, db =>
+        builder.ComplexProperty(p => p.Description, db =>
         {
             db.Property(d => d.Value)
                 .IsRequired(false)
@@ -63,27 +66,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnOrder(6);
         });
 
-        builder.ComplexProperty(p => p.HealthDetails, hdb =>
-        {
-            hdb.Property(hd => hd.HealthInformation)
-                .IsRequired()
-                .HasColumnName("health_information")
-                .HasMaxLength(Domain.Shared.Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
-                .HasColumnOrder(14);
-
-            hdb.Property(hd => hd.IsCastrated)
-                .IsRequired()
-                .HasColumnName("is_castrated")
-                .HasDefaultValue(false)
-                .HasColumnOrder(15);
-
-            hdb.Property(hd => hd.IsVaccinated)
-                .IsRequired()
-                .HasColumnName("is_vaccinated")
-                .HasDefaultValue(false)
-                .HasColumnOrder(16);
-        });
-
         builder.ComplexProperty(p => p.Address, ab =>
         {
             ab.Property(p => p.Country)
@@ -111,7 +93,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnOrder(10);
         });
 
-        builder.OwnsOne(p => p.PhoneNumber, pb =>
+        builder.ComplexProperty(p => p.PhoneNumber, pb =>
         {
             pb.Property(pn => pn.Value)
                 .IsRequired()
@@ -129,6 +111,49 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasDefaultValue(StatusForHelp.Unknown)
             .HasColumnOrder(13);
 
+        builder.ComplexProperty(p => p.HealthDetails, hdb =>
+        {
+            hdb.Property(hd => hd.HealthInformation)
+                .IsRequired()
+                .HasColumnName("health_information")
+                .HasMaxLength(Domain.Shared.Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
+                .HasColumnOrder(14);
+
+            hdb.Property(hd => hd.IsCastrated)
+                .IsRequired()
+                .HasColumnName("is_castrated")
+                .HasDefaultValue(false)
+                .HasColumnOrder(15);
+
+            hdb.Property(hd => hd.IsVaccinated)
+                .IsRequired()
+                .HasColumnName("is_vaccinated")
+                .HasDefaultValue(false)
+                .HasColumnOrder(16);
+        });
+
+        builder.Property(p => p.Requisites)
+            .IsRequired()
+            .ValueObjectsCollectionJsonConversion(
+                r => new RequisiteDto(r.Title, r.Description),
+                dto => Requisite.Create(dto.Title, dto.Description).Value)
+            .HasColumnOrder(17);
+
+        builder.Property(p => p.PetPhotos)
+            .IsRequired()
+            .ValueObjectsCollectionJsonConversion(
+                pp => new PetPhotoDto(pp.Path.Path, pp.IsMainPhoto),
+                dto => new PetPhoto(PhotoPath.Create(dto.PhotoPath).Value, dto.IsMainPhoto))
+            .HasColumnOrder(18);
+
+        builder.ComplexProperty(p => p.Position, snb =>
+        {
+            snb.Property(sn => sn.Value)
+                .IsRequired()
+                .HasColumnName("position")
+                .HasColumnOrder(19);
+        });
+
         builder.ComplexProperty(p => p.BreedAndSpeciesId, bsb =>
         {
             bsb.Property(ad => ad.SpeciesId)
@@ -136,56 +161,18 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("species_id")
                 .HasConversion(
                     id => id.Value,
-                    value => SpeciesId.Create(value));
+                    value => SpeciesId.Create(value))
+                .HasColumnOrder(20);
 
             bsb.Property(ad => ad.BreedId)
                 .IsRequired()
-                .HasColumnName("breed_id");
-        });
-
-        builder.OwnsOne(p => p.Requisites, requisiteBuilder =>
-        {
-            requisiteBuilder.ToJson("requisite");
-
-            requisiteBuilder.OwnsMany(r => r.Requisites, rb =>
-            {
-                rb.Property(r => r.Title)
-                    .IsRequired()
-                    .HasMaxLength(Domain.Shared.Constants.MAX_VERY_LOW_TEXT_LENGTH);
-
-                rb.Property(r => r.Description)
-                    .IsRequired()
-                    .HasMaxLength(Domain.Shared.Constants.MAX_MEDIUM_LOW_TEXT_LENGTH);
-            });
-        });
-
-        builder.OwnsOne(p => p.PetPhotos, petPhotoBuilder =>
-        {
-            petPhotoBuilder.ToJson("pet_photo");
-
-            petPhotoBuilder.OwnsMany(pp => pp.PetPhotos, ppb =>
-            {
-                ppb.Property(pp => pp.IsMainPhoto)
-                    .IsRequired();
-
-                ppb.Property(pp => pp.Path)
-                    .IsRequired()
-                    .HasConversion(
-                        p => p.Path,
-                        value => PhotoPath.Create(value).Value)
-                    .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH);
-            });
-        });
-
-        builder.OwnsOne(p => p.Position, snb =>
-        {
-            snb.Property(sn => sn.Value)
-                .IsRequired()
-                .HasColumnName("position");
+                .HasColumnName("breed_id")
+                .HasColumnOrder(21);
         });
 
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
-            .HasColumnName("is_deleted");
+            .HasColumnName("is_deleted")
+            .HasColumnOrder(22);
     }
 }

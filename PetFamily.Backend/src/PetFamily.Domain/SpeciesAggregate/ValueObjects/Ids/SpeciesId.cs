@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using CSharpFunctionalExtensions;
 
 namespace PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
@@ -22,5 +21,5 @@ public class SpeciesId : ValueObject
     }
     
     public static implicit operator Guid(SpeciesId id) => id.Value;
-    public static implicit operator SpeciesId(Guid id) => SpeciesId.Create(id);
+    public static implicit operator SpeciesId(Guid id) => Create(id);
 }

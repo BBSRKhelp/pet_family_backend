@@ -26,26 +26,20 @@ public class VolunteersRepository : IVolunteersRepository
     {
         await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken); //Вопрос: надо ли сохранять тут или через UoF в handle
 
         return volunteer.Id.Value;
     }
-
-    public Guid SaveChanges(Volunteer volunteer, CancellationToken cancellationToken = default)
+    //public async Task<Guid> SaveChangesAsync...  //Вопрос: Нужен ли тут метод SaveChangesAsync, если он есть в UoF
+    public Guid Delete(Volunteer volunteer)
     {
-        _dbContext.Volunteers.Attach(volunteer);
+        _dbContext.Volunteers.Remove(volunteer); //Вопрос: надо ли сохранять тут или через UoF в handle
 
         return volunteer.Id.Value;
     }
 
-    public Guid Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
-    {
-        _dbContext.Volunteers.Remove(volunteer);
-
-        return volunteer.Id.Value;
-    }
-
-    public async Task<Result<Volunteer, Error>> GetByIdAsync(VolunteerId volunteerId,
+    public async Task<Result<Volunteer, Error>> GetByIdAsync(
+        VolunteerId volunteerId,
         CancellationToken cancellationToken = default)
     {
         var volunteer = await _dbContext

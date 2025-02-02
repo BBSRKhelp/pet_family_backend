@@ -7,7 +7,6 @@ using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
-using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.UpdateSocialNetworks;
 
@@ -49,7 +48,7 @@ public class UpdateSocialNetworksVolunteerHandler : ICommandHandler<Guid, Update
 
         var socialNetworks = command.SocialNetworks
             .Select(x => SocialNetwork.Create(x.Title, x.Url).Value)
-            .ToList();
+            .ToArray();
 
         volunteerResult.Value.UpdateSocialNetwork(socialNetworks);
 

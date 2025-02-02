@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Dtos;
+using PetFamily.Application.DTOs.Read;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Database;
@@ -43,16 +43,15 @@ public class GetVolunteerByIdHandler : IQueryHandler<VolunteerDto, GetVolunteerB
         {
             var volunteerQuery = await _readDbContext
                 .Volunteers
-                .AsNoTracking()
                 .Where(v => v.IsDeleted == false)
                 .FirstOrDefaultAsync(v => v.Id == query.VolunteerId, cancellationToken);
-
+            
             if (volunteerQuery is null)
             {
                 _logger.LogInformation("Volunteer with id = '{VolunteerId}' does not found'", query.VolunteerId);
-                return (ErrorList)Errors.General.NotFound(nameof(volunteerQuery));
+                return (ErrorList)Errors.General.NotFound("volunteer");
             }
-
+            
             return volunteerQuery;
         }
         catch (Exception ex)

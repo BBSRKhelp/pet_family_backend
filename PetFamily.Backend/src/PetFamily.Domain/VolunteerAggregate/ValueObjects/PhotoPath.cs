@@ -12,14 +12,15 @@ public record PhotoPath
 
     public string Path { get; } = null!;
 
-    public static Result<PhotoPath, Error> Create(string extension)
+    public static Result<PhotoPath, Error> Create(string photoPath)
     {
-        if (string.IsNullOrWhiteSpace(extension))
-            return Errors.General.IsRequired(nameof(extension));
+        if (string.IsNullOrWhiteSpace(photoPath))
+            return Errors.General.IsRequired(nameof(photoPath));
 
-        // if (extension is not ("jpg" or "jpeg" or "png"))
+        //var extension = System.IO.Path.GetExtension(photoPath);
+        // if (extension is not (".jpg" or ".jpeg" or ".png"))
         //     return Errors.General.IsInvalid(nameof(extension));
 
-        return new PhotoPath(Guid.NewGuid().ToString("N") + extension);
+        return new PhotoPath(photoPath);
     }
 }

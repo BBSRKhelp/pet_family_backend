@@ -1,6 +1,8 @@
+using System.Text.Json.Serialization;
+
 namespace PetFamily.Domain.Shared.Models;
 
-public partial record Error
+public record Error
 {
     private const string SEPARATOR = "||";
 
@@ -15,7 +17,7 @@ public partial record Error
     public string Code { get; }
     public string Message { get; }
     public string? InvalidField { get; }
-    public ErrorType Type { get; }
+    [JsonIgnore] public ErrorType Type { get; }
 
     public static Error Validation(string code, string message, string? invalidField = null) =>
         new Error(code, message, ErrorType.Validation, invalidField);

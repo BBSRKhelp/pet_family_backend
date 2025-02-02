@@ -1,4 +1,3 @@
-using System.Windows.Input;
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
@@ -11,7 +10,6 @@ using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Application.Providers;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
-using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.UploadFilesToPet;
 
@@ -53,7 +51,10 @@ public class UploadFilesToPetHandler : ICommandHandler<Guid, UploadFilesToPetCom
         {
             var validationResult = await _validator.ValidateAsync(command, cancellationToken);
             if (!validationResult.IsValid)
+            {
+                _logger.LogWarning("Upload files to pet failed");
                 return validationResult.ToErrorList();
+            }
 
             var volunteerResult = await _volunteersRepository.GetByIdAsync(command.VolunteerId, cancellationToken);
             if (volunteerResult.IsFailure)
@@ -65,7 +66,7 @@ public class UploadFilesToPetHandler : ICommandHandler<Guid, UploadFilesToPetCom
             List<FileData> filesData = [];
             foreach (var file in command.Files)
             {
-                var photoPath = PhotoPath.Create(Path.GetExtension(file.FileName)).Value;
+                var photoPath = PhotoPath.Create(file.FileName).Value;
 
                 var fileData = new FileData(file.Stream, new FileIdentifier(photoPath, BUCKET_NAME));
 
@@ -82,10 +83,9 @@ public class UploadFilesToPetHandler : ICommandHandler<Guid, UploadFilesToPetCom
                 return (ErrorList)filePathsResult.Error;
             }
 
-            var petPhotos = new PetPhotosShell(
-                filePathsResult.Value
+            var petPhotos = filePathsResult.Value
                     .Select(p => p)
-                    .Select(p => new PetPhoto(p)));
+                    .Select(p => new PetPhoto(p)).ToArray();
 
             var petResult = volunteerResult.Value.GetPetById(command.PetId);
             if (petResult.IsFailure)
@@ -94,7 +94,7 @@ public class UploadFilesToPetHandler : ICommandHandler<Guid, UploadFilesToPetCom
                 return (ErrorList)petResult.Error;
             }
 
-            petResult.Value.UpdatePhotos(petPhotos);
+            petResult.Value.AddPhotos(petPhotos);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

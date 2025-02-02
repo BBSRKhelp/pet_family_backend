@@ -1,6 +1,5 @@
-using System.Collections;
-using PetFamily.Application.Dtos;
-using PetFamily.Application.Providers;
+using PetFamily.Application.DTOs;
+using PetFamily.Application.DTOs.Pet;
 using PetFamily.Application.VolunteerAggregate.Commands.AddPet;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 
@@ -26,7 +25,7 @@ public record CreatePetRequest(
     Guid SpeciesId,
     Guid BreedId)
 {
-    public CreatePetCommand ToCommand(Guid volunteerId)
+    public AddPetCommand ToCommand(Guid volunteerId)
     {
         var appearanceDetails = new AppearanceDetailsDto(Colouration, Weight, Height);
         
@@ -38,7 +37,7 @@ public record CreatePetRequest(
             Domain.SpeciesAggregate.ValueObjects.Ids.SpeciesId.Create(SpeciesId), 
             BreedId);
         
-        return new CreatePetCommand(
+        return new AddPetCommand(
             volunteerId,
             Name,
             Description,

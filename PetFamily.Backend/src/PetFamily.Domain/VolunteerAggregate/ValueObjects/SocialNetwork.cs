@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using CSharpFunctionalExtensions;
 using PetFamily.Domain.Shared;
 using PetFamily.Domain.Shared.Models;

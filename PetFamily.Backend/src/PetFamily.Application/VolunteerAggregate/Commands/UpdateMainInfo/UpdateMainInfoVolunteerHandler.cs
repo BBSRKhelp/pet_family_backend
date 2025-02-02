@@ -36,8 +36,6 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, UpdateMainIn
     {
         _logger.LogInformation("Updating main info volunteer");
         
-        var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
-
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
             return validationResult.ToErrorList();
@@ -83,8 +81,6 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, UpdateMainIn
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("Volunteer with Id = {VolunteerId} has been update", command.Id);
-
-        transaction.Commit();
 
         return volunteerResult.Value.Id.Value;
     }
