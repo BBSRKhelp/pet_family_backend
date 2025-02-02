@@ -25,7 +25,7 @@ public class Pet : CSharpFunctionalExtensions.Entity<PetId>
         Address address,
         PhoneNumber phoneNumber,
         DateOnly? birthday,
-        StatusForHelp status,
+        Status status,
         IReadOnlyList<Requisite> requisites,
         BreedAndSpeciesId breedAndSpeciesId)
         : base(PetId.NewId())
@@ -48,7 +48,7 @@ public class Pet : CSharpFunctionalExtensions.Entity<PetId>
     public Address Address { get; private set; } = null!;
     public PhoneNumber PhoneNumber { get; private set; } = null!;
     public DateOnly? Birthday { get; private set; }
-    public StatusForHelp Status { get; private set; }
+    public Status Status { get; private set; }
     public HealthDetails HealthDetails { get; private set; } = null!;
     public IReadOnlyList<Requisite> Requisites { get; private set; } = [];
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos.AsReadOnly();
@@ -56,11 +56,61 @@ public class Pet : CSharpFunctionalExtensions.Entity<PetId>
     public BreedAndSpeciesId BreedAndSpeciesId { get; private set; } = null!;
     public static DateTime CreatedAt => DateTime.Now;
 
+    public void AddRequisite(IReadOnlyList<Requisite> requisites) =>
+        Requisites = requisites;
+
     public void AddPhotos(IEnumerable<PetPhoto> photos) =>
         _petPhotos.AddRange(photos);
 
     public void SetSerialNumber(Position position) =>
         Position = position;
+
+    public void UpdateMainInfo(
+        Name name,
+        Description description,
+        AppearanceDetails appearanceDetails,
+        Address address,
+        PhoneNumber phoneNumber,
+        DateOnly? birthday,
+        HealthDetails healthDetails,
+        IReadOnlyList<Requisite> requisites,
+        BreedAndSpeciesId breedAndSpeciesId)
+    {
+        Name = name;
+        Description = description;
+        AppearanceDetails = appearanceDetails;
+        Address = address;
+        PhoneNumber = phoneNumber;
+        Birthday = birthday;
+        HealthDetails = healthDetails;
+        Requisites = requisites;
+        BreedAndSpeciesId = breedAndSpeciesId;
+    }
+
+    public void UpdateStatus(Status status)
+    {
+        Status = status;
+    }
+
+    public UnitResult<Error> SetMainPhoto(PhotoPath photoPath)
+    {
+        var petPhoto = _petPhotos.FirstOrDefault(x => x.Path == photoPath);
+        if (petPhoto is null)
+            return Errors.General.NotFound("PetPhoto");
+
+        var currentMainPhoto = _petPhotos.FirstOrDefault(x => x.IsMainPhoto);
+        if (currentMainPhoto is not null)
+        {
+            _petPhotos.Remove(currentMainPhoto);
+            _petPhotos.Add(new PetPhoto(currentMainPhoto.Path, false));
+        }
+        
+        _petPhotos.Remove(petPhoto);
+
+        _petPhotos.Add(new PetPhoto(photoPath, true));
+
+        return UnitResult.Success<Error>();
+    }
 
     public void Move(Position newPosition) =>
         Position = newPosition;

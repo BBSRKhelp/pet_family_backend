@@ -1,14 +1,14 @@
 using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.Pet;
-using PetFamily.Application.VolunteerAggregate.Commands.AddPet;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.AddPet;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 
 namespace PetFamily.API.Contracts.Pet;
 
 public record CreatePetRequest(
-    string Name,
-    string Description,
-    Colour Colouration,
+    string? Name,
+    string? Description,
+    string Colouration,
     float Weight,
     float Height,
     string HealthInformation,
@@ -20,22 +20,24 @@ public record CreatePetRequest(
     string? Postalcode,
     string PhoneNumber,
     DateOnly? Birthday,
-    StatusForHelp Status,
+    string Status,
     IEnumerable<RequisiteDto>? Requisites,
     Guid SpeciesId,
     Guid BreedId)
 {
     public AddPetCommand ToCommand(Guid volunteerId)
     {
-        var appearanceDetails = new AppearanceDetailsDto(Colouration, Weight, Height);
+        var coloration = Enum.Parse<Colour>(Colouration, true);
+        
+        var appearanceDetails = new AppearanceDetailsDto(coloration, Weight, Height);
         
         var healthDetails = new HealthDetailsDto(HealthInformation, IsCastrated, IsVaccinated);
         
         var address = new AddressDto(Country, City, Street, Postalcode);
         
-        var breedAndSpeciesId = new BreedAndSpeciesIdDto(
-            Domain.SpeciesAggregate.ValueObjects.Ids.SpeciesId.Create(SpeciesId), 
-            BreedId);
+        var status = Enum.Parse<Status>(Status, true);
+        
+        var breedAndSpeciesId = new BreedAndSpeciesIdDto(SpeciesId, BreedId);
         
         return new AddPetCommand(
             volunteerId,
@@ -46,7 +48,7 @@ public record CreatePetRequest(
             address,
             PhoneNumber,
             Birthday,
-            Status,
+            status,
             Requisites,
             breedAndSpeciesId);
     }

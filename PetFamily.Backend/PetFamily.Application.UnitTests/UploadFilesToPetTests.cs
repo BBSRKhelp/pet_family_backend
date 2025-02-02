@@ -12,7 +12,7 @@ using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Messaging;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Application.Providers;
-using PetFamily.Application.VolunteerAggregate.Commands.UploadFilesToPet;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.UploadFilesToPet;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.VolunteerAggregate;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;

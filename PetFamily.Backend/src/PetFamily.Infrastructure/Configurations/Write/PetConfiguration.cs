@@ -108,7 +108,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(p => p.Status)
             .IsRequired()
-            .HasDefaultValue(StatusForHelp.Unknown)
             .HasColumnOrder(13);
 
         builder.ComplexProperty(p => p.HealthDetails, hdb =>
@@ -173,6 +172,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted")
-            .HasColumnOrder(22);
+            .HasColumnOrder(23);
     }
 }

@@ -5,14 +5,19 @@ using PetFamily.API.Extensions;
 using PetFamily.API.Processors;
 using PetFamily.Application.DTOs.Read;
 using PetFamily.Application.Models;
-using PetFamily.Application.VolunteerAggregate.Commands.AddPet;
-using PetFamily.Application.VolunteerAggregate.Commands.ChangePetsPosition;
-using PetFamily.Application.VolunteerAggregate.Commands.Create;
-using PetFamily.Application.VolunteerAggregate.Commands.Delete;
-using PetFamily.Application.VolunteerAggregate.Commands.UpdateMainInfo;
-using PetFamily.Application.VolunteerAggregate.Commands.UpdateRequisites;
-using PetFamily.Application.VolunteerAggregate.Commands.UpdateSocialNetworks;
-using PetFamily.Application.VolunteerAggregate.Commands.UploadFilesToPet;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.AddPet;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.ChangePetsPosition;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.HardDeletePet;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.SetMainPetPhoto;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.SoftDeletePet;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.UpdateMainPetInfo;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.UpdatePetStatus;
+using PetFamily.Application.VolunteerAggregate.Commands.Pet.UploadFilesToPet;
+using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.Create;
+using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.Delete;
+using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.UpdateMainInfo;
+using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.UpdateRequisites;
+using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.UpdateSocialNetworks;
 using PetFamily.Application.VolunteerAggregate.Queries.GetFilteredVolunteersWithPagination;
 using PetFamily.Application.VolunteerAggregate.Queries.GetVolunteerById;
 
@@ -78,7 +83,7 @@ public class VolunteersController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<Guid>> DeleteAsync(
+    public async Task<ActionResult<Boolean>> DeleteAsync(
         [FromServices] DeleteVolunteerHandler handler,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
@@ -157,9 +162,82 @@ public class VolunteersController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var query = new GetVolunteerByIdQuery(id);
-        
+
         var result = await handler.HandleAsync(query, cancellationToken);
-        
+
+        return result.ToResponse();
+    }
+
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-info")]
+    public async Task<ActionResult<Guid>> UpdatePetMainInfoAsync(
+        [FromServices] UpdatePetMainInfoHandler handler,
+        [FromBody] UpdatePetMainInfoRequest request,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}/status")]
+    public async Task<ActionResult<Guid>> UpdatePetStatusAsync(
+        [FromServices] UpdatePetStatusHandler handler,
+        [FromBody] UpdatePetStatusRequest request,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpDelete("{volunteerId:guid}/pets/{petId:guid}/soft")]
+    public async Task<ActionResult<Boolean>> SoftDeletePetAsync(
+        [FromServices] SoftDeletePetHandler handler,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new SoftDeletePetCommand(volunteerId, petId);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpDelete("{volunteerId:guid}/pets/{petId:guid}/hard")]
+    public async Task<ActionResult<Boolean>> HardDeletePetAsync(
+        [FromServices] HardDeletePetHandler handler,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new HardDeletePetCommand(volunteerId, petId);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-photo")]
+    public async Task<ActionResult<Boolean>> SetMainPetPhotoAsync(
+        [FromServices] SetMainPetPhotoHandler handler,
+        [FromBody] SetMainPetPhotoRequest request,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
         return result.ToResponse();
     }
 }
