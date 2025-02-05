@@ -5,7 +5,6 @@ using PetFamily.Domain.VolunteerAggregate;
 using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
-using PetFamily.Domain.VolunteerAggregate.ValueObjects.Shell;
 
 namespace PetFamily.Domain.UnitTests;
 
@@ -263,9 +262,8 @@ public class VolunteerTests
         var address = Address.Create("test", "test", "test", "test").Value;
         var phoneNumber = PhoneNumber.Create("88888888888").Value;
         var birthday = DateOnly.Parse("2015-01-01");
-        var status = StatusForHelp.NeedsHelp;
-        var petPhotos = new PetPhotosShell([new PetPhoto(PhotoPath.Create(".png").Value)]);
-        var requisites = new RequisitesShell([Requisite.Create("TestRequisite", "TestRequisiteUrl").Value]);
+        var status = Status.LookingForHome;
+        IReadOnlyList<Requisite> requisites = [Requisite.Create("TestRequisite", "TestRequisiteUrl").Value];
         var breedAndSpeciesId = BreedAndSpeciesId.Create(SpeciesId.NewId(), Guid.NewGuid()).Value;
 
         return new Pet(
@@ -277,7 +275,6 @@ public class VolunteerTests
             phoneNumber,
             birthday,
             status,
-            petPhotos,
             requisites,
             breedAndSpeciesId);
     }

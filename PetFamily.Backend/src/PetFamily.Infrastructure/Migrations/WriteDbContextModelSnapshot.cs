@@ -101,16 +101,14 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnOrder(17);
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasDefaultValue(0)
                         .HasColumnName("status")
                         .HasColumnOrder(13);
 
                     b.Property<bool>("_isDeleted")
                         .HasColumnType("boolean")
                         .HasColumnName("is_deleted")
-                        .HasColumnOrder(22);
+                        .HasColumnOrder(23);
 
                     b.Property<Guid>("volunteer_id")
                         .HasColumnType("uuid")
@@ -183,7 +181,7 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasColumnName("breed_id")
                                 .HasColumnOrder(21);
 
-                            b1.Property<Guid>("Id")
+                            b1.Property<Guid>("SpeciesId")
                                 .HasColumnType("uuid")
                                 .HasColumnName("species_id")
                                 .HasColumnOrder(20);

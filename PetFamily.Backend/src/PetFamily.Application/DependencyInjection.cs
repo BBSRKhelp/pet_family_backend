@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Interfaces.Abstractions;
+using PetFamily.Application.Validation;
 
 namespace PetFamily.Application;
 
@@ -11,7 +12,8 @@ public static class DependencyInjection
         services
             .AddCommands()
             .AddQueries()
-            .AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+            .AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly)
+            .AddScoped<SpeciesAndBreedValidator>();
 
         return services;
     }

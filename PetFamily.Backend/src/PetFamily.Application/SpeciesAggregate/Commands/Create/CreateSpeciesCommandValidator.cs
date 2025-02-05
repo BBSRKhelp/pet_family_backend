@@ -1,5 +1,5 @@
 using FluentValidation;
-using PetFamily.Application.Validators;
+using PetFamily.Application.Validation;
 using PetFamily.Domain.Shared.ValueObjects;
 
 namespace PetFamily.Application.SpeciesAggregate.Commands.Create;

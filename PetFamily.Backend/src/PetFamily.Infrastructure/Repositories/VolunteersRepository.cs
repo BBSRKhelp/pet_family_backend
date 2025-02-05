@@ -26,14 +26,12 @@ public class VolunteersRepository : IVolunteersRepository
     {
         await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken); //Вопрос: надо ли сохранять тут или через UoF в handle
-
         return volunteer.Id.Value;
     }
-    //public async Task<Guid> SaveChangesAsync...  //Вопрос: Нужен ли тут метод SaveChangesAsync, если он есть в UoF
+
     public Guid Delete(Volunteer volunteer)
     {
-        _dbContext.Volunteers.Remove(volunteer); //Вопрос: надо ли сохранять тут или через UoF в handle
+        _dbContext.Volunteers.Remove(volunteer);
 
         return volunteer.Id.Value;
     }
@@ -48,12 +46,12 @@ public class VolunteersRepository : IVolunteersRepository
 
         if (volunteer is null)
         {
-            _logger.LogInformation("A volunteer with Id = {volunteerId} was not found", volunteerId.Value);
+            _logger.LogInformation("A volunteer with id = {volunteerId} was not found", volunteerId.Value);
 
             return Errors.General.NotFound(nameof(volunteerId));
         }
 
-        _logger.LogInformation("A volunteer with Id = {volunteerId} has been found", volunteerId.Value);
+        _logger.LogInformation("A volunteer with id = {volunteerId} has been found", volunteerId.Value);
 
         return volunteer;
     }
@@ -67,12 +65,12 @@ public class VolunteersRepository : IVolunteersRepository
 
         if (volunteer is null)
         {
-            _logger.LogInformation("A volunteer with Phone = {phoneNumber} was not found", phoneNumber.Value);
+            _logger.LogInformation("A volunteer with phone = {phoneNumber} was not found", phoneNumber.Value);
 
             return Errors.General.NotFound(nameof(phoneNumber));
         }
 
-        _logger.LogInformation("A volunteer with Phone = {phoneNumber} has been found", phoneNumber.Value);
+        _logger.LogInformation("A volunteer with phone = {phoneNumber} has been found", phoneNumber.Value);
 
         return volunteer;
     }
@@ -85,12 +83,12 @@ public class VolunteersRepository : IVolunteersRepository
 
         if (volunteer is null)
         {
-            _logger.LogInformation("A volunteer with Email = {email} was not found", email.Value);
+            _logger.LogInformation("A volunteer with email = {email} was not found", email.Value);
 
             return Errors.General.NotFound(nameof(email));
         }
 
-        _logger.LogInformation("A volunteer with Email = {email} has been found", email.Value);
+        _logger.LogInformation("A volunteer with email = {email} has been found", email.Value);
 
         return volunteer;
     }

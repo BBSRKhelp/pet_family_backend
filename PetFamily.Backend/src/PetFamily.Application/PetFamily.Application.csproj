@@ -19,4 +19,9 @@
       <PackageReference Include="Scrutor" Version="6.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="VolunteerAggregate\Commands\Pet\" />
+      <Folder Include="VolunteerAggregate\Commands\Volunteer\" />
+    </ItemGroup>
+
 </Project>

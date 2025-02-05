@@ -47,9 +47,9 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
     public IReadOnlyList<Requisite> Requisites { get; private set; } = [];
     public IReadOnlyList<Pet> Pets => _pets.AsReadOnly();
 
-    public int PetsFoundHome() => _pets.Count(p => p.Status == StatusForHelp.FoundHome);
-    public int PetsLookingForHome() => _pets.Count(p => p.Status == StatusForHelp.LookingForHome);
-    public int PetsNeedHelp() => _pets.Count(p => p.Status == StatusForHelp.NeedsHelp);
+    public int PetsFoundHome() => _pets.Count(p => p.Status == Status.FoundHome);
+    public int PetsLookingForHome() => _pets.Count(p => p.Status == Status.LookingForHome);
+    public int PetsUndergoingTreatment() => _pets.Count(p => p.Status == Status.UndergoingTreatment);
 
     public void UpdateMainInfo(
         FullName fullName,
@@ -65,9 +65,9 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
         PhoneNumber = phoneNumber;
     }
 
-    public void UpdateRequisite(IReadOnlyList<Requisite> requisite)
+    public void UpdateRequisite(IReadOnlyList<Requisite> requisites)
     {
-        Requisites = requisite;
+        Requisites = requisites;
     }
 
     public void UpdateSocialNetwork(IReadOnlyList<SocialNetwork> socialNetworks)
@@ -98,7 +98,7 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
         var pet = _pets.FirstOrDefault(p => p.Id == id);
         if (pet is null)
             return Errors.General.NotFound(nameof(pet));
-
+        
         return pet;
     }
 
@@ -152,8 +152,8 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
     {
         if (newPosition < currentPosition)
         {
-            var petsToMove = _pets.Where(p => p.Position >= newPosition
-                                              && p.Position < currentPosition);
+            var petsToMove = _pets
+                .Where(p => p.Position >= newPosition && p.Position < currentPosition);
 
             foreach (var petToMove in petsToMove)
             {
@@ -165,8 +165,8 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
 
         else if (newPosition > currentPosition)
         {
-            var petsToMove = _pets.Where(p => p.Position <= newPosition
-                                              && p.Position > currentPosition);
+            var petsToMove = _pets
+                .Where(p => p.Position <= newPosition && p.Position > currentPosition);
 
             foreach (var petToMove in petsToMove)
             {
@@ -178,4 +178,6 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
 
         return Result.Success<Error>();
     }
+
+    public void DeletePet(Pet pet) => _pets.Remove(pet);
 }

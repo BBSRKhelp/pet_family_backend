@@ -1,5 +1,5 @@
 using FluentValidation;
-using PetFamily.Application.Validators;
+using PetFamily.Application.Validation;
 using PetFamily.Domain.Shared.Models;
 
 namespace PetFamily.Application.SpeciesAggregate.Commands.Delete;

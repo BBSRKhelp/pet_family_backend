@@ -29,7 +29,7 @@ public record PetDto
 
     public DateOnly Birthday { get; init; }
 
-    public StatusForHelp Status { get; init; }
+    public Status Status { get; init; }
 
     public string HealthInformation { get; init; } = null!;
 
