@@ -20,8 +20,11 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="SpeciesAggregate\Commands\Breed\" />
+      <Folder Include="SpeciesAggregate\Commands\Species\" />
       <Folder Include="VolunteerAggregate\Commands\Pet\" />
       <Folder Include="VolunteerAggregate\Commands\Volunteer\" />
+      <Folder Include="VolunteerAggregate\Queries\Volunteer\" />
     </ItemGroup>
 
 </Project>

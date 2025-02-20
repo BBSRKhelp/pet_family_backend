@@ -7,12 +7,12 @@ public record PetPhoto
     {
     }
 
-    public PetPhoto(PhotoPath path, bool isMainPhoto = false)
+    public PetPhoto(PhotoPath photoPath, bool isMainPhoto = false)
     {
-        Path = path;
+        PhotoPath = photoPath;
         IsMainPhoto = isMainPhoto;
     }
 
-    public PhotoPath Path { get; } = null!;
+    public PhotoPath PhotoPath { get; } = null!;
     public bool IsMainPhoto { get; }
 }

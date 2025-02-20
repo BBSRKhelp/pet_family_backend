@@ -1,4 +1,4 @@
-using PetFamily.Application.VolunteerAggregate.Queries.GetFilteredVolunteersWithPagination;
+using PetFamily.Application.VolunteerAggregate.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 
 namespace PetFamily.API.Contracts.Volunteer;
 

@@ -17,7 +17,7 @@ public record PhotoPath
         if (string.IsNullOrWhiteSpace(photoPath))
             return Errors.General.IsRequired(nameof(photoPath));
 
-        //var extension = System.IO.Path.GetExtension(photoPath);
+        //var extension = System.IO.PhotoPath.GetExtension(photoPath);
         // if (extension is not (".jpg" or ".jpeg" or ".png"))
         //     return Errors.General.IsInvalid(nameof(extension));
 

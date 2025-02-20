@@ -34,3 +34,8 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+namespace PetFamily.API
+{
+    public partial class Program;
+}

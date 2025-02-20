@@ -11,7 +11,7 @@ using PetFamily.Domain.Shared.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Pet.HardDeletePet;
 
-public class HardDeletePetHandler : ICommandHandler<Boolean, HardDeletePetCommand>
+public class HardDeletePetHandler : ICommandHandler<Guid, HardDeletePetCommand>
 {
     
     private readonly IVolunteersRepository _volunteersRepository;
@@ -35,7 +35,7 @@ public class HardDeletePetHandler : ICommandHandler<Boolean, HardDeletePetComman
         _logger = logger;
     }
 
-    public async Task<Result<Boolean, ErrorList>> HandleAsync(
+    public async Task<Result<Guid, ErrorList>> HandleAsync(
         HardDeletePetCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -69,7 +69,7 @@ public class HardDeletePetHandler : ICommandHandler<Boolean, HardDeletePetComman
             var petPhotos = petResult.Value.PetPhotos;
             foreach (var petPhoto in petPhotos)
             {
-                var fileIdentifier = new FileIdentifier(petPhoto.Path, BUCKET_NAME);
+                var fileIdentifier = new FileIdentifier(petPhoto.PhotoPath, BUCKET_NAME);
                 
                 await _fileProvider.RemoveFileAsync(fileIdentifier, cancellationToken);
             }
@@ -82,7 +82,7 @@ public class HardDeletePetHandler : ICommandHandler<Boolean, HardDeletePetComman
             
             _logger.LogInformation("Successfully hard-deletion pet with id = {PetId}", command.PetId);
             
-            return true;
+            return petResult.Value.Id.Value;
         }
         catch (Exception ex)
         {

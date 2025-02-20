@@ -1,4 +1,4 @@
-using PetFamily.Application.SpeciesAggregate.Commands.AddBreed;
+using PetFamily.Application.SpeciesAggregate.Commands.Breed.AddBreed;
 
 namespace PetFamily.API.Contracts.Breed;
 

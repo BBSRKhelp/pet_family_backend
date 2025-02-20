@@ -1,14 +1,11 @@
 using System.Data;
-using Microsoft.Extensions.Configuration;
 using Npgsql;
 using PetFamily.Application.Interfaces.Database;
 
 namespace PetFamily.Infrastructure;
 
-public class SqlConnectionFactory(IConfiguration configuration) : ISqlConnectionFactory
+public class SqlConnectionFactory(string stringConnection) : ISqlConnectionFactory
 {
-    private const string DATABASE = "Database";
-
     public IDbConnection GetConnection() =>
-        new NpgsqlConnection(configuration.GetConnectionString(DATABASE));
+        new NpgsqlConnection(stringConnection);
 }

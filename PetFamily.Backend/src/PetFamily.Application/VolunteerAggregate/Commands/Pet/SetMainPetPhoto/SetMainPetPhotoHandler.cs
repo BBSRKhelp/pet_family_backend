@@ -10,7 +10,7 @@ using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Pet.SetMainPetPhoto;
 
-public class SetMainPetPhotoHandler : ICommandHandler<Boolean, SetMainPetPhotoCommand>
+public class SetMainPetPhotoHandler : ICommandHandler<Guid, SetMainPetPhotoCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IValidator<SetMainPetPhotoCommand> _validator;
@@ -29,11 +29,11 @@ public class SetMainPetPhotoHandler : ICommandHandler<Boolean, SetMainPetPhotoCo
         _logger = logger;
     }
     
-    public async Task<Result<Boolean, ErrorList>> HandleAsync(
+    public async Task<Result<Guid, ErrorList>> HandleAsync(
         SetMainPetPhotoCommand command, 
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Setting main pet photo with id = {PetId}", command.PetId); //Думаю не совсем правильная запись
+        _logger.LogInformation("Setting main pet photo with id = {PetId}", command.PetId);
         
         var validationResult = await _validator.ValidateAsync(command, cancellationToken);
         if (!validationResult.IsValid)
@@ -56,9 +56,9 @@ public class SetMainPetPhotoHandler : ICommandHandler<Boolean, SetMainPetPhotoCo
             return (ErrorList)petResult.Error;
         }
 
-        var petPhoto = PhotoPath.Create(command.PhotoPath).Value;
+        var photoPath = PhotoPath.Create(command.PhotoPath).Value;
         
-        var result = petResult.Value.SetMainPhoto(petPhoto);
+        var result = petResult.Value.SetMainPhoto(photoPath);
         if (result.IsFailure)
         {
             _logger.LogWarning("Set main pet photo failed");
@@ -69,6 +69,6 @@ public class SetMainPetPhotoHandler : ICommandHandler<Boolean, SetMainPetPhotoCo
 
         _logger.LogInformation("Set main pet photo success with id = {PetId}", command.PetId);
         
-        return true;
+        return petResult.Value.Id.Value;
     }
 }
