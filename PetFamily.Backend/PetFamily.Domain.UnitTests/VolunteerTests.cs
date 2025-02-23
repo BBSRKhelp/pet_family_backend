@@ -14,14 +14,14 @@ public class VolunteerTests
     public void AddPet_WithEmptyPets_ShouldSuccessResult()
     {
         //Arrange
-        var volunteer = CreateVolunteer();
+        var sut = CreateVolunteer();
         var pet = CreatePet();
 
         //Act
-        var result = volunteer.AddPet(pet);
+        var result = sut.AddPet(pet);
 
         //Assert
-        var addedPetResult = volunteer.GetPetById(pet.Id);
+        var addedPetResult = sut.GetPetById(pet.Id);
 
         result.IsSuccess.Should().BeTrue();
         addedPetResult.IsSuccess.Should().BeTrue();
@@ -35,15 +35,14 @@ public class VolunteerTests
         //Arrange
         const int PETS_COUNT = 5;
 
-        var volunteer = CreateVolunteerWithPets(PETS_COUNT);
-
+        var sut = CreateVolunteerWithPets(PETS_COUNT);
         var petToAdd = CreatePet();
 
         //Act
-        var result = volunteer.AddPet(petToAdd);
+        var result = sut.AddPet(petToAdd);
 
         //Assert
-        var addedPetResult = volunteer.GetPetById(petToAdd.Id);
+        var addedPetResult = sut.GetPetById(petToAdd.Id);
 
         var serialNumber = Position.Create(PETS_COUNT + 1).Value;
 
@@ -59,19 +58,19 @@ public class VolunteerTests
         //Arrange
         const int PETS_COUNT = 6;
 
-        var volunteer = CreateVolunteerWithPets(PETS_COUNT);
+        var sut = CreateVolunteerWithPets(PETS_COUNT);
 
         var secondPosition = Position.Create(2).Value;
 
-        var firstPet = volunteer.Pets[0];
-        var secondPet = volunteer.Pets[1];
-        var thirdPet = volunteer.Pets[2];
-        var fourthPet = volunteer.Pets[3];
-        var fifthPet = volunteer.Pets[4];
-        var sixthPet = volunteer.Pets[5];
+        var firstPet = sut.Pets[0];
+        var secondPet = sut.Pets[1];
+        var thirdPet = sut.Pets[2];
+        var fourthPet = sut.Pets[3];
+        var fifthPet = sut.Pets[4];
+        var sixthPet = sut.Pets[5];
 
         //Act
-        var result = volunteer.MovePet(secondPet, secondPosition);
+        var result = sut.MovePet(secondPet, secondPosition);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
@@ -89,19 +88,19 @@ public class VolunteerTests
         //Arrange
         const int PETS_COUNT = 6;
 
-        var volunteer = CreateVolunteerWithPets(PETS_COUNT);
+        var sut = CreateVolunteerWithPets(PETS_COUNT);
 
         var secondPosition = Position.Create(2).Value;
 
-        var firstPet = volunteer.Pets[0];
-        var secondPet = volunteer.Pets[1];
-        var thirdPet = volunteer.Pets[2];
-        var fourthPet = volunteer.Pets[3];
-        var fifthPet = volunteer.Pets[4];
-        var sixthPet = volunteer.Pets[5];
+        var firstPet = sut.Pets[0];
+        var secondPet = sut.Pets[1];
+        var thirdPet = sut.Pets[2];
+        var fourthPet = sut.Pets[3];
+        var fifthPet = sut.Pets[4];
+        var sixthPet = sut.Pets[5];
 
         //Act
-        var result = volunteer.MovePet(fifthPet, secondPosition);
+        var result = sut.MovePet(fifthPet, secondPosition);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
@@ -119,19 +118,19 @@ public class VolunteerTests
         //Arrange
         const int PETS_COUNT = 6;
 
-        var volunteer = CreateVolunteerWithPets(PETS_COUNT);
+        var sut = CreateVolunteerWithPets(PETS_COUNT);
 
         var firstPosition = Position.Create(1).Value;
 
-        var firstPet = volunteer.Pets[0];
-        var secondPet = volunteer.Pets[1];
-        var thirdPet = volunteer.Pets[2];
-        var fourthPet = volunteer.Pets[3];
-        var fifthPet = volunteer.Pets[4];
-        var sixthPet = volunteer.Pets[5];
+        var firstPet = sut.Pets[0];
+        var secondPet = sut.Pets[1];
+        var thirdPet = sut.Pets[2];
+        var fourthPet = sut.Pets[3];
+        var fifthPet = sut.Pets[4];
+        var sixthPet = sut.Pets[5];
 
         //Act
-        var result = volunteer.MovePet(sixthPet, firstPosition);
+        var result = sut.MovePet(sixthPet, firstPosition);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
@@ -149,19 +148,19 @@ public class VolunteerTests
         //Arrange
         const int PETS_COUNT = 6;
 
-        var volunteer = CreateVolunteerWithPets(PETS_COUNT);
+        var sut = CreateVolunteerWithPets(PETS_COUNT);
 
         var fifthPosition = Position.Create(5).Value;
 
-        var firstPet = volunteer.Pets[0];
-        var secondPet = volunteer.Pets[1];
-        var thirdPet = volunteer.Pets[2];
-        var fourthPet = volunteer.Pets[3];
-        var fifthPet = volunteer.Pets[4];
-        var sixthPet = volunteer.Pets[5];
+        var firstPet = sut.Pets[0];
+        var secondPet = sut.Pets[1];
+        var thirdPet = sut.Pets[2];
+        var fourthPet = sut.Pets[3];
+        var fifthPet = sut.Pets[4];
+        var sixthPet = sut.Pets[5];
 
         //Act
-        var result = volunteer.MovePet(secondPet, fifthPosition);
+        var result = sut.MovePet(secondPet, fifthPosition);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
@@ -179,19 +178,19 @@ public class VolunteerTests
         //Arrange
         const int PETS_COUNT = 6;
 
-        var volunteer = CreateVolunteerWithPets(PETS_COUNT);
+        var sut = CreateVolunteerWithPets(PETS_COUNT);
 
         var sixthPosition = Position.Create(6).Value;
 
-        var firstPet = volunteer.Pets[0];
-        var secondPet = volunteer.Pets[1];
-        var thirdPet = volunteer.Pets[2];
-        var fourthPet = volunteer.Pets[3];
-        var fifthPet = volunteer.Pets[4];
-        var sixthPet = volunteer.Pets[5];
+        var firstPet = sut.Pets[0];
+        var secondPet = sut.Pets[1];
+        var thirdPet = sut.Pets[2];
+        var fourthPet = sut.Pets[3];
+        var fifthPet = sut.Pets[4];
+        var sixthPet = sut.Pets[5];
 
         //Act
-        var result = volunteer.MovePet(firstPet, sixthPosition);
+        var result = sut.MovePet(firstPet, sixthPosition);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
@@ -209,19 +208,19 @@ public class VolunteerTests
         //Arrange
         const int PETS_COUNT = 6;
 
-        var volunteer = CreateVolunteerWithPets(PETS_COUNT);
+        var sut = CreateVolunteerWithPets(PETS_COUNT);
 
         var outOfRangePosition = Position.Create(8).Value;
 
-        var firstPet = volunteer.Pets[0];
-        var secondPet = volunteer.Pets[1];
-        var thirdPet = volunteer.Pets[2];
-        var fourthPet = volunteer.Pets[3];
-        var fifthPet = volunteer.Pets[4];
-        var sixthPet = volunteer.Pets[5];
+        var firstPet = sut.Pets[0];
+        var secondPet = sut.Pets[1];
+        var thirdPet = sut.Pets[2];
+        var fourthPet = sut.Pets[3];
+        var fifthPet = sut.Pets[4];
+        var sixthPet = sut.Pets[5];
 
         //Act
-        var result = volunteer.MovePet(thirdPet, outOfRangePosition);
+        var result = sut.MovePet(thirdPet, outOfRangePosition);
 
         //Assert
         result.IsSuccess.Should().BeTrue();

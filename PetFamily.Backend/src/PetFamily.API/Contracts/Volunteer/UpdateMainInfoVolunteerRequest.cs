@@ -13,11 +13,11 @@ public record UpdateMainInfoVolunteerRequest(
     string PhoneNumber
 )
 {
-    public UpdateMainInfoVolunteerCommand ToCommand(Guid id)
+    public UpdateMainVolunteerInfoCommand ToCommand(Guid id)
     {
         var fullName = new FullNameDto(FirstName, LastName, Patronymic);
         
-        return new UpdateMainInfoVolunteerCommand(
+        return new UpdateMainVolunteerInfoCommand(
             id, 
             fullName, 
             Email,

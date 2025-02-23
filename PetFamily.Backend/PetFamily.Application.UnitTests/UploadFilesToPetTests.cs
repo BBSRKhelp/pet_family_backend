@@ -1,12 +1,10 @@
 using System.Data;
-using System.Data.Common;
 using CSharpFunctionalExtensions;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.Extensions.Logging;
 using Moq;
-using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.Pet;
 using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Messaging;
@@ -36,15 +34,15 @@ public class UploadFilesToPetTests
         var cancellationToken = new CancellationTokenSource().Token;
 
         var volunteer = Shared.Models.CreateVolunteer();
-        var pet = Shared.Models.CreatePet();
-        volunteer.AddPet(pet);
+        var sut = Shared.Models.CreatePet();
+        volunteer.AddPet(sut);
 
         var stream = new MemoryStream();
         const string FILENAME = "test.jpg";
         var uploadFileDto = new UploadFileDto(stream, FILENAME);
         List<UploadFileDto> files = [uploadFileDto, uploadFileDto];
 
-        var command = new UploadFilesToPetCommand(volunteer.Id.Value, pet.Id.Value, files);
+        var command = new UploadFilesToPetCommand(volunteer.Id.Value, sut.Id.Value, files);
 
         //volunteersRepository
         _volunteersRepositoryMock
@@ -99,6 +97,6 @@ public class UploadFilesToPetTests
 
         //Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().Be(pet.Id.Value);
+        result.Value.Should().Be(sut.Id.Value);
     }
 }

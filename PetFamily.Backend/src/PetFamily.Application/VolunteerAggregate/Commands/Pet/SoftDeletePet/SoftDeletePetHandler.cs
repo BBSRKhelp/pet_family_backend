@@ -9,7 +9,7 @@ using PetFamily.Domain.Shared.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Pet.SoftDeletePet;
 
-public class SoftDeletePetHandler : ICommandHandler<Boolean, SoftDeletePetCommand>
+public class SoftDeletePetHandler : ICommandHandler<Guid, SoftDeletePetCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IValidator<SoftDeletePetCommand> _validator;
@@ -28,7 +28,7 @@ public class SoftDeletePetHandler : ICommandHandler<Boolean, SoftDeletePetComman
         _logger = logger;
     }
     
-    public async Task<Result<Boolean, ErrorList>> HandleAsync(
+    public async Task<Result<Guid, ErrorList>> HandleAsync(
         SoftDeletePetCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -61,6 +61,6 @@ public class SoftDeletePetHandler : ICommandHandler<Boolean, SoftDeletePetComman
         
         _logger.LogInformation("Successfully soft-deletion pet with id = {PetId}", command.PetId);
         
-        return true;
+        return petResult.Value.Id.Value;
     }
 }

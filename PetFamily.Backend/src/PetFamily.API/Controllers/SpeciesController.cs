@@ -4,10 +4,10 @@ using PetFamily.API.Contracts.Species;
 using PetFamily.API.Extensions;
 using PetFamily.Application.DTOs.Read;
 using PetFamily.Application.Models;
-using PetFamily.Application.SpeciesAggregate.Commands.AddBreed;
-using PetFamily.Application.SpeciesAggregate.Commands.Create;
-using PetFamily.Application.SpeciesAggregate.Commands.Delete;
-using PetFamily.Application.SpeciesAggregate.Commands.DeleteBreed;
+using PetFamily.Application.SpeciesAggregate.Commands.Breed.AddBreed;
+using PetFamily.Application.SpeciesAggregate.Commands.Breed.DeleteBreed;
+using PetFamily.Application.SpeciesAggregate.Commands.Species.Create;
+using PetFamily.Application.SpeciesAggregate.Commands.Species.Delete;
 using PetFamily.Application.SpeciesAggregate.Queries.GetBreedsByIdSpecies;
 using PetFamily.Application.SpeciesAggregate.Queries.GetFilteredSpeciesWithPagination;
 
@@ -45,7 +45,7 @@ public class SpeciesController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<Boolean>> DeleteAsync(
+    public async Task<ActionResult<Guid>> DeleteAsync(
         [FromServices] DeleteSpeciesHandler handler,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
@@ -58,7 +58,7 @@ public class SpeciesController : ControllerBase
     }
 
     [HttpDelete("{speciesId:guid}/breeds/{breedId:guid}")]
-    public async Task<ActionResult<Boolean>> DeleteBreedAsync(
+    public async Task<ActionResult<Guid>> DeleteBreedAsync(
         [FromServices] DeleteBreedHandler handler,
         [FromRoute] Guid speciesId,
         [FromRoute] Guid breedId,

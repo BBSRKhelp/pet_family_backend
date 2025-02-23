@@ -24,7 +24,7 @@ public record UpdatePetMainInfoRequest(
     Guid SpeciesId,
     Guid BreedId)
 {
-    public UpdatePetMainInfoCommand ToCommand(Guid volunteerId, Guid petId)
+    public UpdateMainPetInfoCommand ToCommand(Guid volunteerId, Guid petId)
     {
         var coloration = Enum.Parse<Colour>(Colouration, true);
         
@@ -36,7 +36,7 @@ public record UpdatePetMainInfoRequest(
 
         var breedAndSpeciesId = new BreedAndSpeciesIdDto(SpeciesId, BreedId);
 
-        return new UpdatePetMainInfoCommand(
+        return new UpdateMainPetInfoCommand(
             volunteerId,
             petId,
             Name,

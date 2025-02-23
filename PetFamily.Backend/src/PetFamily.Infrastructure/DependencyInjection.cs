@@ -23,21 +23,27 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDatabase()
-            .AddRepositories()
+        services.AddRepositories()
             .AddBackgroundService()
+            .AddDatabase(configuration)
             .AddFileProvider(configuration);
 
         return services;
     }
 
     private static IServiceCollection AddDatabase(
-        this IServiceCollection services)
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        services.AddScoped<WriteDbContext>();
-        services.AddScoped<IReadDbContext, ReadDbContext>();
+        services.AddScoped<WriteDbContext>(_ =>
+            new WriteDbContext(configuration.GetConnectionString(Constants.DATABASE)!));
+        
+        services.AddScoped<IReadDbContext, ReadDbContext>(_ =>
+            new ReadDbContext(configuration.GetConnectionString(Constants.DATABASE)!));
+        
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
+        services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>(_ =>
+            new SqlConnectionFactory(configuration.GetConnectionString(Constants.DATABASE)!));
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 
         return services;

@@ -141,7 +141,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
         builder.Property(p => p.PetPhotos)
             .IsRequired()
             .ValueObjectsCollectionJsonConversion(
-                pp => new PetPhotoDto(pp.Path.Path, pp.IsMainPhoto),
+                pp => new PetPhotoDto(pp.PhotoPath.Path, pp.IsMainPhoto),
                 dto => new PetPhoto(PhotoPath.Create(dto.PhotoPath).Value, dto.IsMainPhoto))
             .HasColumnOrder(18);
 

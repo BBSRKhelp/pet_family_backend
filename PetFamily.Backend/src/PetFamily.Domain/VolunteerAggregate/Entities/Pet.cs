@@ -62,7 +62,7 @@ public class Pet : CSharpFunctionalExtensions.Entity<PetId>
     public void AddPhotos(IEnumerable<PetPhoto> photos) =>
         _petPhotos.AddRange(photos);
 
-    public void SetSerialNumber(Position position) =>
+    public void SetPosition(Position position) =>
         Position = position;
 
     public void UpdateMainInfo(
@@ -94,7 +94,7 @@ public class Pet : CSharpFunctionalExtensions.Entity<PetId>
 
     public UnitResult<Error> SetMainPhoto(PhotoPath photoPath)
     {
-        var petPhoto = _petPhotos.FirstOrDefault(x => x.Path == photoPath);
+        var petPhoto = _petPhotos.FirstOrDefault(x => x.PhotoPath == photoPath);
         if (petPhoto is null)
             return Errors.General.NotFound("PetPhoto");
 
@@ -102,11 +102,10 @@ public class Pet : CSharpFunctionalExtensions.Entity<PetId>
         if (currentMainPhoto is not null)
         {
             _petPhotos.Remove(currentMainPhoto);
-            _petPhotos.Add(new PetPhoto(currentMainPhoto.Path, false));
+            _petPhotos.Add(new PetPhoto(currentMainPhoto.PhotoPath, false));
         }
         
         _petPhotos.Remove(petPhoto);
-
         _petPhotos.Add(new PetPhoto(photoPath, true));
 
         return UnitResult.Success<Error>();

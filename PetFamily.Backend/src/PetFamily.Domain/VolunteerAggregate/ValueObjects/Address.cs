@@ -38,9 +38,6 @@ public record Address
         if (IsNullOrWhiteSpace(street))
             return Errors.General.IsRequired(nameof(street));
 
-        if (IsNullOrWhiteSpace(postalcode))
-            return Errors.General.IsRequired(nameof(postalcode));
-
         return new Address(country,
             city,
             street,

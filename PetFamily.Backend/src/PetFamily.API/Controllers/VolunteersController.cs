@@ -18,8 +18,8 @@ using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.Delete;
 using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.UpdateMainInfo;
 using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.UpdateRequisites;
 using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.UpdateSocialNetworks;
-using PetFamily.Application.VolunteerAggregate.Queries.GetFilteredVolunteersWithPagination;
-using PetFamily.Application.VolunteerAggregate.Queries.GetVolunteerById;
+using PetFamily.Application.VolunteerAggregate.Queries.Volunteer.GetFilteredVolunteersWithPagination;
+using PetFamily.Application.VolunteerAggregate.Queries.Volunteer.GetVolunteerById;
 
 namespace PetFamily.API.Controllers;
 
@@ -42,7 +42,7 @@ public class VolunteersController : ControllerBase
 
     [HttpPut("{id:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdateMainInfoAsync(
-        [FromServices] UpdateMainInfoVolunteerHandler handler,
+        [FromServices] UpdateMainVolunteerInfoHandler handler,
         [FromBody] UpdateMainInfoVolunteerRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
@@ -83,7 +83,7 @@ public class VolunteersController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<Boolean>> DeleteAsync(
+    public async Task<ActionResult<Guid>> DeleteAsync(
         [FromServices] DeleteVolunteerHandler handler,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
@@ -170,7 +170,7 @@ public class VolunteersController : ControllerBase
 
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdatePetMainInfoAsync(
-        [FromServices] UpdatePetMainInfoHandler handler,
+        [FromServices] UpdateMainPetInfoHandler handler,
         [FromBody] UpdatePetMainInfoRequest request,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -199,7 +199,7 @@ public class VolunteersController : ControllerBase
     }
 
     [HttpDelete("{volunteerId:guid}/pets/{petId:guid}/soft")]
-    public async Task<ActionResult<Boolean>> SoftDeletePetAsync(
+    public async Task<ActionResult<Guid>> SoftDeletePetAsync(
         [FromServices] SoftDeletePetHandler handler,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -213,7 +213,7 @@ public class VolunteersController : ControllerBase
     }
 
     [HttpDelete("{volunteerId:guid}/pets/{petId:guid}/hard")]
-    public async Task<ActionResult<Boolean>> HardDeletePetAsync(
+    public async Task<ActionResult<Guid>> HardDeletePetAsync(
         [FromServices] HardDeletePetHandler handler,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -227,7 +227,7 @@ public class VolunteersController : ControllerBase
     }
 
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-photo")]
-    public async Task<ActionResult<Boolean>> SetMainPetPhotoAsync(
+    public async Task<ActionResult<Guid>> SetMainPetPhotoAsync(
         [FromServices] SetMainPetPhotoHandler handler,
         [FromBody] SetMainPetPhotoRequest request,
         [FromRoute] Guid volunteerId,

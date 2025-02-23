@@ -10,7 +10,7 @@ using PetFamily.Domain.Shared.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Volunteer.Delete;
 
-public class DeleteVolunteerHandler : ICommandHandler<Boolean, DeleteVolunteerCommand>
+public class DeleteVolunteerHandler : ICommandHandler<Guid, DeleteVolunteerCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IValidator<DeleteVolunteerCommand> _validator;
@@ -29,7 +29,7 @@ public class DeleteVolunteerHandler : ICommandHandler<Boolean, DeleteVolunteerCo
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<Boolean, ErrorList>> HandleAsync(
+    public async Task<Result<Guid, ErrorList>> HandleAsync(
         DeleteVolunteerCommand command,
         CancellationToken cancellationToken = default)
     {
@@ -52,6 +52,6 @@ public class DeleteVolunteerHandler : ICommandHandler<Boolean, DeleteVolunteerCo
 
         _logger.LogInformation("The volunteer with id = {VolunteerId} has been deleted", command.Id);
 
-        return true;
+        return command.Id;
     }
 }

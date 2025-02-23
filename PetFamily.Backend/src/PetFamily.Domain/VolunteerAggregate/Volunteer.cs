@@ -104,11 +104,11 @@ public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
 
     public UnitResult<Error> AddPet(Pet pet)
     {
-        var serialNumberResult = Position.Create(_pets.Count + 1);
-        if (serialNumberResult.IsFailure)
-            return serialNumberResult.Error;
+        var positionResult = Position.Create(_pets.Count + 1);
+        if (positionResult.IsFailure)
+            return positionResult.Error;
 
-        pet.SetSerialNumber(serialNumberResult.Value);
+        pet.SetPosition(positionResult.Value);
 
         _pets.Add(pet);
         return Result.Success<Error>();
