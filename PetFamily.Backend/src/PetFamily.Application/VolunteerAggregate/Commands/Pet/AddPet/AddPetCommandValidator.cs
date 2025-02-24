@@ -16,16 +16,16 @@ public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
 
         RuleFor(c => c.Description).MustBeValueObject(Description.Create);
 
-        RuleFor(c => c.AppearanceDetails.Colouration).IsInEnum().WithError(Errors.General.IsInvalid("Colouration"));
+        RuleFor(c => c.AppearanceDetails.Coloration).IsInEnum().WithError(Errors.General.IsInvalid("Coloration"));
 
         RuleFor(c => c.AppearanceDetails)
-            .MustBeValueObject(x => AppearanceDetails.Create(x.Colouration, x.Weight, x.Height));
+            .MustBeValueObject(x => AppearanceDetails.Create(x.Coloration, x.Weight, x.Height));
 
         RuleFor(c => c.HealthDetails)
             .MustBeValueObject(x => HealthDetails.Create(x.HealthInformation, x.IsCastrated, x.IsVaccinated));
 
         RuleFor(c => c.Address)
-            .MustBeValueObject(x => Address.Create(x.Country, x.City, x.Street, x.Postalcode));
+            .MustBeValueObject(x => Address.Create(x.Country, x.City, x.Street, x.PostalCode));
 
         RuleFor(c => c.PhoneNumber)
             .MustBeValueObject(PhoneNumber.Create);

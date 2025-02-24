@@ -18,13 +18,13 @@ public class UpdateMainPetInfoCommandValidator : AbstractValidator<UpdateMainPet
 
         RuleFor(u => u.Description).MustBeValueObject(Description.Create);
         
-        RuleFor(u => u.AppearanceDetails.Colouration).IsInEnum().WithError(Errors.General.IsInvalid("Colouration"));
+        RuleFor(u => u.AppearanceDetails.Coloration).IsInEnum().WithError(Errors.General.IsInvalid("Coloration"));
 
         RuleFor(u => u.AppearanceDetails)
-            .MustBeValueObject(x => AppearanceDetails.Create(x.Colouration, x.Weight, x.Height));
+            .MustBeValueObject(x => AppearanceDetails.Create(x.Coloration, x.Weight, x.Height));
 
         RuleFor(u => u.Address)
-            .MustBeValueObject(x => Address.Create(x.Country, x.City, x.Street, x.Postalcode));
+            .MustBeValueObject(x => Address.Create(x.Country, x.City, x.Street, x.PostalCode));
 
         RuleFor(u => u.PhoneNumber)
             .MustBeValueObject(PhoneNumber.Create);

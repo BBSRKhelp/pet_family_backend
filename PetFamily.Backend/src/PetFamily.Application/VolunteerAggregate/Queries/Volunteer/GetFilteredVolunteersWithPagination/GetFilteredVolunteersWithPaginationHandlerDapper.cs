@@ -125,7 +125,7 @@ public class GetFilteredVolunteersWithPaginationHandlerDapper :
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get volunteers with pagination");
+            _logger.LogWarning(ex, "Failed to get volunteers with pagination");
             return (ErrorList)Errors.Database.IsFailure();
         }
     }

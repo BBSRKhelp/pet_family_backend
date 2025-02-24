@@ -8,7 +8,7 @@ namespace PetFamily.API.Contracts.Pet;
 public record CreatePetRequest(
     string? Name,
     string? Description,
-    string Colouration,
+    string Coloration,
     float Weight,
     float Height,
     string HealthInformation,
@@ -17,9 +17,9 @@ public record CreatePetRequest(
     string Country,
     string City,
     string Street,
-    string? Postalcode,
+    string? PostalCode,
     string PhoneNumber,
-    DateOnly? Birthday,
+    DateTime? BirthDate,
     string Status,
     IEnumerable<RequisiteDto>? Requisites,
     Guid SpeciesId,
@@ -27,13 +27,13 @@ public record CreatePetRequest(
 {
     public AddPetCommand ToCommand(Guid volunteerId)
     {
-        var coloration = Enum.Parse<Colour>(Colouration, true);
+        var coloration = Enum.Parse<Colour>(Coloration, true);
         
         var appearanceDetails = new AppearanceDetailsDto(coloration, Weight, Height);
         
         var healthDetails = new HealthDetailsDto(HealthInformation, IsCastrated, IsVaccinated);
         
-        var address = new AddressDto(Country, City, Street, Postalcode);
+        var address = new AddressDto(Country, City, Street, PostalCode);
         
         var status = Enum.Parse<Status>(Status, true);
         
@@ -47,7 +47,7 @@ public record CreatePetRequest(
             healthDetails,
             address,
             PhoneNumber,
-            Birthday,
+            BirthDate,
             status,
             Requisites,
             breedAndSpeciesId);

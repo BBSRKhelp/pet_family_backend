@@ -41,22 +41,22 @@ public class GetVolunteerByIdHandler : IQueryHandler<VolunteerDto, GetVolunteerB
 
         try
         {
-            var volunteerQuery = await _readDbContext
+            var volunteer = await _readDbContext
                 .Volunteers
                 .Where(v => v.IsDeleted == false)
                 .FirstOrDefaultAsync(v => v.Id == query.VolunteerId, cancellationToken);
             
-            if (volunteerQuery is null)
+            if (volunteer is null)
             {
                 _logger.LogInformation("Volunteer with id = '{VolunteerId}' does not found'", query.VolunteerId);
                 return (ErrorList)Errors.General.NotFound("volunteer");
             }
             
-            return volunteerQuery;
+            return volunteer;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to get volunteer by id");
+            _logger.LogWarning(ex, "Failed to get volunteer by id");
             return (ErrorList)Errors.Database.IsFailure();
         }
     }
