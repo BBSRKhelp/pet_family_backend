@@ -27,11 +27,11 @@ public class GetPetByIdHandler : IQueryHandler<PetDto, GetPetByIdQuery>
     }
 
     public async Task<Result<PetDto, ErrorList>> HandleAsync(
-        GetPetByIdQuery query, 
+        GetPetByIdQuery query,
         CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting pet by id");
-        
+
         var validationResult = await _validator.ValidateAsync(query, cancellationToken);
         if (!validationResult.IsValid)
         {
@@ -39,25 +39,17 @@ public class GetPetByIdHandler : IQueryHandler<PetDto, GetPetByIdQuery>
             return validationResult.ToErrorList();
         }
 
-        try
-        {
-            var pet = await _readDbContext
-                .Pets
-                .Where(p => p.IsDeleted == false)
-                .FirstOrDefaultAsync(p => p.Id == query.PetId, cancellationToken);
+        var pet = await _readDbContext
+            .Pets
+            .Where(p => p.IsDeleted == false)
+            .FirstOrDefaultAsync(p => p.Id == query.PetId, cancellationToken);
 
-            if (pet is null)
-            {
-                _logger.LogInformation("Pet with id = '{PetId}' does not exist", query.PetId);
-                return (ErrorList)Errors.General.NotFound("Pet");
-            }
-
-            return pet;
-        }
-        catch (Exception ex)
+        if (pet is null)
         {
-            _logger.LogWarning(ex, "Failed to get pet by id");
-            return (ErrorList)Errors.Database.IsFailure();
+            _logger.LogInformation("Pet with id = '{PetId}' does not exist", query.PetId);
+            return (ErrorList)Errors.General.NotFound("Pet");
         }
+
+        return pet;
     }
 }

@@ -2,6 +2,7 @@ using FluentValidation;
 using PetFamily.Application.Validation;
 using PetFamily.Domain.Shared.Models;
 using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Domain.VolunteerAggregate.Enums;
 
 namespace PetFamily.Application.VolunteerAggregate.Queries.Pet.GetFilteredPetsWithPagination;
 
@@ -23,6 +24,7 @@ public class GetFilteredPetsWithPaginationQueryValidator : AbstractValidator<Get
         "status",
         "is_castrated",
         "is_vaccinated",
+        "position",
         "volunteer_id",
         "species_id",
         "breed_id"
@@ -53,8 +55,11 @@ public class GetFilteredPetsWithPaginationQueryValidator : AbstractValidator<Get
         RuleFor(g => g.PhoneNumber).Must(x => x?.Length is <= 11 or null)
             .WithError(Errors.General.IsInvalid("PhoneNumber"));
 
-        RuleFor(g => g.BirthDate).Must(x => x?.Year is > 1990 or null).WithError(Errors.General.MaxLengthExceeded("BirthDate"));
+        RuleFor(g => g.BirthDate).Must(x => x?.Year is > 1990 or null)
+            .WithError(Errors.General.MaxLengthExceeded("BirthDate"));
 
         RuleFor(g => g.Status).IsInEnum().WithError(Errors.General.IsInvalid("Status"));
+
+        RuleFor(g => g.Position).Must(x => x is > 0 or null).WithError(Errors.General.MinLengthLowered("Position"));
     }
 }

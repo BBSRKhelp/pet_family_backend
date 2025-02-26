@@ -19,6 +19,7 @@ public record GetFilteredPetsWithPaginationQuery(
     Status? Status,
     bool? IsCastrated,
     bool? IsVaccinated,
+    int? Position,
     Guid? VolunteerId,
     Guid? BreedId,
     Guid? SpeciesId,

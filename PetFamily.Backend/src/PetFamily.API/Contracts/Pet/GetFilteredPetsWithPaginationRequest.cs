@@ -19,6 +19,7 @@ public record GetFilteredPetsWithPaginationRequest(
     string? Status,
     bool? IsCastrated,
     bool? IsVaccinated,
+    int? Position,
     Guid? VolunteerId,
     Guid? SpeciesId,
     Guid? BreedId,
@@ -27,8 +28,13 @@ public record GetFilteredPetsWithPaginationRequest(
 {
     public GetFilteredPetsWithPaginationQuery ToQuery()
     {
-        Colour? coloration = Enum.TryParse(Coloration, true, out Colour resultColour) ? resultColour : null;
-        Status? status = Enum.TryParse(Status, true, out Status resultStatus) ? resultStatus : null;
+        Colour? coloration = Enum.TryParse(Coloration, true, out Colour resultColour)
+            ? resultColour
+            : null;
+        
+        Status? status = Enum.TryParse(Status, true, out Status resultStatus)
+            ? resultStatus
+            : null;
 
         return new GetFilteredPetsWithPaginationQuery(
             PageNumber,
@@ -46,6 +52,7 @@ public record GetFilteredPetsWithPaginationRequest(
             status,
             IsCastrated,
             IsVaccinated,
+            Position,
             VolunteerId,
             BreedId,
             SpeciesId,

@@ -26,7 +26,7 @@ public record UpdatePetMainInfoRequest(
 {
     public UpdateMainPetInfoCommand ToCommand(Guid volunteerId, Guid petId)
     {
-        var coloration = Enum.Parse<Colour>(Coloration, true);
+        var coloration = Enum.TryParse(Coloration, true, out Colour resultColour) ? resultColour : Colour.Unknown;
         
         var appearanceDetails = new AppearanceDetailsDto(coloration, Weight, Height);
 
