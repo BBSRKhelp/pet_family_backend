@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PetFamily.Core\PetFamily.Core.csproj" />
       <ProjectReference Include="..\PetFamily.Domain\PetFamily.Domain.csproj" />
     </ItemGroup>
 
@@ -20,8 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="SpeciesAggregate\Commands\Breed\" />
-      <Folder Include="SpeciesAggregate\Commands\Species\" />
+      <Folder Include="Models\" />
       <Folder Include="VolunteerAggregate\Commands\Pet\" />
       <Folder Include="VolunteerAggregate\Commands\Volunteer\" />
       <Folder Include="VolunteerAggregate\Queries\Volunteer\" />

@@ -1,5 +1,5 @@
-using PetFamily.API.Response.Shared;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core.Models;
+using PetFamily.Core.Response;
 
 namespace PetFamily.API.Middlewares;
 

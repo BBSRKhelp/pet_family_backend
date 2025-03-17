@@ -1,6 +1,6 @@
 using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Core.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;

@@ -7,7 +7,7 @@ using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Files;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Application.Providers;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Pet.HardDeletePet;
 

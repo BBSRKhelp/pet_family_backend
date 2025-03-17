@@ -2,8 +2,8 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.DTOs.Read;
 using PetFamily.Application.Interfaces.Abstractions;
-using PetFamily.Application.Models;
 using PetFamily.Application.VolunteerAggregate.Queries.Volunteer.GetFilteredVolunteersWithPagination;
+using PetFamily.Core.Models;
 
 namespace PetFamily.Application.IntegrationTests.Volunteer.GetFilteredVolunteersWithPaginationTests;
 

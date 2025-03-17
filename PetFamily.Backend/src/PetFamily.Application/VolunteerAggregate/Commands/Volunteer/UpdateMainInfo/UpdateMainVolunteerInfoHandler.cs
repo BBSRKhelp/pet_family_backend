@@ -5,8 +5,8 @@ using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Repositories;
-using PetFamily.Domain.Shared.Models;
-using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Core.Models;
+using PetFamily.Core.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Volunteer.UpdateMainInfo;

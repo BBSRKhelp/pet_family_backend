@@ -9,8 +9,7 @@ using PetFamily.Application.DTOs.Volunteer;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Database;
-using PetFamily.Application.Models;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 

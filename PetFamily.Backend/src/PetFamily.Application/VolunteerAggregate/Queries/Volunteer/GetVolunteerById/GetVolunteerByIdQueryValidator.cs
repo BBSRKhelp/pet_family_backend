@@ -1,6 +1,6 @@
 using FluentValidation;
 using PetFamily.Application.Validation;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Queries.Volunteer.GetVolunteerById;
 

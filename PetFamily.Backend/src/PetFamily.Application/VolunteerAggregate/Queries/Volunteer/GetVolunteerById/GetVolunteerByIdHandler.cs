@@ -6,7 +6,7 @@ using PetFamily.Application.DTOs.Read;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Database;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Queries.Volunteer.GetVolunteerById;
 

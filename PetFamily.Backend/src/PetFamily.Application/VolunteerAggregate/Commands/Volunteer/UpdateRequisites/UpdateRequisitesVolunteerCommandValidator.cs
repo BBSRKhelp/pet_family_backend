@@ -1,6 +1,6 @@
 using FluentValidation;
 using PetFamily.Application.Validation;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core.Models;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Volunteer.UpdateRequisites;

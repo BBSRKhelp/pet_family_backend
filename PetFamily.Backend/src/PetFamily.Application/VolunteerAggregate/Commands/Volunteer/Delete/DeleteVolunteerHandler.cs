@@ -6,7 +6,7 @@ using PetFamily.Application.Interfaces.Abstractions;
 using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Repositories;
 using PetFamily.Application.VolunteerAggregate.Commands.Volunteer.Create;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Volunteer.Delete;
 

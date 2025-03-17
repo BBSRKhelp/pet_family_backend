@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.Volunteer;
-using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Core.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
@@ -29,17 +29,17 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             fb.Property(f => f.FirstName)
                 .IsRequired()
                 .HasColumnName("first_name")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH);
 
             fb.Property(f => f.LastName)
                 .IsRequired()
                 .HasColumnName("last_name")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH);
 
             fb.Property(f => f.Patronymic)
                 .IsRequired(false)
                 .HasColumnName("patronymic")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH);
         });
 
         builder.ComplexProperty(v => v.Email, eb =>
@@ -47,7 +47,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             eb.Property(e => e.Value)
                 .IsRequired()
                 .HasColumnName("email")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH);
         });
 
         builder.ComplexProperty(v => v.Description, db =>
@@ -55,7 +55,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             db.Property(d => d.Value)
                 .IsRequired(false)
                 .HasColumnName("description")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH);
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH);
         });
 
         builder.ComplexProperty(v => v.WorkExperience, web =>

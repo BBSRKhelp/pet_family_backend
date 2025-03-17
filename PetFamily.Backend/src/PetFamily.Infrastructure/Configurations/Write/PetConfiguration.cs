@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.Pet;
-using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Core.ValueObjects;
 using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
 using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
@@ -32,7 +32,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             nb.Property(n => n.Value)
                 .IsRequired(false)
                 .HasColumnName("name")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH)
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH)
                 .HasColumnOrder(2);
         });
 
@@ -41,7 +41,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             db.Property(d => d.Value)
                 .IsRequired(false)
                 .HasColumnName("description")
-                .HasMaxLength(Domain.Shared.Constants.MAX_MEDIUM_TEXT_LENGTH)
+                .HasMaxLength(Core.Constants.MAX_MEDIUM_TEXT_LENGTH)
                 .HasColumnOrder(3);
         });
 
@@ -71,25 +71,25 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             ab.Property(p => p.Country)
                 .IsRequired()
                 .HasColumnName("country")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH)
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH)
                 .HasColumnOrder(7);
 
             ab.Property(p => p.City)
                 .IsRequired()
                 .HasColumnName("city")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH)
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH)
                 .HasColumnOrder(8);
 
             ab.Property(p => p.Street)
                 .IsRequired()
                 .HasColumnName("street")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH)
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH)
                 .HasColumnOrder(9);
 
             ab.Property(p => p.PostalCode)
                 .IsRequired(false)
                 .HasColumnName("postal_code")
-                .HasMaxLength(Domain.Shared.Constants.MAX_LOW_TEXT_LENGTH)
+                .HasMaxLength(Core.Constants.MAX_LOW_TEXT_LENGTH)
                 .HasColumnOrder(10);
         });
 
@@ -115,7 +115,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             hdb.Property(hd => hd.HealthInformation)
                 .IsRequired()
                 .HasColumnName("health_information")
-                .HasMaxLength(Domain.Shared.Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
+                .HasMaxLength(Core.Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
                 .HasColumnOrder(14);
 
             hdb.Property(hd => hd.IsCastrated)

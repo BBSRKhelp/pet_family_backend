@@ -1,6 +1,6 @@
 using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Core.ValueObjects;
 using PetFamily.Infrastructure.DbContexts;
 
 namespace PetFamily.Application.IntegrationTests.Species;

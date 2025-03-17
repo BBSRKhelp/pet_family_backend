@@ -2,8 +2,8 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.DTOs.Read;
 using PetFamily.Application.Interfaces.Abstractions;
-using PetFamily.Application.Models;
 using PetFamily.Application.SpeciesAggregate.Queries.GetBreedsByIdSpecies;
+using PetFamily.Core.Models;
 using Xunit.Abstractions;
 
 namespace PetFamily.Application.IntegrationTests.Breed.GetBreedsByIdSpeciesTests;
