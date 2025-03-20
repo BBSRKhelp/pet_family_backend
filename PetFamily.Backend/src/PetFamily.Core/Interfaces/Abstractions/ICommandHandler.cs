@@ -1,7 +1,7 @@
 using CSharpFunctionalExtensions;
 using PetFamily.Core.Models;
 
-namespace PetFamily.Species.Application.Interfaces.Abstractions;
+namespace PetFamily.Core.Interfaces.Abstractions;
 
 public interface ICommandHandler<TResponse, in TCommand> where TCommand : ICommand
 {

@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
 
-public class VolunteerId : ValueObject
+public class VolunteerId : ComparableValueObject
 {
     private VolunteerId(Guid value)
     {
@@ -14,8 +14,8 @@ public class VolunteerId : ValueObject
     public static VolunteerId NewId() => new(Guid.NewGuid());
     public static VolunteerId Empty() => new(Guid.Empty);
     public static VolunteerId Create(Guid id) => new(id);
-    
-    protected override IEnumerable<IComparable> GetEqualityComponents()
+
+    protected override IEnumerable<IComparable> GetComparableEqualityComponents()
     {
         yield return Value;
     }

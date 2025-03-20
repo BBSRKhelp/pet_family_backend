@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\" />
+      <Folder Include="Interfaces\" />
       <Folder Include="VolunteerAggregate\Commands\Pet\" />
       <Folder Include="VolunteerAggregate\Commands\Volunteer\" />
       <Folder Include="VolunteerAggregate\Queries\Volunteer\" />

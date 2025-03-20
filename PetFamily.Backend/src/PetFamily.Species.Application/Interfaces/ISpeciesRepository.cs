@@ -1,6 +1,7 @@
+using CSharpFunctionalExtensions;
 using PetFamily.Core.Models;
 using PetFamily.Core.ValueObjects;
-using PetFamily.Species.Domain.ValueObjects.Ids;
+using PetFamily.Core.ValueObjects.Ids;
 
 namespace PetFamily.Species.Application.Interfaces;
 

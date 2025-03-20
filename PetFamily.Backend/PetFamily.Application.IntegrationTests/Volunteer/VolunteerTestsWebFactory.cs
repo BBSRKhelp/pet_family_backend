@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Interfaces.Database;
+using PetFamily.Core.Interfaces.Database;
 using PetFamily.Infrastructure;
 
 namespace PetFamily.Application.IntegrationTests.Volunteer;

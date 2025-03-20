@@ -1,4 +1,6 @@
-using PetFamily.Species.Domain.ValueObjects.Ids;
+using CSharpFunctionalExtensions;
+using PetFamily.Core.ValueObjects;
+using PetFamily.Core.ValueObjects.Ids;
 
 namespace PetFamily.Species.Domain.Entities;
 

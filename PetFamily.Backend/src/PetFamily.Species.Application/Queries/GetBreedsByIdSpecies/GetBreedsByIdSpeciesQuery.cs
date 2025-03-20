@@ -1,4 +1,4 @@
-using PetFamily.Species.Application.Interfaces.Abstractions;
+using PetFamily.Core.Interfaces.Abstractions;
 
 namespace PetFamily.Species.Application.Queries.GetBreedsByIdSpecies;
 

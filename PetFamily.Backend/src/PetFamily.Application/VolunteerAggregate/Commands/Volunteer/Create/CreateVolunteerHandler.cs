@@ -1,10 +1,10 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.Extensions;
-using PetFamily.Application.Interfaces.Abstractions;
-using PetFamily.Application.Interfaces.Database;
 using PetFamily.Application.Interfaces.Repositories;
+using PetFamily.Core.Extensions;
+using PetFamily.Core.Interfaces.Abstractions;
+using PetFamily.Core.Interfaces.Database;
 using PetFamily.Core.Models;
 using PetFamily.Core.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;

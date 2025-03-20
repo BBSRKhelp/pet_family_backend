@@ -1,14 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PetFamily.Application.DTOs.Read;
-using PetFamily.Application.Interfaces.Database;
+using PetFamily.Species.Application.DTOs.Read;
+using PetFamily.Species.Application.Interfaces;
 
-namespace PetFamily.Infrastructure.DbContexts;
+namespace PetFamily.Species.Infrastructure.DbContexts;
 
 public class ReadDbContext(string connectionString) : DbContext, IReadDbContext
 {
-    public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
-    public IQueryable<PetDto> Pets => Set<PetDto>();
+    // public IQueryable<VolunteerDto> Volunteers => Set<VolunteerDto>();
+    // public IQueryable<PetDto> Pets => Set<PetDto>();
     public IQueryable<SpeciesDto> Species => Set<SpeciesDto>();
     public IQueryable<BreedDto> Breeds => Set<BreedDto>();
 

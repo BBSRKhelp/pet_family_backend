@@ -1,4 +1,4 @@
-using ICommand = PetFamily.Application.Interfaces.Abstractions.ICommand;
+using PetFamily.Core.Interfaces.Abstractions;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Pet.ChangePetsPosition;
 

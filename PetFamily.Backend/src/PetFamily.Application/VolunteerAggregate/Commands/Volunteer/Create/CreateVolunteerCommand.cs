@@ -1,6 +1,6 @@
 using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.Volunteer;
-using PetFamily.Application.Interfaces.Abstractions;
+using PetFamily.Core.Interfaces.Abstractions;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Volunteer.Create;
 

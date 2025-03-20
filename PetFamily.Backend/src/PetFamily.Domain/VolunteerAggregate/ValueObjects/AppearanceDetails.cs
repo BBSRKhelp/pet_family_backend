@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core;
+using PetFamily.Core.Models;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;

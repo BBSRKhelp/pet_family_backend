@@ -3,9 +3,8 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.DTOs.Read;
-using PetFamily.Application.Extensions;
-using PetFamily.Application.Interfaces.Abstractions;
-using PetFamily.Application.Interfaces.Database;
+using PetFamily.Core.Extensions;
+using PetFamily.Core.Interfaces.Abstractions;
 using PetFamily.Core.Models;
 
 namespace PetFamily.Application.VolunteerAggregate.Queries.Pet.GetPetById;

@@ -1,6 +1,7 @@
+using CSharpFunctionalExtensions;
 using PetFamily.Core.Models;
 
-namespace PetFamily.Species.Application.Interfaces.Abstractions;
+namespace PetFamily.Core.Interfaces.Abstractions;
 
 public interface IQueryHandler<TResponse, in TQuery> where TQuery : IQuery
 {

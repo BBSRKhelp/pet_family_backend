@@ -1,5 +1,5 @@
 using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared.Models;
+using PetFamily.Core.Models;
 using static System.String;
 
 namespace PetFamily.Domain.VolunteerAggregate.ValueObjects;

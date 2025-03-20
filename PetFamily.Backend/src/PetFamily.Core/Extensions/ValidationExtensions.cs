@@ -1,7 +1,7 @@
 using FluentValidation.Results;
 using PetFamily.Core.Models;
 
-namespace PetFamily.Application.Extensions;
+namespace PetFamily.Core.Extensions;
 
 public static class ValidationExtensions
 {

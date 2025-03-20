@@ -1,13 +1,13 @@
 using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared.Models;
-using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Core.Models;
+using PetFamily.Core.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
 
 namespace PetFamily.Domain.VolunteerAggregate.Entities;
 
-public class Pet : CSharpFunctionalExtensions.Entity<PetId>
+public class Pet : Entity<PetId>
 {
     private bool _isDeleted;
     private readonly List<PetPhoto> _petPhotos = [];

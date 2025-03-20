@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.Pet;
 using PetFamily.Core.ValueObjects;
-using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
+using PetFamily.Core.ValueObjects.Ids;
 using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;

@@ -1,6 +1,7 @@
 using FluentValidation;
 using PetFamily.Application.Validation;
 using PetFamily.Core.Models;
+using PetFamily.Core.Validation;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Pet.SoftDeletePet;
 

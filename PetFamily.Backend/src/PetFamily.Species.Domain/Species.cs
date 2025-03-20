@@ -1,9 +1,12 @@
+using CSharpFunctionalExtensions;
+using PetFamily.Core.Models;
+using PetFamily.Core.ValueObjects;
+using PetFamily.Core.ValueObjects.Ids;
 using PetFamily.Species.Domain.Entities;
-using PetFamily.Species.Domain.ValueObjects.Ids;
 
 namespace PetFamily.Species.Domain;
 
-public class Species : CSharpFunctionalExtensions.Entity<SpeciesId>
+public class Species : Entity<SpeciesId>
 {
     private readonly List<Breed> _breeds = [];
 

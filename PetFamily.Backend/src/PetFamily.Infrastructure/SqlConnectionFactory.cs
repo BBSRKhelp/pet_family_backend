@@ -1,6 +1,6 @@
 using System.Data;
 using Npgsql;
-using PetFamily.Application.Interfaces.Database;
+using PetFamily.Core.Interfaces.Database;
 
 namespace PetFamily.Infrastructure;
 

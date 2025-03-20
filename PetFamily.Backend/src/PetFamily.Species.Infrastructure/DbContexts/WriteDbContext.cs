@@ -1,14 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PetFamily.Domain.SpeciesAggregate;
-using PetFamily.Domain.VolunteerAggregate;
 
-namespace PetFamily.Infrastructure.DbContexts;
+namespace PetFamily.Species.Infrastructure.DbContexts;
 
 public class WriteDbContext(string connectionString) : DbContext
 {
-    public DbSet<Volunteer> Volunteers => Set<Volunteer>();
-    public DbSet<Species> Species => Set<Species>();
+    // public DbSet<Volunteer> Volunteers => Set<Volunteer>();
+    public DbSet<Species.Domain.Species> Species => Set<Species.Domain.Species>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

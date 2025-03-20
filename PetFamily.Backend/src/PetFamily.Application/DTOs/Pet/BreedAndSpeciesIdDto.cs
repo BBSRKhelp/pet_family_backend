@@ -1,4 +1,4 @@
-using PetFamily.Domain.SpeciesAggregate.ValueObjects.Ids;
+using PetFamily.Core.ValueObjects.Ids;
 
 namespace PetFamily.Application.DTOs.Pet;
 

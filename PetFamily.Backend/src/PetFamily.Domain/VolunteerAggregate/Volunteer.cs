@@ -1,6 +1,6 @@
 using CSharpFunctionalExtensions;
-using PetFamily.Domain.Shared.Models;
-using PetFamily.Domain.Shared.ValueObjects;
+using PetFamily.Core.Models;
+using PetFamily.Core.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.Entities;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
@@ -8,7 +8,7 @@ using PetFamily.Domain.VolunteerAggregate.ValueObjects.Ids;
 
 namespace PetFamily.Domain.VolunteerAggregate;
 
-public class Volunteer : CSharpFunctionalExtensions.Entity<VolunteerId>
+public class Volunteer : Entity<VolunteerId>
 {
     private bool _isDeleted;
 

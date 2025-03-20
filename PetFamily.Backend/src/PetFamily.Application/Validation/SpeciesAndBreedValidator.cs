@@ -2,7 +2,6 @@ using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.DTOs.Pet;
-using PetFamily.Application.Interfaces.Database;
 using PetFamily.Core.Models;
 
 namespace PetFamily.Application.Validation;

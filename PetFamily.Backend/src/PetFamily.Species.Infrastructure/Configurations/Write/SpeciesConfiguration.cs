@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Core;
-using PetFamily.Species.Domain.ValueObjects.Ids;
+using PetFamily.Core.ValueObjects.Ids;
 
 namespace PetFamily.Species.Infrastructure.Configurations.Write;
 

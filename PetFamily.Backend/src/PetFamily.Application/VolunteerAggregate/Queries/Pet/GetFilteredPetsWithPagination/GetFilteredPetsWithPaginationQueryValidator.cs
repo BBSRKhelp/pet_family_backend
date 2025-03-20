@@ -1,6 +1,7 @@
 using FluentValidation;
 using PetFamily.Application.Validation;
 using PetFamily.Core.Models;
+using PetFamily.Core.Validation;
 using PetFamily.Core.ValueObjects;
 using PetFamily.Domain.VolunteerAggregate.Enums;
 

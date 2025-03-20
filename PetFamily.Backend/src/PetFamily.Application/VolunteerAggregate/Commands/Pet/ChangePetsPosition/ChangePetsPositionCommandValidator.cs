@@ -1,6 +1,6 @@
 using FluentValidation;
-using PetFamily.Application.Validation;
 using PetFamily.Core.Models;
+using PetFamily.Core.Validation;
 using PetFamily.Domain.VolunteerAggregate.ValueObjects;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Pet.ChangePetsPosition;

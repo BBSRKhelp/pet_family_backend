@@ -1,6 +1,12 @@
+using CSharpFunctionalExtensions;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using PetFamily.Core.Extensions;
+using PetFamily.Core.Interfaces.Abstractions;
 using PetFamily.Core.Models;
 using PetFamily.Species.Application.DTOs.Read;
-using PetFamily.Species.Application.Interfaces.Abstractions;
+using PetFamily.Species.Application.Interfaces;
 
 namespace PetFamily.Species.Application.Queries.GetFilteredSpeciesWithPagination;
 

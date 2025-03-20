@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PetFamily.Species.Application.DTOs.Read;
 
 public class BreedDto

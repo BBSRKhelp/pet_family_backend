@@ -1,6 +1,6 @@
 using PetFamily.Application.DTOs;
 using PetFamily.Application.DTOs.Pet;
-using PetFamily.Application.Interfaces.Abstractions;
+using PetFamily.Core.Interfaces.Abstractions;
 
 namespace PetFamily.Application.VolunteerAggregate.Commands.Pet.UpdateMainPetInfo;
 

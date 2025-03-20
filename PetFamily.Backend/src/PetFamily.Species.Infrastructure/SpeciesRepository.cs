@@ -1,7 +1,11 @@
+using CSharpFunctionalExtensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PetFamily.Core.Models;
 using PetFamily.Core.ValueObjects;
+using PetFamily.Core.ValueObjects.Ids;
 using PetFamily.Species.Application.Interfaces;
-using PetFamily.Species.Domain.ValueObjects.Ids;
+using PetFamily.Species.Infrastructure.DbContexts;
 
 namespace PetFamily.Species.Infrastructure;
 
