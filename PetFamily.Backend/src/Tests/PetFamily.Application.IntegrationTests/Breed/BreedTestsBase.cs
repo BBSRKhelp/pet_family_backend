@@ -1,6 +1,7 @@
 using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.SharedKernel.ValueObjects;
+using PetFamily.Species.Infrastructure.Database;
 
 namespace PetFamily.Application.IntegrationTests.Breed;
 

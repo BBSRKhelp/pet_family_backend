@@ -39,8 +39,8 @@ public class UploadFilesToPetTests : PetTestsBase
         result.Value.Should().NotBeEmpty();
         result.Value.Should().Be(pet.Id.Value);
         
-        var petFromDb = WriteDbContext.
-            Volunteers.FirstOrDefault()?
+        var petFromDb = VolunteerWriteDbContext
+            .Volunteers.FirstOrDefault()?
             .Pets.FirstOrDefault();
         
         petFromDb?.PetPhotos.Should().NotBeEmpty();

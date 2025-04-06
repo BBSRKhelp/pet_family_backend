@@ -1,3 +1,10 @@
+using FluentAssertions;
+using PetFamily.Core.Enums;
+using PetFamily.SharedKernel.ValueObjects;
+using PetFamily.SharedKernel.ValueObjects.Ids;
+using PetFamily.Volunteer.Domain.Entities;
+using PetFamily.Volunteer.Domain.ValueObjects;
+
 namespace PetFamily.Domain.UnitTests;
 
 public class VolunteerTests
@@ -224,7 +231,7 @@ public class VolunteerTests
         sixthPet.Position.Value.Should().Be(5);
     }
 
-    private Volunteer CreateVolunteer()
+    private Volunteer.Domain.Volunteer CreateVolunteer()
     {
         var fullname = FullName.Create("TestJohn", "TestSmith", "TestPetrov").Value;
         var email = Email.Create("TestJohn@TestSmith.com").Value;
@@ -234,7 +241,7 @@ public class VolunteerTests
         IReadOnlyList<SocialNetwork> socialNetworks = [SocialNetwork.Create("TestSocialNetwork", "url").Value];
         IReadOnlyList<Requisite> requisites = [Requisite.Create("TestRequisite", "TestRequisiteUrl").Value];
 
-        return new Volunteer(
+        return new Volunteer.Domain.Volunteer(
             fullname,
             email,
             description,
@@ -270,7 +277,7 @@ public class VolunteerTests
             breedAndSpeciesId);
     }
 
-    private Volunteer CreateVolunteerWithPets(int petsCount)
+    private Volunteer.Domain.Volunteer CreateVolunteerWithPets(int petsCount)
     {
         var volunteer = CreateVolunteer();
         var pets = Enumerable.Range(1, petsCount).Select(_ => CreatePet());

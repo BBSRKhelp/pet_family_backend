@@ -8,7 +8,7 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddWeb()
+    .AddWeb(builder.Configuration)
     .AddFile(builder.Configuration)
     .AddSpecies(builder.Configuration)
     .AddVolunteer(builder.Configuration);
@@ -33,4 +33,7 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program;
+namespace PetFamily.Web
+{
+    public partial class Program;
+}

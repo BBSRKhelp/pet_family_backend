@@ -1,9 +1,8 @@
-using System.Runtime.InteropServices.JavaScript;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using NSubstitute;
 using PetFamily.Core.Providers;
+using PetFamily.File.Application;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
 
@@ -50,13 +49,13 @@ public class PetTestsWebFactory : IntegrationTestsWebFactory
 
         _fileProviderMock
             .UploadFilesAsync(Arg.Any<IEnumerable<FileData>>())
-            .Returns(Task.FromResult(Result.Success<IReadOnlyList<PhotoPath>, JSType.Error>([photoPath])));
+            .Returns(Task.FromResult(Result.Success<IReadOnlyList<PhotoPath>, Error>([photoPath])));
     }
 
     public void SetupFailureFileProviderMock()
     {
         _fileProviderMock
             .UploadFilesAsync(Arg.Any<IEnumerable<FileData>>())
-            .Returns(Task.FromResult(Result.Failure<IReadOnlyList<PhotoPath>, JSType.Error>(Errors.General.IsInvalid())));
+            .Returns(Task.FromResult(Result.Failure<IReadOnlyList<PhotoPath>, Error>(Errors.General.IsInvalid())));
     }
 }

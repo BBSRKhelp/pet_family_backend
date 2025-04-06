@@ -3,9 +3,18 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
+using PetFamily.Volunteer.Infrastructure.Database;
 using PetFamily.Web;
 using Respawn;
 using Testcontainers.PostgreSql;
+using VolunteerWriteDbContext = PetFamily.Volunteer.Infrastructure.Database.WriteDbContext;
+using VolunteerIReadDbContext = PetFamily.Volunteer.Application.Interfaces.IReadDbContext;
+using VolunteerReadDbContext = PetFamily.Volunteer.Infrastructure.Database.ReadDbContext;
+using SpeciesWriteDbContext = PetFamily.Species.Infrastructure.Database.WriteDbContext;
+using SpeciesIReadDbContext = PetFamily.Species.Application.Interfaces.IReadDbContext;
+using SpeciesReadDbContext = PetFamily.Species.Infrastructure.Database.ReadDbContext;
+
 
 namespace PetFamily.Application.IntegrationTests;
 
@@ -28,23 +37,51 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
 
     protected virtual void ConfigureDefaultServices(IServiceCollection services)
     {
-        var writeContext = services.SingleOrDefault(s =>
-            s.ServiceType == typeof(WriteDbContext));
+        ReconfigureVolunteerServices(services);
+        
+        ReconfigureSpeciesServices(services);
+    }
 
-        var readContext = services.SingleOrDefault(s =>
-            s.ServiceType == typeof(IReadDbContext));
+    private void ReconfigureVolunteerServices(IServiceCollection services)
+    {
+        var writeDbContext = services.SingleOrDefault(s => 
+            s.ServiceType == typeof(VolunteerWriteDbContext));
 
-        if (writeContext is not null)
-            services.Remove(writeContext);
+        var readDbContext = services.SingleOrDefault(s =>
+            s.ServiceType == typeof(VolunteerIReadDbContext));
+        
+        if (writeDbContext is not null)
+            services.Remove(writeDbContext);
+        
+        if (readDbContext is not null)
+            services.Remove(readDbContext);
 
-        if (readContext is not null)
-            services.Remove(readContext);
+        services.AddScoped<VolunteerWriteDbContext>(_ =>
+            new VolunteerWriteDbContext(DbContainer.GetConnectionString()));
+        
+        services.AddScoped<VolunteerIReadDbContext, VolunteerReadDbContext>(_ =>
+            new VolunteerReadDbContext(DbContainer.GetConnectionString()));
+    }
 
-        services.AddScoped<WriteDbContext>(_ =>
-            new WriteDbContext(DbContainer.GetConnectionString()));
+    private void ReconfigureSpeciesServices(IServiceCollection services)
+    {
+        var writeDbContext = services.SingleOrDefault(s => 
+            s.ServiceType == typeof(SpeciesWriteDbContext));
 
-        services.AddScoped<IReadDbContext, ReadDbContext>(_ =>
-            new ReadDbContext(DbContainer.GetConnectionString()));
+        var readDbContext = services.SingleOrDefault(s =>
+            s.ServiceType == typeof(SpeciesIReadDbContext));
+        
+        if (writeDbContext is not null)
+            services.Remove(writeDbContext);
+        
+        if (readDbContext is not null)
+            services.Remove(readDbContext);
+
+        services.AddScoped<SpeciesWriteDbContext>(_ =>
+            new SpeciesWriteDbContext(DbContainer.GetConnectionString()));
+        
+        services.AddScoped<SpeciesIReadDbContext, SpeciesReadDbContext>(_ =>
+            new SpeciesReadDbContext(DbContainer.GetConnectionString()));
     }
 
     private async Task InitializeRespawner()
@@ -62,7 +99,7 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
     {
         await _respawner.ResetAsync(_dbConnection);
     }
-    
+
     public async Task InitializeAsync()
     {
         await DbContainer.StartAsync();

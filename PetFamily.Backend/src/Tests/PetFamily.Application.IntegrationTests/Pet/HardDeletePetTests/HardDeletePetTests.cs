@@ -33,7 +33,7 @@ public class HardDeletePetTests : PetTestsBase
         result.Value.Should().NotBeEmpty();
         result.Value.GetType().Should().Be(typeof(Guid));
         
-        var pets = WriteDbContext.Volunteers.FirstOrDefault()?.Pets;
+        var pets = VolunteerWriteDbContext.Volunteers.FirstOrDefault()?.Pets;
         
         pets.Should().BeEmpty();
         pets.Count.Should().Be(0);

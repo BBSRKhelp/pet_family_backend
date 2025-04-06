@@ -22,7 +22,7 @@ public class ChangePetsPositionTests : PetTestsBase
         var species = await SeedSpeciesAsync();
         var breedId = await SeedBreedAsync(species);
 
-        List<Domain.VolunteerAggregate.Entities.Pet> pets = [];
+        List<PetFamily.Volunteer.Domain.Entities.Pet> pets = [];
         foreach (var _ in Enumerable.Range(0, 5))
         {
             var pet = await SeedPetAsync(volunteer, species.Id, breedId);
@@ -41,7 +41,7 @@ public class ChangePetsPositionTests : PetTestsBase
         //Assert
         result.IsSuccess.Should().BeTrue();
 
-        var petFromDb = WriteDbContext
+        var petFromDb = VolunteerWriteDbContext
             .Volunteers.FirstOrDefault()
             ?.Pets.FirstOrDefault(p => p.Position.Value == 4);
 

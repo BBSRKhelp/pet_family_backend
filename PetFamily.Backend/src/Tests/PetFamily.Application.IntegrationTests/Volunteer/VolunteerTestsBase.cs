@@ -2,6 +2,7 @@ using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteer.Domain.ValueObjects;
+using PetFamily.Volunteer.Infrastructure.Database;
 
 namespace PetFamily.Application.IntegrationTests.Volunteer;
 
@@ -22,7 +23,7 @@ public class VolunteerTestsBase : IClassFixture<VolunteerTestsWebFactory>, IAsyn
 
     protected async Task<Guid> SeedVolunteerAsync()
     {
-        var volunteer = new Domain.VolunteerAggregate.Volunteer(
+        var volunteer = new PetFamily.Volunteer.Domain.Volunteer(
             FullName.Create("testname", "testlastname", "testpatronymic").Value,
             Email.Create("test@test.com").Value,
             Description.Create("").Value,

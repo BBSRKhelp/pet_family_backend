@@ -39,7 +39,7 @@ public class UpdatePetStatusTests : PetTestsBase
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().Be(pet.Id.Value);
 
-        var petFromDb = WriteDbContext
+        var petFromDb = VolunteerWriteDbContext
             .Volunteers.FirstOrDefault()?
             .Pets.FirstOrDefault();
 

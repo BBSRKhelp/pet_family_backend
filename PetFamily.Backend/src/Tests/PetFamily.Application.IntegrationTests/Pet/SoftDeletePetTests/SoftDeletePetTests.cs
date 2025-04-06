@@ -34,7 +34,7 @@ public class SoftDeletePetTests : PetTestsBase
         result.Value.Should().NotBeEmpty();
         result.Value.Should().Be(pet.Id.Value);
 
-        var petFromDb = WriteDbContext
+        var petFromDb = VolunteerWriteDbContext
             .Volunteers.FirstOrDefault()
             ?.Pets.FirstOrDefault();
 

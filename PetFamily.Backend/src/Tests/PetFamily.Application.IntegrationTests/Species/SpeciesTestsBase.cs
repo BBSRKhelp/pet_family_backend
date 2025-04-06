@@ -1,6 +1,7 @@
 using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.SharedKernel.ValueObjects;
+using PetFamily.Species.Infrastructure.Database;
 
 namespace PetFamily.Application.IntegrationTests.Species;
 
@@ -21,7 +22,7 @@ public class SpeciesTestsBase : IClassFixture<SpeciesTestsWebFactory>, IAsyncLif
 
     protected async Task<Guid> SeedSpeciesAsync()
     {
-        var species = new Domain.SpeciesAggregate.Species(Name.Create("nameSpecies").Value);
+        var species = new PetFamily.Species.Domain.Species(Name.Create("nameSpecies").Value);
         
         WriteDbContext.Species.Add(species);
         await WriteDbContext.SaveChangesAsync();

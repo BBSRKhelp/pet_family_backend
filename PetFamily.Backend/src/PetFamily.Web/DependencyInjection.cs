@@ -5,12 +5,12 @@ namespace PetFamily.Web;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddWeb(this IServiceCollection services)
+    public static IServiceCollection AddWeb(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-        services.AddSerilog();
+        services.AddSerilog(configuration);
         return services;
     }
 

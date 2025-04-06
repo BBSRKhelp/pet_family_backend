@@ -32,7 +32,7 @@ public class AddPetTests : PetTestsBase
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().NotBeEmpty();
 
-        var pet = WriteDbContext
+        var pet = VolunteerWriteDbContext
             .Volunteers.FirstOrDefault()
             ?.Pets.FirstOrDefault();
         

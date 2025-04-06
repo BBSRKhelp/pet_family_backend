@@ -4,7 +4,9 @@ using PetFamily.Core.Enums;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.SharedKernel.ValueObjects.Ids;
 using PetFamily.Volunteer.Domain.ValueObjects;
-using Address = Docker.DotNet.Models.Address;
+using PetFamily.Volunteer.Infrastructure.Database;
+using VolunteerWriteDbContext = PetFamily.Volunteer.Infrastructure.Database.WriteDbContext;
+using SpeciesWriteDbContext = PetFamily.Species.Infrastructure.Database.WriteDbContext;
 
 namespace PetFamily.Application.IntegrationTests.Pet;
 
@@ -13,22 +15,24 @@ public class PetTestsBase : IClassFixture<PetTestsWebFactory>, IAsyncLifetime
     protected readonly PetTestsWebFactory Factory;
     protected readonly IServiceScope Scope;
     protected readonly Fixture Fixture;
-    protected readonly WriteDbContext WriteDbContext;
+    protected readonly VolunteerWriteDbContext VolunteerWriteDbContext;
+    protected readonly SpeciesWriteDbContext SpeciesWriteDbContext;
 
     protected PetTestsBase(PetTestsWebFactory factory)
     {
         Factory = factory;
         Scope = factory.Services.CreateScope();
         Fixture = new Fixture();
-        WriteDbContext = Scope.ServiceProvider.GetRequiredService<WriteDbContext>();
+        VolunteerWriteDbContext = Scope.ServiceProvider.GetRequiredService<VolunteerWriteDbContext>();
+        SpeciesWriteDbContext = Scope.ServiceProvider.GetRequiredService<SpeciesWriteDbContext>();
     }
 
-    protected async Task<Domain.VolunteerAggregate.Entities.Pet> SeedPetAsync(
-        Domain.VolunteerAggregate.Volunteer volunteer,
+    protected async Task<PetFamily.Volunteer.Domain.Entities.Pet> SeedPetAsync(
+        PetFamily.Volunteer.Domain.Volunteer volunteer,
         SpeciesId speciesId,
         Guid breedId)
     {
-        var pet = new Domain.VolunteerAggregate.Entities.Pet(
+        var pet = new PetFamily.Volunteer.Domain.Entities.Pet(
             Name.Create("testname").Value,
             Description.Create("").Value,
             AppearanceDetails.Create(Colour.Black, 15, 15).Value,
@@ -41,14 +45,14 @@ public class PetTestsBase : IClassFixture<PetTestsWebFactory>, IAsyncLifetime
             BreedAndSpeciesId.Create(speciesId, breedId).Value);
         
         volunteer.AddPet(pet);
-        await WriteDbContext.SaveChangesAsync();
+        await VolunteerWriteDbContext.SaveChangesAsync();
         
         return pet;
     }
     
-    protected async Task<Domain.VolunteerAggregate.Volunteer> SeedVolunteerAsync()
+    protected async Task<PetFamily.Volunteer.Domain.Volunteer> SeedVolunteerAsync()
     {
-        var volunteer = new Domain.VolunteerAggregate.Volunteer(
+        var volunteer = new PetFamily.Volunteer.Domain.Volunteer(
             FullName.Create("testname", "testlastname", "testpatronymic").Value,
             Email.Create("test@test.com").Value,
             Description.Create("").Value,
@@ -57,28 +61,28 @@ public class PetTestsBase : IClassFixture<PetTestsWebFactory>, IAsyncLifetime
             [],
             []);
         
-        await WriteDbContext.Volunteers.AddAsync(volunteer);
-        await WriteDbContext.SaveChangesAsync();
+        await VolunteerWriteDbContext.Volunteers.AddAsync(volunteer);
+        await VolunteerWriteDbContext.SaveChangesAsync();
         
         return volunteer;
     }
 
-    protected async Task<Domain.SpeciesAggregate.Species> SeedSpeciesAsync()
+    protected async Task<PetFamily.Species.Domain.Species> SeedSpeciesAsync()
     {
-        var species = new Domain.SpeciesAggregate.Species(Name.Create("testname").Value);
+        var species = new PetFamily.Species.Domain.Species(Name.Create("testname").Value);
         
-        await WriteDbContext.Species.AddAsync(species);
-        await WriteDbContext.SaveChangesAsync();
+        await SpeciesWriteDbContext.Species.AddAsync(species);
+        await SpeciesWriteDbContext.SaveChangesAsync();
         
         return species;
     }
 
-    protected async Task<Guid> SeedBreedAsync(Domain.SpeciesAggregate.Species species)
+    protected async Task<Guid> SeedBreedAsync(PetFamily.Species.Domain.Species species)
     {
-        var breed = new Domain.SpeciesAggregate.Entities.Breed(Name.Create("testname").Value);
+        var breed = new PetFamily.Species.Domain.Entities.Breed(Name.Create("testname").Value);
         
         species.AddBreed(breed);
-        await WriteDbContext.SaveChangesAsync();
+        await SpeciesWriteDbContext.SaveChangesAsync();
         
         return breed.Id.Value;
     }

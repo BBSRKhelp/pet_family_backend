@@ -37,7 +37,7 @@ public class SetMainPetPhotoTests : PetTestsBase
         result.Value.Should().NotBeEmpty();
         result.Value.Should().Be(pet.Id.Value);
         
-        var petPhotoFromDb = WriteDbContext
+        var petPhotoFromDb = VolunteerWriteDbContext
             .Volunteers.FirstOrDefault()
             ?.Pets.FirstOrDefault()
             ?.PetPhotos.FirstOrDefault();
