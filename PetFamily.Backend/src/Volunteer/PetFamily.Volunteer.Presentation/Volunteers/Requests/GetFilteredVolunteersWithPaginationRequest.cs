@@ -1,5 +1,7 @@
 
-namespace PetFamily.Volunteer.Contracts.Requests;
+using PetFamily.Volunteer.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
+
+namespace PetFamily.Volunteer.Presentation.Volunteers.Requests;
 
 public record GetFilteredVolunteersWithPaginationRequest(
     int PageNumber,
@@ -12,7 +14,7 @@ public record GetFilteredVolunteersWithPaginationRequest(
     string? SortDirection)
     
 {
-    /*public GetFilteredVolunteersWithPaginationQuery ToQuery()
+    public GetFilteredVolunteersWithPaginationQuery ToQuery()
     {
         return new GetFilteredVolunteersWithPaginationQuery(
             PageNumber,
@@ -23,5 +25,5 @@ public record GetFilteredVolunteersWithPaginationRequest(
             WorkExperience,
             SortBy ?? "id",
             SortDirection ?? "ASC");
-    }*/
+    }
 }

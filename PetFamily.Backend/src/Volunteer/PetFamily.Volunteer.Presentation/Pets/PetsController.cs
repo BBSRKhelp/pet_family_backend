@@ -1,13 +1,12 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core.Models;
 using PetFamily.Framework;
 using PetFamily.Volunteer.Application.Features.Queries.Pet.GetFilteredPetsWithPagination;
 using PetFamily.Volunteer.Application.Features.Queries.Pet.GetPetById;
 using PetFamily.Volunteer.Contracts.DTOs;
-using PetFamily.Volunteer.Contracts.Requests;
+using PetFamily.Volunteer.Presentation.Pets.Requests;
 
-namespace PetFamily.Volunteer.Presentation;
+namespace PetFamily.Volunteer.Presentation.Pets;
 
 [ApiController]
 [Route("[controller]")]
@@ -16,11 +15,10 @@ public class PetsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<PagedList<PetDto>>> GetPetsAsync(
         [FromServices] GetFilteredPetsWithPaginationHandlerDapper handler,
-        [FromServices] IMapper mapper,
         [FromQuery] GetFilteredPetsWithPaginationRequest request,
         CancellationToken cancellationToken = default)
     {
-        var query = mapper.Map<GetFilteredPetsWithPaginationQuery>(request);
+        var query = request.ToQuery();
         
         var result = await handler.HandleAsync(query, cancellationToken);
 

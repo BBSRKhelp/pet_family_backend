@@ -1,7 +1,8 @@
+using PetFamily.Volunteer.Application.Features.Commands.Volunteer.Create;
 using PetFamily.Volunteer.Contracts.DTOs;
 using PetFamily.Volunteer.Contracts.DTOs.Volunteer;
 
-namespace PetFamily.Volunteer.Contracts.Requests;
+namespace PetFamily.Volunteer.Presentation.Volunteers.Requests;
 
 public record CreateVolunteerRequest(
     string FirstName,
@@ -14,7 +15,7 @@ public record CreateVolunteerRequest(
     IEnumerable<SocialNetworkDto>? SocialNetworks,
     IEnumerable<RequisiteDto>? Requisites)
 {
-    /*public CreateVolunteerCommand ToCommand()
+    public CreateVolunteerCommand ToCommand()
     {
         var fullName = new FullNameDto(FirstName, LastName, Patronymic);
         
@@ -26,5 +27,5 @@ public record CreateVolunteerRequest(
             PhoneNumber,
             SocialNetworks,
             Requisites);
-    }*/
+    }
 }

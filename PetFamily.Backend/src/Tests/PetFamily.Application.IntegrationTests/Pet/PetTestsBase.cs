@@ -4,7 +4,6 @@ using PetFamily.Core.Enums;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.SharedKernel.ValueObjects.Ids;
 using PetFamily.Volunteer.Domain.ValueObjects;
-using PetFamily.Volunteer.Infrastructure.Database;
 using VolunteerWriteDbContext = PetFamily.Volunteer.Infrastructure.Database.WriteDbContext;
 using SpeciesWriteDbContext = PetFamily.Species.Infrastructure.Database.WriteDbContext;
 

@@ -1,4 +1,7 @@
-namespace PetFamily.Volunteer.Contracts.Requests;
+using PetFamily.Volunteer.Application.Features.Commands.Volunteer.UpdateMainInfo;
+using PetFamily.Volunteer.Contracts.DTOs.Volunteer;
+
+namespace PetFamily.Volunteer.Presentation.Volunteers.Requests;
 
 public record UpdateMainInfoVolunteerRequest(
     string FirstName,
@@ -10,7 +13,7 @@ public record UpdateMainInfoVolunteerRequest(
     string PhoneNumber
 )
 {
-    /*public UpdateMainVolunteerInfoCommand ToCommand(Guid id)
+    public UpdateMainVolunteerInfoCommand ToCommand(Guid id)
     {
         var fullName = new FullNameDto(FirstName, LastName, Patronymic);
         
@@ -21,5 +24,5 @@ public record UpdateMainInfoVolunteerRequest(
             Description,
             WorkExperience,
             PhoneNumber);
-    }*/
+    }
 }

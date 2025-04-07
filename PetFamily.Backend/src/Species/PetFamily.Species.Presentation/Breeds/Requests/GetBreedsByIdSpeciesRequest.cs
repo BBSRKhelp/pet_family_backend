@@ -1,4 +1,6 @@
-namespace PetFamily.Species.Contracts.Requests;
+using PetFamily.Species.Application.Feature.Queries.GetBreedsByIdSpecies;
+
+namespace PetFamily.Species.Presentation.Breeds.Requests;
 
 public record GetBreedsByIdSpeciesRequest(
     int PageNumber,
@@ -7,7 +9,7 @@ public record GetBreedsByIdSpeciesRequest(
     string? SortBy,
     string? SortDirection)
 {
-    /*public GetBreedsByIdSpeciesQuery ToQuery(Guid speciesId)
+    public GetBreedsByIdSpeciesQuery ToQuery(Guid speciesId)
     {
         return new GetBreedsByIdSpeciesQuery(
             speciesId,
@@ -16,5 +18,5 @@ public record GetBreedsByIdSpeciesRequest(
             Name,
             SortBy ?? "id",
             SortDirection ?? "ASC");
-    }*/
+    }
 }

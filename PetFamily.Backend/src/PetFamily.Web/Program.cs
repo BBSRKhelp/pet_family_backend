@@ -2,6 +2,7 @@ using PetFamily.File.Presentation;
 using PetFamily.Species.Presentation;
 using PetFamily.Volunteer.Presentation;
 using PetFamily.Web;
+using PetFamily.Web.Extensions;
 using PetFamily.Web.Middlewares;
 using Serilog;
 
@@ -23,6 +24,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    await app.ApplyMigration();
 }
 
 app.UseHttpsRedirection();
@@ -33,7 +36,4 @@ app.MapControllers();
 
 app.Run();
 
-namespace PetFamily.Web
-{
-    public partial class Program;
-}
+public partial class Program;

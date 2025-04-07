@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core.Models;
 using PetFamily.Framework;
@@ -8,9 +7,9 @@ using PetFamily.Species.Application.Feature.Commands.Species.Create;
 using PetFamily.Species.Application.Feature.Commands.Species.Delete;
 using PetFamily.Species.Application.Feature.Queries.GetFilteredSpeciesWithPagination;
 using PetFamily.Species.Contracts.DTOs;
-using PetFamily.Species.Contracts.Requests;
+using PetFamily.Species.Presentation.Species.Requests;
 
-namespace PetFamily.Species.Presentation;
+namespace PetFamily.Species.Presentation.Species;
 
 [ApiController]
 [Route("[controller]")]
@@ -22,7 +21,7 @@ public class SpeciesController : ControllerBase
        [FromBody] CreateSpeciesRequest request,
        CancellationToken cancellationToken = default)
     {
-        var command = new CreateSpeciesCommand(request.Name);
+        var command = request.ToCommand();
 
         var result = await handler.HandleAsync(command, cancellationToken);
         
@@ -36,7 +35,7 @@ public class SpeciesController : ControllerBase
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
-        var command = new AddBreedCommand(id, request.Name);
+        var command = request.ToCommand(id);
         
         var result = await handler.HandleAsync(command, cancellationToken);
         
@@ -73,11 +72,10 @@ public class SpeciesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<PagedList<SpeciesDto>>> GetAsync(
         [FromServices] GetFilteredSpeciesWithPaginationHandler handler,
-        [FromServices] IMapper mapper,
         [FromQuery] GetFilteredSpeciesWithPaginationRequest request,
         CancellationToken cancellationToken = default)
     {
-        var query = mapper.Map<GetFilteredSpeciesWithPaginationQuery>(request);
+        var query = request.ToQuery();
         
         var result = await handler.HandleAsync(query, cancellationToken);
 

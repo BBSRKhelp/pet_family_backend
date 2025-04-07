@@ -1,7 +1,5 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PetFamily.Core.Enums;
 using PetFamily.Core.Models;
 using PetFamily.Framework;
 using PetFamily.Framework.Processors;
@@ -21,9 +19,9 @@ using PetFamily.Volunteer.Application.Features.Commands.Volunteer.UpdateSocialNe
 using PetFamily.Volunteer.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 using PetFamily.Volunteer.Application.Features.Queries.Volunteer.GetVolunteerById;
 using PetFamily.Volunteer.Contracts.DTOs;
-using PetFamily.Volunteer.Contracts.Requests;
+using PetFamily.Volunteer.Presentation.Volunteers.Requests;
 
-namespace PetFamily.Volunteer.Presentation;
+namespace PetFamily.Volunteer.Presentation.Volunteers;
 
 [ApiController]
 [Route("[controller]")]
@@ -32,11 +30,10 @@ public class VolunteersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateAsync(
         [FromServices] CreateVolunteerHandler handler,
-        [FromServices] IMapper mapper,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
-        var command = mapper.Map<CreateVolunteerCommand>(request);
+        var command = request.ToCommand();
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -46,15 +43,11 @@ public class VolunteersController : ControllerBase
     [HttpPut("{id:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdateMainInfoAsync(
         [FromServices] UpdateMainVolunteerInfoHandler handler,
-        [FromServices] IMapper mapper,
         [FromBody] UpdateMainInfoVolunteerRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
-        var command = mapper.Map<UpdateMainVolunteerInfoCommand>(request, opts =>
-        {
-            opts.Items["Id"] = id;
-        });
+        var command = request.ToCommand(id);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -68,7 +61,7 @@ public class VolunteersController : ControllerBase
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateRequisitesVolunteerCommand(id, request.Requisite);
+        var command = request.ToCommand(id);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -82,7 +75,7 @@ public class VolunteersController : ControllerBase
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
-        var command = new UpdateSocialNetworksVolunteerCommand(id, request.SocialNetworks);
+        var command = request.ToCommand(id);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -105,15 +98,11 @@ public class VolunteersController : ControllerBase
     [HttpPost("{id:guid}/pets")]
     public async Task<ActionResult<Guid>> AddPetAsync(
         [FromServices] AddPetHandler handler,
-        [FromServices] IMapper mapper,
         [FromBody] CreatePetRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
-        var command = mapper.Map<AddPetCommand>(request, opts =>
-        {
-            opts.Items["Id"] = id;
-        });
+        var command = request.ToCommand(id);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -146,7 +135,7 @@ public class VolunteersController : ControllerBase
         [FromRoute] Guid petId,
         CancellationToken cancellationToken = default)
     {
-        var command = new ChangePetsPositionCommand(volunteerId, petId, request.NewPosition);
+        var command = request.ToCommand(volunteerId, petId);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -156,17 +145,12 @@ public class VolunteersController : ControllerBase
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdatePetMainInfoAsync(
         [FromServices] UpdateMainPetInfoHandler handler,
-        [FromServices] IMapper mapper,
         [FromBody] UpdatePetMainInfoRequest request,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
         CancellationToken cancellationToken = default)
     {
-        var command = mapper.Map<UpdateMainPetInfoCommand>(request, opts =>
-        {
-            opts.Items["VolunteerId"] = volunteerId;
-            opts.Items["PetId"] = petId;
-        });
+        var command = request.ToCommand(volunteerId, petId);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -181,11 +165,7 @@ public class VolunteersController : ControllerBase
         [FromRoute] Guid petId,
         CancellationToken cancellationToken = default)
     {
-        var status = Enum.TryParse(request.Status, true, out Status statusResult)
-            ? statusResult 
-            : Status.Unknown;   
-        
-        var command = new UpdatePetStatusCommand(volunteerId, petId, status);
+        var command = request.ToCommand(volunteerId, petId);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -228,7 +208,7 @@ public class VolunteersController : ControllerBase
         [FromRoute] Guid petId,
         CancellationToken cancellationToken = default)
     {
-        var command = new SetMainPetPhotoCommand(volunteerId, petId, request.PhotoPath);
+        var command = request.ToCommand(volunteerId, petId);
 
         var result = await handler.HandleAsync(command, cancellationToken);
 
@@ -238,11 +218,10 @@ public class VolunteersController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<PagedList<VolunteerDto>>> GetAsync(
         [FromServices] GetFilteredVolunteersWithPaginationHandlerDapper handler,
-        [FromServices] IMapper mapper,
         [FromQuery] GetFilteredVolunteersWithPaginationRequest request,
         CancellationToken cancellationToken = default)
     {
-        var query = mapper.Map<GetFilteredVolunteersWithPaginationQuery>(request);
+        var query = request.ToQuery();
 
         var result = await handler.HandleAsync(query, cancellationToken);
 

@@ -1,4 +1,7 @@
-namespace PetFamily.Volunteer.Contracts.Requests;
+using PetFamily.Core.Enums;
+using PetFamily.Volunteer.Application.Features.Queries.Pet.GetFilteredPetsWithPagination;
+
+namespace PetFamily.Volunteer.Presentation.Pets.Requests;
 
 public record GetFilteredPetsWithPaginationRequest(
     int PageNumber,
@@ -23,7 +26,7 @@ public record GetFilteredPetsWithPaginationRequest(
     string? SortBy,
     string? SortDirection)
 {
-    /*public GetFilteredPetsWithPaginationQuery ToQuery()
+    public GetFilteredPetsWithPaginationQuery ToQuery()
     {
         Colour? coloration = Enum.TryParse(Coloration, true, out Colour resultColour)
             ? resultColour
@@ -55,5 +58,5 @@ public record GetFilteredPetsWithPaginationRequest(
             SpeciesId,
             SortBy ?? "id",
             SortDirection ?? "ASC");
-    }*/
+    }
 }

@@ -1,5 +1,7 @@
 
-namespace PetFamily.Species.Contracts.Requests;
+using PetFamily.Species.Application.Feature.Queries.GetFilteredSpeciesWithPagination;
+
+namespace PetFamily.Species.Presentation.Species.Requests;
 
 public record GetFilteredSpeciesWithPaginationRequest(
     int PageNumber,
@@ -8,7 +10,7 @@ public record GetFilteredSpeciesWithPaginationRequest(
     string? SortBy,
     string? SortDirection)
 {
-    /*public GetFilteredSpeciesWithPaginationQuery ToQuery()
+    public GetFilteredSpeciesWithPaginationQuery ToQuery()
     {
         return new GetFilteredSpeciesWithPaginationQuery(
             PageNumber,
@@ -16,5 +18,5 @@ public record GetFilteredSpeciesWithPaginationRequest(
             Name,
             SortBy ?? "id",
             SortDirection ?? "ASC");
-    }*/
+    }
 }
