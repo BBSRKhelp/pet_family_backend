@@ -24,15 +24,13 @@ public class SpeciesRepository : ISpeciesRepository
     {
         await _writeDbContext.Species.AddAsync(species, cancellationToken);
 
-        await _writeDbContext.SaveChangesAsync(cancellationToken);
-
         return species.Id.Value;
     }
-    
+
     public Guid Delete(Domain.Species species)
     {
         _writeDbContext.Species.Remove(species);
-        
+
         return species.Id.Value;
     }
 
@@ -55,7 +53,8 @@ public class SpeciesRepository : ISpeciesRepository
         return species;
     }
 
-    public async Task<Result<Domain.Species, Error>> GetByNameAsync(Name name, CancellationToken cancellationToken = default)
+    public async Task<Result<Domain.Species, Error>> GetByNameAsync(Name name,
+        CancellationToken cancellationToken = default)
     {
         var species = await _writeDbContext
             .Species

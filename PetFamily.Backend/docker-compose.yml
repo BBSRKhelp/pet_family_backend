@@ -32,6 +32,9 @@
     volumes:
       - minio_data:/data
     command: server --console-address ":9001" /data
+    
+networks:
+  pet_project:
 
 volumes:
   postgres-data:

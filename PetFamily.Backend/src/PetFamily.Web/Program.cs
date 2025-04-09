@@ -1,6 +1,3 @@
-using PetFamily.File.Presentation;
-using PetFamily.Species.Presentation;
-using PetFamily.Volunteer.Presentation;
 using PetFamily.Web;
 using PetFamily.Web.Extensions;
 using PetFamily.Web.Middlewares;
@@ -9,10 +6,8 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
-    .AddWeb(builder.Configuration)
-    .AddFile(builder.Configuration)
-    .AddSpecies(builder.Configuration)
-    .AddVolunteer(builder.Configuration);
+    .AddWeb(builder.Configuration);
+    
 
 var app = builder.Build();
 
@@ -36,4 +31,7 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program;
+namespace PetFamily.Web
+{
+    public partial class Program;
+}

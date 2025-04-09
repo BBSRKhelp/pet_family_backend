@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
@@ -21,7 +22,7 @@ public class DeleteBreedHandler : ICommandHandler<Guid, DeleteBreedCommand>
         ISpeciesRepository speciesRepository,
         IValidator<DeleteBreedCommand> validator,
         IVolunteerContract volunteerContract,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Species)]IUnitOfWork unitOfWork,
         ILogger<DeleteBreedHandler> logger)
     {
         _speciesRepository = speciesRepository;

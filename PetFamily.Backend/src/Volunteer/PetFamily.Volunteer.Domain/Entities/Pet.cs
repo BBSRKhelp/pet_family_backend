@@ -24,7 +24,7 @@ public class Pet : Entity<PetId>, ISoftDeletable
         HealthDetails healthDetails,
         Address address,
         PhoneNumber phoneNumber,
-        DateTime? birthDate,
+        DateOnly? birthDate,
         Status status,
         IReadOnlyList<Requisite> requisites,
         BreedAndSpeciesId breedAndSpeciesId)
@@ -47,7 +47,7 @@ public class Pet : Entity<PetId>, ISoftDeletable
     public AppearanceDetails AppearanceDetails { get; private set; } = null!;
     public Address Address { get; private set; } = null!;
     public PhoneNumber PhoneNumber { get; private set; } = null!;
-    public DateTime? BirthDate { get; private set; }
+    public DateOnly? BirthDate { get; private set; }
     public Status Status { get; private set; }
     public HealthDetails HealthDetails { get; private set; } = null!;
     public IReadOnlyList<Requisite> Requisites { get; private set; } = [];
@@ -71,7 +71,7 @@ public class Pet : Entity<PetId>, ISoftDeletable
         AppearanceDetails appearanceDetails,
         Address address,
         PhoneNumber phoneNumber,
-        DateTime? birthday,
+        DateOnly? birthday,
         HealthDetails healthDetails,
         IReadOnlyList<Requisite> requisites,
         BreedAndSpeciesId breedAndSpeciesId)

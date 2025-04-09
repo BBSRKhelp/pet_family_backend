@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
@@ -13,15 +14,18 @@ public class CreateSpeciesHandler : ICommandHandler<Guid, CreateSpeciesCommand>
 {
     private readonly ISpeciesRepository _speciesRepository;
     private readonly IValidator<CreateSpeciesCommand> _validator;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<CreateSpeciesHandler> _logger;
 
     public CreateSpeciesHandler(
         ISpeciesRepository speciesRepository,
         IValidator<CreateSpeciesCommand> validator,
+        [FromKeyedServices(UnitOfWorkContext.Species)]IUnitOfWork unitOfWork,
         ILogger<CreateSpeciesHandler> logger)
     {
         _speciesRepository = speciesRepository;
         _validator = validator;
+        _unitOfWork = unitOfWork;
         _logger = logger;
     }
 
@@ -47,6 +51,8 @@ public class CreateSpeciesHandler : ICommandHandler<Guid, CreateSpeciesCommand>
         var species = new Domain.Species(name);
 
         var result = await _speciesRepository.AddAsync(species, cancellationToken);
+        
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("The species was created with the ID: {speciesId}", result);
 

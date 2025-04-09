@@ -11,7 +11,7 @@ namespace PetFamily.Volunteer.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(
+    public static IServiceCollection AddVolunteerInfrastructure(
         this IServiceCollection services,
         IConfiguration configuration)
     {
@@ -25,27 +25,25 @@ public static class DependencyInjection
     {
         services.AddScoped<WriteDbContext>(_ =>
             new WriteDbContext(configuration.GetConnectionString(Constants.DATABASE)!));
-        
+
         services.AddScoped<IReadDbContext, ReadDbContext>(_ =>
             new ReadDbContext(configuration.GetConnectionString(Constants.DATABASE)!));
-        
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-        
+
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkContext.Volunteer);
+
         services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>(_ =>
             new SqlConnectionFactory(configuration.GetConnectionString(Constants.DATABASE)!));
-        
+
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 
         return services;
     }
-    
+
     private static IServiceCollection AddRepositories(
         this IServiceCollection services)
     {
         services.AddScoped<IVolunteersRepository, VolunteersRepository>();
-        
+
         return services;
     }
-
-
 }

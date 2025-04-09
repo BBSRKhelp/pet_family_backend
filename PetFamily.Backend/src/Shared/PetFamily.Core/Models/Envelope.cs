@@ -2,8 +2,6 @@ using PetFamily.SharedKernel;
 
 namespace PetFamily.Core.Models;
 
-//public record ResponseError(string? ErrorCode, string? ErrorMessage, string? InvalidField);
-
 public record Envelope
 {
     private Envelope(object? result, ErrorList? errors)

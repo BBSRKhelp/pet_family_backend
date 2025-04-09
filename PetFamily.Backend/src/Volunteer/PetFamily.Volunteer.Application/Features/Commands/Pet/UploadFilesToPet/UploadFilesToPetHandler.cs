@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
@@ -9,6 +10,7 @@ using PetFamily.File.Contracts;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteer.Application.Interfaces;
+using PetFamily.Volunteer.Domain.ValueObjects;
 
 namespace PetFamily.Volunteer.Application.Features.Commands.Pet.UploadFilesToPet;
 
@@ -26,7 +28,7 @@ public class UploadFilesToPetHandler : ICommandHandler<Guid, UploadFilesToPetCom
         IVolunteersRepository volunteersRepository,
         IFileContract fileContract,
         IValidator<UploadFilesToPetCommand> validator,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
         IMessageQueue<IEnumerable<FileIdentifier>> messageQueue,
         ILogger<UploadFilesToPetHandler> logger)
     {

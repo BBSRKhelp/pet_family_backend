@@ -13,7 +13,7 @@ namespace PetFamily.File.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(
+    public static IServiceCollection AddFileInfrastructure(
         this IServiceCollection services, 
         IConfiguration configuration)
     {

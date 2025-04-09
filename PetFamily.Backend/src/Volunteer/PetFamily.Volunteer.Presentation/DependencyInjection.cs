@@ -1,17 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Volunteer.Application;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Volunteer.Contracts;
-using PetFamily.Volunteer.Infrastructure;
 
 namespace PetFamily.Volunteer.Presentation;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddVolunteer(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddVolunteerPresentation(this IServiceCollection services)
     {
-        return services.AddApplication()
-            .AddInfrastructure(configuration)
-            .AddScoped<IVolunteerContract, VolunteerContract>();
+        return services.AddScoped<IVolunteerContract, VolunteerContract>();
     }
 }

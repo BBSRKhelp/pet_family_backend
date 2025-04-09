@@ -10,7 +10,6 @@
       <ProjectReference Include="..\..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />
       <ProjectReference Include="..\PetFamily.Volunteer.Application\PetFamily.Volunteer.Application.csproj" />
       <ProjectReference Include="..\PetFamily.Volunteer.Contracts\PetFamily.Volunteer.Contracts.csproj" />
-      <ProjectReference Include="..\PetFamily.Volunteer.Infrastructure\PetFamily.Volunteer.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -30,7 +30,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\File\PetFamily.File.Infrastructure\PetFamily.File.Infrastructure.csproj" />
       <ProjectReference Include="..\File\PetFamily.File.Presentation\PetFamily.File.Presentation.csproj" />
+      <ProjectReference Include="..\Species\PetFamily.Species.Infrastructure\PetFamily.Species.Infrastructure.csproj" />
+      <ProjectReference Include="..\Volunteer\PetFamily.Volunteer.Infrastructure\PetFamily.Volunteer.Infrastructure.csproj" />
       <ProjectReference Include="..\Volunteer\PetFamily.Volunteer.Presentation\PetFamily.Volunteer.Presentation.csproj" />
       <ProjectReference Include="..\Species\PetFamily.Species.Presentation\PetFamily.Species.Presentation.csproj" />
     </ItemGroup>

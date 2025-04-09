@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
@@ -18,7 +19,7 @@ public class SoftDeletePetHandler : ICommandHandler<Guid, SoftDeletePetCommand>
     public SoftDeletePetHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<SoftDeletePetCommand> validator,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
         ILogger<SoftDeletePetHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

@@ -1,15 +1,12 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PetFamily.File.Contracts;
-using PetFamily.File.Infrastructure;
 
 namespace PetFamily.File.Presentation;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddFile(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddFilePresentation(this IServiceCollection services)
     {
-        return services.AddInfrastructure(configuration)
-            .AddScoped<IFileContract, FileContract>();
+        return services.AddScoped<IFileContract, FileContract>();
     }
 }

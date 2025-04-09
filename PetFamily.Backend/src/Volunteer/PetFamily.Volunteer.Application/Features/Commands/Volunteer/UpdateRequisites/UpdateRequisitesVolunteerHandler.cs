@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
@@ -19,8 +20,8 @@ public class UpdateRequisitesVolunteerHandler : ICommandHandler<Guid, UpdateRequ
     public UpdateRequisitesVolunteerHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<UpdateRequisitesVolunteerCommand> validator,
-        ILogger<UpdateRequisitesVolunteerHandler> logger,
-        IUnitOfWork unitOfWork)
+        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        ILogger<UpdateRequisitesVolunteerHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _validator = validator;

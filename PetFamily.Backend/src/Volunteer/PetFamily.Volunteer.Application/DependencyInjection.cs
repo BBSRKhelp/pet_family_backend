@@ -7,7 +7,7 @@ namespace PetFamily.Volunteer.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddVolunteerApplication(this IServiceCollection services)
     {
         services
             .AddCommands()

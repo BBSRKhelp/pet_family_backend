@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
@@ -24,7 +25,7 @@ public class HardDeletePetHandler : ICommandHandler<Guid, HardDeletePetCommand>
         IVolunteersRepository volunteersRepository,
         IFileContract fileContract,
         IValidator<HardDeletePetCommand> validator,
-        IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
         ILogger<HardDeletePetHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
