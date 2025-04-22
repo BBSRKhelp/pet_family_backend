@@ -1,11 +1,4 @@
-using PetFamily.File.Infrastructure;
-using PetFamily.File.Presentation;
-using PetFamily.Species.Application;
-using PetFamily.Species.Infrastructure;
-using PetFamily.Species.Presentation;
-using PetFamily.Volunteer.Application;
-using PetFamily.Volunteer.Infrastructure;
-using PetFamily.Volunteer.Presentation;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Events;
 
@@ -17,22 +10,40 @@ public static class DependencyInjection
     {
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo { 
+                Title = "My API", 
+                Version = "v1" 
+            });
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                In = ParameterLocation.Header, 
+                Description = "Please insert JWT with Bearer into field",
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey 
+            });
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                { 
+                    new OpenApiSecurityScheme 
+                    { 
+                        Reference = new OpenApiReference 
+                        { 
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer" 
+                        } 
+                    },
+                    []
+                } 
+            });
+        });
+        
         services.AddSerilog(configuration);
-
-        services.AddFilePresentation()
-            .AddFileInfrastructure(configuration)
-            .AddSpeciesPresentation()
-            .AddSpeciesApplication()
-            .AddSpeciesInfrastructure(configuration)
-            .AddVolunteerPresentation()
-            .AddVolunteerApplication()
-            .AddVolunteerInfrastructure(configuration);
         
         return services;
     }
 
-    public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
     {
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()

@@ -6,15 +6,3 @@ public record GetBreedsByIdSpeciesRequest(
     string? Name,
     string? SortBy,
     string? SortDirection);
-// {
-//     public GetBreedsByIdSpeciesQuery ToQuery(Guid speciesId)
-//     {
-//         return new GetBreedsByIdSpeciesQuery(
-//             speciesId,
-//             PageNumber,
-//             PageSize,
-//             Name,
-//             SortBy ?? "id",
-//             SortDirection ?? "ASC");
-//     }
-// }

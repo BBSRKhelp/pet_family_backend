@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SpeciesWriteDbContext = PetFamily.Species.Infrastructure.Database.WriteDbContext;
-using VolunteerWriteDbContext = PetFamily.Volunteer.Infrastructure.Database.WriteDbContext;
+using VolunteerWriteDbContext = PetFamily.Volunteers.Infrastructure.Database.WriteDbContext;
 
 namespace PetFamily.Web.Extensions;
 

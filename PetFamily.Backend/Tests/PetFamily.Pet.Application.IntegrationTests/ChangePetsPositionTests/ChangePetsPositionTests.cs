@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.ChangePetsPosition;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.ChangePetsPosition;
 
 namespace PetFamily.Pet.Application.IntegrationTests.ChangePetsPositionTests;
 
@@ -22,7 +22,7 @@ public class ChangePetsPositionTests : PetTestsBase
         var species = await SeedSpeciesAsync();
         var breedId = await SeedBreedAsync(species);
 
-        List<PetFamily.Volunteer.Domain.Entities.Pet> pets = [];
+        List<Volunteers.Domain.Entities.Pet> pets = [];
         foreach (var _ in Enumerable.Range(0, 5))
         {
             var pet = await SeedPetAsync(volunteer, species.Id, breedId);

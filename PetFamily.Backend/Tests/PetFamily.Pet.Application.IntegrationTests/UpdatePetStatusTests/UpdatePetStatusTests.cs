@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Enums;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.UpdatePetStatus;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.UpdatePetStatus;
 
 namespace PetFamily.Pet.Application.IntegrationTests.UpdatePetStatusTests;
 

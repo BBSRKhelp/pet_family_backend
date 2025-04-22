@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
 using PetFamily.SharedKernel.ValueObjects.Ids;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.AddPet;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.AddPet;
 
 namespace PetFamily.Pet.Application.IntegrationTests.AddPetTests;
 

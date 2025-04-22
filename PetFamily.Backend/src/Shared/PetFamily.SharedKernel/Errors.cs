@@ -30,9 +30,9 @@ public static class Errors
             Error.Validation("record.lowered", $"record {value ?? ""} lowered");
     }
 
-    public static class Database
+    public static class User
     {
-        public static Error IsFailure() =>
-            Error.Validation("database.failure", "database failure");
+        public static Error InvalidCredentials() =>
+            Error.Validation("credentials.is.invalid", "your credentials are invalid");
     }
 }

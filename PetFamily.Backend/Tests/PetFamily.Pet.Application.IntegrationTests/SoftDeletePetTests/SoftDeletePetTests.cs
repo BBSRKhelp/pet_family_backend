@@ -2,7 +2,7 @@ using System.Reflection;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.SoftDeletePet;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.SoftDeletePet;
 
 namespace PetFamily.Pet.Application.IntegrationTests.SoftDeletePetTests;
 

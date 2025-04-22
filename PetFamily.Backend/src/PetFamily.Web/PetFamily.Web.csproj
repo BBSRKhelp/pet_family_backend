@@ -30,11 +30,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\File\PetFamily.File.Infrastructure\PetFamily.File.Infrastructure.csproj" />
-      <ProjectReference Include="..\File\PetFamily.File.Presentation\PetFamily.File.Presentation.csproj" />
+      <ProjectReference Include="..\Accounts\PetFamily.Accounts.Infrastructure\PetFamily.Accounts.Infrastructure.csproj" />
+      <ProjectReference Include="..\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj" />
+      <ProjectReference Include="..\Files\PetFamily.Files.Infrastructure\PetFamily.Files.Infrastructure.csproj" />
+      <ProjectReference Include="..\Files\PetFamily.Files.Presentation\PetFamily.Files.Presentation.csproj" />
       <ProjectReference Include="..\Species\PetFamily.Species.Infrastructure\PetFamily.Species.Infrastructure.csproj" />
-      <ProjectReference Include="..\Volunteer\PetFamily.Volunteer.Infrastructure\PetFamily.Volunteer.Infrastructure.csproj" />
-      <ProjectReference Include="..\Volunteer\PetFamily.Volunteer.Presentation\PetFamily.Volunteer.Presentation.csproj" />
+      <ProjectReference Include="..\Volunteers\PetFamily.Volunteers.Infrastructure\PetFamily.Volunteers.Infrastructure.csproj" />
+      <ProjectReference Include="..\Volunteers\PetFamily.Volunteers.Presentation\PetFamily.Volunteers.Presentation.csproj" />
       <ProjectReference Include="..\Species\PetFamily.Species.Presentation\PetFamily.Species.Presentation.csproj" />
     </ItemGroup>
 

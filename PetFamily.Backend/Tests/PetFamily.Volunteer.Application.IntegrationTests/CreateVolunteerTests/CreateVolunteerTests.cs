@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
-using PetFamily.Volunteer.Application.Features.Commands.Volunteer.Create;
+using PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
 
 namespace PetFamily.Volunteer.Application.IntegrationTests.CreateVolunteerTests;
 

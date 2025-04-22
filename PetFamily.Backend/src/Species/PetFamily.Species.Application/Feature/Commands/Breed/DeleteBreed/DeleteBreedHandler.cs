@@ -6,7 +6,7 @@ using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel;
 using PetFamily.Species.Application.Interfaces;
-using PetFamily.Volunteer.Contracts;
+using PetFamily.Volunteers.Contracts;
 
 namespace PetFamily.Species.Application.Feature.Commands.Breed.DeleteBreed;
 
