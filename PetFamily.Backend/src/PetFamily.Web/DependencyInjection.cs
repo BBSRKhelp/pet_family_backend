@@ -1,4 +1,11 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PetFamily.Accounts.Infrastructure.Options;
+using PetFamily.Framework.Authorization;
 using Serilog;
 using Serilog.Events;
 
@@ -9,37 +16,11 @@ public static class DependencyInjection
     public static IServiceCollection AddWeb(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
-        services.AddEndpointsApiExplorer();
-        
-        services.AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc("v1", new OpenApiInfo { 
-                Title = "My API", 
-                Version = "v1" 
-            });
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
-                In = ParameterLocation.Header, 
-                Description = "Please insert JWT with Bearer into field",
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey 
-            });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-                { 
-                    new OpenApiSecurityScheme 
-                    { 
-                        Reference = new OpenApiReference 
-                        { 
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer" 
-                        } 
-                    },
-                    []
-                } 
-            });
-        });
-        
-        services.AddSerilog(configuration);
-        
+
+        services.AddEndpointsApiExplorer()
+            .AddSwaggerGen()
+            .AddSerilog(configuration);
+
         return services;
     }
 
@@ -60,6 +41,45 @@ public static class DependencyInjection
             .CreateLogger();
 
         services.AddSerilog();
+
+        return services;
+    }
+
+    private static IServiceCollection AddSwaggerGen(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "My API",
+                Version = "v1"
+            });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
 
         return services;
     }

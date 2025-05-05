@@ -12,12 +12,12 @@ public static class RequestMappingExtensions
     {
         return new CreateSpeciesCommand(request.Name);
     }
-    
+
     public static AddBreedCommand ToCommand(this AddBreedRequest request, Guid id)
     {
         return new AddBreedCommand(id, request.Name);
     }
-    
+
     public static GetFilteredSpeciesWithPaginationQuery ToQuery(this GetFilteredSpeciesWithPaginationRequest request)
     {
         return new GetFilteredSpeciesWithPaginationQuery(
@@ -27,7 +27,7 @@ public static class RequestMappingExtensions
             request.SortBy ?? "id",
             request.SortDirection ?? "ASC");
     }
-    
+
     public static GetBreedsByIdSpeciesQuery ToQuery(this GetBreedsByIdSpeciesRequest request, Guid speciesId)
     {
         return new GetBreedsByIdSpeciesQuery(

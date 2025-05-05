@@ -20,15 +20,15 @@ public class DeleteSpeciesHandler : ICommandHandler<Guid, DeleteSpeciesCommand>
 
     public DeleteSpeciesHandler(
         ISpeciesRepository speciesRepository,
-        IValidator<DeleteSpeciesCommand> validator,
         IVolunteerContract volunteerContract,
         [FromKeyedServices(UnitOfWorkContext.Species)]IUnitOfWork unitOfWork,
+        IValidator<DeleteSpeciesCommand> validator,
         ILogger<DeleteSpeciesHandler> logger)
     {
         _speciesRepository = speciesRepository;
-        _validator = validator;
         _volunteerContract = volunteerContract;
         _unitOfWork = unitOfWork;
+        _validator = validator;
         _logger = logger;
     }
     

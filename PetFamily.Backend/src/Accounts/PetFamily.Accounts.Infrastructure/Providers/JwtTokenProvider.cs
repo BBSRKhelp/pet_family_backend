@@ -26,15 +26,14 @@ public class JwtTokenProvider : ITokenProvider
     public string GenerateAccessToken(User user)
     {
         _logger.LogInformation("Generating access token");
-        
+
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         Claim[] claims =
         [
-            new Claim(CustomClaims.SUB, user.Id.ToString()),
-            new Claim(CustomClaims.EMAIL, user.Email!),
-            
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Email, user.Email!)
         ];
 
         var jwtToken = new JwtSecurityToken(
@@ -43,11 +42,11 @@ public class JwtTokenProvider : ITokenProvider
             expires: DateTime.UtcNow.AddMinutes(_jwtOptions.AccessTokenLifetime),
             signingCredentials: signingCredentials,
             claims: claims);
-        
+
         var stringToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
-        
+
         _logger.LogInformation("Successfully generated access token");
-        
+
         return stringToken;
     }
 }
