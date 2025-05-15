@@ -19,8 +19,9 @@ public class BreedsController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var query = request.ToQuery(speciesId);
+
         var result = await speciesHandler.HandleAsync(query, cancellationToken);
-        
+
         return result.ToResponse();
     }
 }

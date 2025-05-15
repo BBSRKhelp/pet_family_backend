@@ -2,8 +2,8 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
 using PetFamily.SharedKernel.ValueObjects;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.SetMainPetPhoto;
-using PetFamily.Volunteer.Domain.ValueObjects;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.SetMainPetPhoto;
+using PetFamily.Volunteers.Domain.ValueObjects;
 
 namespace PetFamily.Pet.Application.IntegrationTests.SetMainPetPhotoTests;
 

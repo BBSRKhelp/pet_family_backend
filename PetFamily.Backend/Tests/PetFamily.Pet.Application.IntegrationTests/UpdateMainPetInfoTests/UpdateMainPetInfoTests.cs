@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.UpdateMainPetInfo;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.UpdateMainPetInfo;
 
 namespace PetFamily.Pet.Application.IntegrationTests.UpdateMainPetInfoTests;
 

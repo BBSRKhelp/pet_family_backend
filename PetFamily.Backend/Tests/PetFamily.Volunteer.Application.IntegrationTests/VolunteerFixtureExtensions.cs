@@ -1,10 +1,10 @@
 using AutoFixture;
-using PetFamily.Volunteer.Application.Features.Commands.Volunteer.Create;
-using PetFamily.Volunteer.Application.Features.Commands.Volunteer.UpdateMainInfo;
-using PetFamily.Volunteer.Application.Features.Commands.Volunteer.UpdateRequisites;
-using PetFamily.Volunteer.Application.Features.Commands.Volunteer.UpdateSocialNetworks;
-using PetFamily.Volunteer.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
-using PetFamily.Volunteer.Contracts.DTOs.Volunteer;
+using PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
+using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateMainInfo;
+using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateRequisites;
+using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateSocialNetworks;
+using PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
+using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
 
 namespace PetFamily.Volunteer.Application.IntegrationTests;
 

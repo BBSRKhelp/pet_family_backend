@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.DTOs;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.UploadFilesToPet;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.UploadFilesToPet;
 
 namespace PetFamily.Pet.Application.IntegrationTests.UploadFilesToPetTests;
 
@@ -26,10 +26,10 @@ public class UploadFilesToPetTests : PetTestsBase
         var breedId = await SeedBreedAsync(species);
         var pet = await SeedPetAsync(volunteer, species.Id, breedId);
 
-        using var steam = new MemoryStream(new byte[1]);
-        var files = new UploadFileDto(steam, "test.file");
+        using var stream = new MemoryStream(new byte[1]);
+        var file = new UploadFileDto(stream, "test.file");
         
-        var command = new UploadFilesToPetCommand(volunteer.Id.Value, pet.Id.Value, [files]);
+        var command = new UploadFilesToPetCommand(volunteer.Id.Value, pet.Id.Value, [file]);
             
         //Act
         var result = await _sut.HandleAsync(command);
@@ -46,31 +46,27 @@ public class UploadFilesToPetTests : PetTestsBase
         petFromDb?.PetPhotos.Should().NotBeEmpty();
     }
     
-    // Думал еще обернуть messageQueue в Mock, но не получилось, видимо с дэдлоком сталкивался
+    [Fact]
+    public async Task UploadFilesToPet_ShouldReturnFailedResult()
+    {
+        //Arrange
+        Factory.SetupFailureFileProviderMock();
+        
+        var volunteer = await SeedVolunteerAsync();
+        var species = await SeedSpeciesAsync();
+        var breedId = await SeedBreedAsync(species);
+        var pet = await SeedPetAsync(volunteer, species.Id, breedId);
     
-    // [Fact]
-    // public async Task UploadFilesToPet_ShouldReturnFailedResult()
-    // {
-    //     //Arrange
-    //     Factory.SetupFailureFileProviderMock();
-    //     
-    //     var volunteer = await SeedVolunteerAsync();
-    //     var species = await SeedSpeciesAsync();
-    //     var breedId = await SeedBreedAsync(species);
-    //     var pet = await SeedPetAsync(volunteer, species.Id, breedId);
-    //
-    //     var steam = new MemoryStream(new byte[1]);
-    //     var files = new UploadFileDto(steam, "test.file");
-    //     
-    //     var command = new UploadFilesToPetCommand(volunteer.Id.Value, pet.Id.Value, [files]);
-    //         
-    //     //Act
-    //     var result = await _sut.HandleAsync(command);
-    //
-    //     //Assert
-    //     result.IsFailure.Should().BeTrue();
-    //     result.Error.Should().NotBeEmpty();
-    //
-    //     await steam.DisposeAsync();
-    // }
+        using var stream = new MemoryStream(new byte[10]);
+        var file = new UploadFileDto(stream, "test.file");
+        
+        var command = new UploadFilesToPetCommand(volunteer.Id.Value, pet.Id.Value, [file]);
+            
+        //Act
+        var result = await _sut.HandleAsync(command);
+        
+        //Assert
+        result.IsFailure.Should().BeTrue();
+        result.Error.Should().NotBeEmpty();
+    }
 }

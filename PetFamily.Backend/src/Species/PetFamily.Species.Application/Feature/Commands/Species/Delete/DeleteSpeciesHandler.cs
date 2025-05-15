@@ -6,7 +6,7 @@ using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel;
 using PetFamily.Species.Application.Interfaces;
-using PetFamily.Volunteer.Contracts;
+using PetFamily.Volunteers.Contracts;
 
 namespace PetFamily.Species.Application.Feature.Commands.Species.Delete;
 
@@ -20,15 +20,15 @@ public class DeleteSpeciesHandler : ICommandHandler<Guid, DeleteSpeciesCommand>
 
     public DeleteSpeciesHandler(
         ISpeciesRepository speciesRepository,
-        IValidator<DeleteSpeciesCommand> validator,
         IVolunteerContract volunteerContract,
         [FromKeyedServices(UnitOfWorkContext.Species)]IUnitOfWork unitOfWork,
+        IValidator<DeleteSpeciesCommand> validator,
         ILogger<DeleteSpeciesHandler> logger)
     {
         _speciesRepository = speciesRepository;
-        _validator = validator;
         _volunteerContract = volunteerContract;
         _unitOfWork = unitOfWork;
+        _validator = validator;
         _logger = logger;
     }
     

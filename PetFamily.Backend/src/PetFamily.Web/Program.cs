@@ -1,13 +1,39 @@
+using PetFamily.Accounts.Application;
+using PetFamily.Accounts.Infrastructure;
+using PetFamily.Files.Infrastructure;
+using PetFamily.Files.Presentation;
+using PetFamily.Species.Application;
+using PetFamily.Species.Infrastructure;
+using PetFamily.Species.Presentation;
+using PetFamily.Volunteers.Application;
+using PetFamily.Volunteers.Infrastructure;
+using PetFamily.Volunteers.Presentation;
 using PetFamily.Web;
 using PetFamily.Web.Extensions;
 using PetFamily.Web.Middlewares;
 using Serilog;
 
+//TODO Расшарить в Core namingConventions и logging
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services
-    .AddWeb(builder.Configuration);
-    
+builder.Services.AddWeb(builder.Configuration);
+
+builder.Services.AddAccountsApplication() //DI Accounts
+    .AddAccountsInfrastructure(builder.Configuration)
+    .ConfigureAuthentication(builder.Configuration)
+    .ConfigureAuthorization();
+
+builder.Services.AddFilePresentation() //DI Files
+    .AddFileInfrastructure(builder.Configuration);
+
+builder.Services.AddSpeciesPresentation() //DI Species
+    .AddSpeciesApplication()
+    .AddSpeciesInfrastructure(builder.Configuration);
+
+builder.Services.AddVolunteerPresentation() //DI Volunteers
+    .AddVolunteerApplication()
+    .AddVolunteerInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
@@ -20,11 +46,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    await app.ApplyMigration();
+    await app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

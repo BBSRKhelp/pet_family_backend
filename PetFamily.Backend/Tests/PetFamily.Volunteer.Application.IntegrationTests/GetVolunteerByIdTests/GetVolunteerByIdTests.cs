@@ -1,8 +1,8 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
-using PetFamily.Volunteer.Application.Features.Queries.Volunteer.GetVolunteerById;
-using PetFamily.Volunteer.Contracts.DTOs;
+using PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetVolunteerById;
+using PetFamily.Volunteers.Contracts.DTOs;
 
 namespace PetFamily.Volunteer.Application.IntegrationTests.GetVolunteerByIdTests;
 

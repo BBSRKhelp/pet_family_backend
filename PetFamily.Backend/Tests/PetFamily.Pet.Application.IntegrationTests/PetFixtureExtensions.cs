@@ -1,10 +1,10 @@
 using AutoFixture;
 using PetFamily.Core.Enums;
 using PetFamily.SharedKernel.ValueObjects.Ids;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.AddPet;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.ChangePetsPosition;
-using PetFamily.Volunteer.Application.Features.Commands.Pet.UpdateMainPetInfo;
-using PetFamily.Volunteer.Contracts.DTOs.Pet;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.AddPet;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.ChangePetsPosition;
+using PetFamily.Volunteers.Application.Features.Commands.Pet.UpdateMainPetInfo;
+using PetFamily.Volunteers.Contracts.DTOs.Pet;
 
 namespace PetFamily.Pet.Application.IntegrationTests;
 

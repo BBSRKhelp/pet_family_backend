@@ -4,8 +4,9 @@ using PetFamily.Core.Enums;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.SharedKernel.ValueObjects.Ids;
 using PetFamily.Species.Domain.Entities;
-using PetFamily.Volunteer.Domain.ValueObjects;
-using VolunteerWriteDbContext = PetFamily.Volunteer.Infrastructure.Database.WriteDbContext;
+using PetFamily.Volunteers.Domain;
+using PetFamily.Volunteers.Domain.ValueObjects;
+using VolunteerWriteDbContext = PetFamily.Volunteers.Infrastructure.Database.WriteDbContext;
 using SpeciesWriteDbContext = PetFamily.Species.Infrastructure.Database.WriteDbContext;
 
 namespace PetFamily.Pet.Application.IntegrationTests;
@@ -27,12 +28,12 @@ public class PetTestsBase : IClassFixture<PetTestsWebFactory>, IAsyncLifetime
         SpeciesWriteDbContext = Scope.ServiceProvider.GetRequiredService<SpeciesWriteDbContext>();
     }
 
-    protected async Task<PetFamily.Volunteer.Domain.Entities.Pet> SeedPetAsync(
-        PetFamily.Volunteer.Domain.Volunteer volunteer,
+    protected async Task<Volunteers.Domain.Entities.Pet> SeedPetAsync(
+        Volunteer volunteer,
         SpeciesId speciesId,
         Guid breedId)
     {
-        var pet = new Volunteer.Domain.Entities.Pet(
+        var pet = new Volunteers.Domain.Entities.Pet(
             Name.Create("testname").Value,
             Description.Create("").Value,
             AppearanceDetails.Create(Colour.Black, 15, 15).Value,
@@ -50,9 +51,9 @@ public class PetTestsBase : IClassFixture<PetTestsWebFactory>, IAsyncLifetime
         return pet;
     }
     
-    protected async Task<PetFamily.Volunteer.Domain.Volunteer> SeedVolunteerAsync()
+    protected async Task<Volunteer> SeedVolunteerAsync()
     {
-        var volunteer = new Volunteer.Domain.Volunteer(
+        var volunteer = new Volunteer(
             FullName.Create("testname", "testlastname", "testpatronymic").Value,
             Email.Create("test@test.com").Value,
             Description.Create("").Value,

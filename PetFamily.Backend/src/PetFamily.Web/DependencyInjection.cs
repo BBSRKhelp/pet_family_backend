@@ -1,11 +1,11 @@
-using PetFamily.File.Infrastructure;
-using PetFamily.File.Presentation;
-using PetFamily.Species.Application;
-using PetFamily.Species.Infrastructure;
-using PetFamily.Species.Presentation;
-using PetFamily.Volunteer.Application;
-using PetFamily.Volunteer.Infrastructure;
-using PetFamily.Volunteer.Presentation;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using PetFamily.Accounts.Infrastructure.Options;
+using PetFamily.Framework.Authorization;
 using Serilog;
 using Serilog.Events;
 
@@ -16,23 +16,15 @@ public static class DependencyInjection
     public static IServiceCollection AddWeb(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
-        services.AddSerilog(configuration);
 
-        services.AddFilePresentation()
-            .AddFileInfrastructure(configuration)
-            .AddSpeciesPresentation()
-            .AddSpeciesApplication()
-            .AddSpeciesInfrastructure(configuration)
-            .AddVolunteerPresentation()
-            .AddVolunteerApplication()
-            .AddVolunteerInfrastructure(configuration);
-        
+        services.AddEndpointsApiExplorer()
+            .AddSwaggerGen()
+            .AddSerilog(configuration);
+
         return services;
     }
 
-    public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
     {
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console()
@@ -49,6 +41,45 @@ public static class DependencyInjection
             .CreateLogger();
 
         services.AddSerilog();
+
+        return services;
+    }
+
+    private static IServiceCollection AddSwaggerGen(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "My API",
+                Version = "v1"
+            });
+
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
+                Name = "Authorization",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer",
+                BearerFormat = "JWT"
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        });
 
         return services;
     }

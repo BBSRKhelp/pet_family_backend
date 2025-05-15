@@ -2,7 +2,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using PetFamily.Core.Providers;
-using PetFamily.File.Application;
+using PetFamily.Files.Application;
 using PetFamily.Shared.Application.IntegrationTests;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
@@ -13,9 +13,6 @@ public class PetTestsWebFactory : IntegrationTestsWebFactory
 {
     private readonly IFileProvider _fileProviderMock = Substitute.For<IFileProvider>();
 
-    // private readonly IMessageQueue<IEnumerable<FileIdentifier>> _messageQueueMock =
-    //     Substitute.For<IMessageQueue<IEnumerable<FileIdentifier>>>();
-
     protected override void ConfigureDefaultServices(IServiceCollection services)
     {
         base.ConfigureDefaultServices(services);
@@ -25,24 +22,7 @@ public class PetTestsWebFactory : IntegrationTestsWebFactory
             services.Remove(fileProvider);
 
         services.AddTransient<IFileProvider>(_ => _fileProviderMock);
-
-        // Думал еще обернуть messageQueue в Mock, но не получилось, видимо с дэдлоком сталкивался
-        
-        // var messageQueue = services
-        //     .SingleOrDefault(s => s.ServiceType == typeof(IMessageQueue<IEnumerable<FileIdentifier>>));
-        //
-        // if (messageQueue is not null)
-        //     services.Remove(messageQueue);
-        //
-        // services.AddTransient<IMessageQueue<IEnumerable<FileIdentifier>>>(_ => _messageQueueMock);
     }
-
-    // public void SetupMessageQueueMock()
-    // {
-    //     _messageQueueMock
-    //         .WriteAsync(Arg.Any<IEnumerable<FileIdentifier>>(), Arg.Any<CancellationToken>())
-    //         .ReturnsForAnyArgs(Task.CompletedTask);
-    // }
 
     public void SetupSuccessFileProviderMock()
     {
