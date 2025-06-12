@@ -10,7 +10,6 @@ namespace PetFamily.Accounts.Presentation.Controllers;
 [Route("[controller]")]
 public class AccountsController : ControllerBase
 {
-    
     [HttpPost("registration")]
     public async Task<ActionResult> Register(
         [FromServices] RegisterUserHandler handler,
@@ -18,12 +17,12 @@ public class AccountsController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand();
-        
+
         var result = await handler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
-    
+
     [HttpPost("login")]
     public async Task<ActionResult<string>> Login(
         [FromServices] LoginHandler handler,
@@ -31,9 +30,15 @@ public class AccountsController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand();
-        
+
         var result = await handler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
+    }
+    
+    [HttpPost("test")]
+    public IActionResult Test()
+    {
+        return Ok();
     }
 }

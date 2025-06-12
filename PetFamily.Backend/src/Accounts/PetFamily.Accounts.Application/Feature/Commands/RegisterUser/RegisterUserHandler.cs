@@ -26,19 +26,18 @@ public class RegisterUserHandler : ICommandHandler<RegisterUserCommand>
     {
         _logger.LogInformation("Register user account");
         
-        var user = new User
-        {
-            Email = command.Email,
-            UserName = command.UserName
-        };
+        var user = User.CreateUser(command.UserName, command.Email);
         
         var result = await _userManager.CreateAsync(user, command.Password);
         if (result.Succeeded)
         {
             _logger.LogInformation("User: {UserName} created a new account with password", command.UserName);
+            
+            await _userManager.AddToRoleAsync(user, "participant");
+
             return UnitResult.Success<ErrorList>();
         }
-        
+
         var errors = result.Errors.Select(e => Error.Failure(e.Code, e.Description));
         
         _logger.LogInformation("User: {UserName} could not be created", command.UserName);

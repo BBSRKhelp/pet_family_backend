@@ -1,0 +1,84 @@
+{
+  "Permissions": {
+    "Volunteers": [
+      "volunteer.Create",
+      "volunteer.Get",
+      "volunteer.GetById",
+      "volunteer.UpdateMainInfo",
+      "volunteer.UpdateRequisites",
+      "volunteer.UpdateSocialNetworks",
+      "volunteer.Delete",
+      "volunteer.AddPet",
+      "volunteer.UploadFilesToPet",
+      "volunteer.GetPets",
+      "volunteer.GetPetById",
+      "volunteer.SetMainPetPhoto",
+      "volunteer.ChangePetsPosition",
+      "volunteer.UpdateMainPetInfo",
+      "volunteer.UpdatePetStatus",
+      "volunteer.SoftDeletePet",
+      "volunteer.HardDeletePet"
+    ],
+    "Species": [
+      "species.Create",
+      "species.Get",
+      "species.Delete",
+      "species.AddBreed",
+      "species.GetBreed",
+      "species.DeleteBreed"
+    ]
+  },
+  "Roles": {
+    "Admin": [
+      "volunteer.Create",
+      "volunteer.Get",
+      "volunteer.GetById",
+      "volunteer.UpdateMainInfo",
+      "volunteer.UpdateRequisites",
+      "volunteer.UpdateSocialNetworks",
+      "volunteer.Delete",
+      "volunteer.AddPet",
+      "volunteer.UploadFilesToPet",
+      "volunteer.GetPets",
+      "volunteer.GetPetById",
+      "volunteer.SetMainPetPhoto",
+      "volunteer.ChangePetsPosition",
+      "volunteer.UpdateMainPetInfo",
+      "volunteer.UpdatePetStatus",
+      "volunteer.SoftDeletePet",
+      "volunteer.HardDeletePet",
+      "species.Create",
+      "species.Get",
+      "species.Delete",
+      "species.AddBreed",
+      "species.GetBreed",
+      "species.DeleteBreed"
+    ],
+    "Volunteer": [
+      "volunteer.Create",
+      "volunteer.Get",
+      "volunteer.GetById",
+      "volunteer.UpdateMainInfo",
+      "volunteer.UpdateSocialNetworks",
+      "volunteer.Delete",
+      "volunteer.AddPet",
+      "volunteer.UploadFilesToPet",
+      "volunteer.GetPets",
+      "volunteer.GetPetById",
+      "volunteer.SetMainPetPhoto",
+      "volunteer.ChangePetsPosition",
+      "volunteer.UpdateMainPetInfo",
+      "volunteer.UpdatePetStatus",
+      "volunteer.SoftDeletePet",
+      "volunteer.HardDeletePet"
+    ],
+    "Participant": [
+      "volunteer.Get",
+      "volunteer.GetById",
+      "volunteer.GetPets",
+      "volunteer.GetPetById",
+      "species.Get",
+      "species.GetBreed"
+    ]
+  }
+}

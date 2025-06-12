@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Framework.Authorization;
 
-namespace PetFamily.Web;
+namespace PetFamily.Web.Extensions;
 
 public static class AccountServiceCollectionExtensions
 {

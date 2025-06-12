@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core.Models;
 using PetFamily.Framework;
+using PetFamily.Framework.Authorization;
 using PetFamily.Species.Application.Feature.Commands.Breed.AddBreed;
 using PetFamily.Species.Application.Feature.Commands.Breed.DeleteBreed;
 using PetFamily.Species.Application.Feature.Commands.Species.Create;
@@ -16,16 +17,44 @@ namespace PetFamily.Species.Presentation.Controllers;
 [Route("[controller]")]
 public class SpeciesController : ControllerBase
 {
+    [Permission(Permissions.Accounts.SPECIES_CREATE)]
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateAsync(
-       [FromServices] CreateSpeciesHandler handler,
-       [FromBody] CreateSpeciesRequest request,
-       CancellationToken cancellationToken = default)
+        [FromServices] CreateSpeciesHandler handler,
+        [FromBody] CreateSpeciesRequest request,
+        CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand();
 
         var result = await handler.HandleAsync(command, cancellationToken);
-        
+
+        return result.ToResponse();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<PagedList<SpeciesDto>>> GetAsync(
+        [FromServices] GetFilteredSpeciesWithPaginationHandler handler,
+        [FromQuery] GetFilteredSpeciesWithPaginationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var query = request.ToQuery();
+
+        var result = await handler.HandleAsync(query, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [Authorize]
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult<Guid>> DeleteAsync(
+        [FromServices] DeleteSpeciesHandler handler,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var command = new DeleteSpeciesCommand(id);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
         return result.ToResponse();
     }
 
@@ -37,20 +66,7 @@ public class SpeciesController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand(id);
-        
-        var result = await handler.HandleAsync(command, cancellationToken);
-        
-        return result.ToResponse();
-    }
 
-    [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<Guid>> DeleteAsync(
-        [FromServices] DeleteSpeciesHandler handler,
-        [FromRoute] Guid id,
-        CancellationToken cancellationToken = default)
-    {
-        var command = new DeleteSpeciesCommand(id);
-        
         var result = await handler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
@@ -64,21 +80,8 @@ public class SpeciesController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var command = new DeleteBreedCommand(speciesId, breedId);
-        
+
         var result = await handler.HandleAsync(command, cancellationToken);
-
-        return result.ToResponse();
-    }
-
-    [HttpGet]
-    public async Task<ActionResult<PagedList<SpeciesDto>>> GetAsync(
-        [FromServices] GetFilteredSpeciesWithPaginationHandler handler,
-        [FromQuery] GetFilteredSpeciesWithPaginationRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var query = request.ToQuery();
-        
-        var result = await handler.HandleAsync(query, cancellationToken);
 
         return result.ToResponse();
     }

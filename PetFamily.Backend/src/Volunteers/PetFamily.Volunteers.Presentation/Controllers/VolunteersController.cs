@@ -25,7 +25,7 @@ namespace PetFamily.Volunteers.Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class VolunteersController : ControllerBase
+public class VolunteersController() : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateAsync(
@@ -36,6 +36,32 @@ public class VolunteersController : ControllerBase
         var command = request.ToCommand();
 
         var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<PagedList<VolunteerDto>>> GetAsync(
+        [FromServices] GetFilteredVolunteersWithPaginationHandlerDapper handler,
+        [FromQuery] GetFilteredVolunteersWithPaginationRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var query = request.ToQuery();
+
+        var result = await handler.HandleAsync(query, cancellationToken);
+
+        return result.ToResponse();
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<VolunteerDto>> GetByIdAsync(
+        [FromServices] GetVolunteerByIdHandler handler,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetVolunteerByIdQuery(id);
+
+        var result = await handler.HandleAsync(query, cancellationToken);
 
         return result.ToResponse();
     }
@@ -127,6 +153,21 @@ public class VolunteersController : ControllerBase
         return result.ToResponse();
     }
 
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-photo")]
+    public async Task<ActionResult<Guid>> SetMainPetPhotoAsync(
+        [FromServices] SetMainPetPhotoHandler handler,
+        [FromBody] SetMainPetPhotoRequest request,
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        CancellationToken cancellationToken = default)
+    {
+        var command = request.ToCommand(volunteerId, petId);
+
+        var result = await handler.HandleAsync(command, cancellationToken);
+
+        return result.ToResponse();
+    }
+
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}/position")]
     public async Task<ActionResult> ChangePetsPosition(
         [FromServices] ChangePetsPositionHandler handler,
@@ -196,47 +237,6 @@ public class VolunteersController : ControllerBase
         var command = new HardDeletePetCommand(volunteerId, petId);
 
         var result = await handler.HandleAsync(command, cancellationToken);
-
-        return result.ToResponse();
-    }
-
-    [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-photo")]
-    public async Task<ActionResult<Guid>> SetMainPetPhotoAsync(
-        [FromServices] SetMainPetPhotoHandler handler,
-        [FromBody] SetMainPetPhotoRequest request,
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        CancellationToken cancellationToken = default)
-    {
-        var command = request.ToCommand(volunteerId, petId);
-
-        var result = await handler.HandleAsync(command, cancellationToken);
-
-        return result.ToResponse();
-    }
-
-    [HttpGet]
-    public async Task<ActionResult<PagedList<VolunteerDto>>> GetAsync(
-        [FromServices] GetFilteredVolunteersWithPaginationHandlerDapper handler,
-        [FromQuery] GetFilteredVolunteersWithPaginationRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var query = request.ToQuery();
-
-        var result = await handler.HandleAsync(query, cancellationToken);
-
-        return result.ToResponse();
-    }
-
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<VolunteerDto>> GetByIdAsync(
-        [FromServices] GetVolunteerByIdHandler handler,
-        [FromRoute] Guid id,
-        CancellationToken cancellationToken = default)
-    {
-        var query = new GetVolunteerByIdQuery(id);
-
-        var result = await handler.HandleAsync(query, cancellationToken);
 
         return result.ToResponse();
     }

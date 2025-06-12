@@ -19,8 +19,10 @@ public class WriteDbContext(string connectionString) : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(
-            typeof(WriteDbContext).Assembly, 
+            typeof(WriteDbContext).Assembly,
             type => type.FullName?.Contains("Configurations.Write") ?? false);
+        
+        modelBuilder.HasDefaultSchema("public");
     }
 
     private ILoggerFactory CreateLoggerFactory() =>

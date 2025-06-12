@@ -7,6 +7,8 @@ using PetFamily.Accounts.Domain.DataModels;
 using PetFamily.Accounts.Infrastructure.Database;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Accounts.Infrastructure.Providers;
+using PetFamily.Accounts.Infrastructure.Seeding;
+using PetFamily.Accounts.Infrastructure.Seeding.Managers;
 using PetFamily.Core;
 using PetFamily.Core.Abstractions;
 using PetFamily.SharedKernel;
@@ -22,7 +24,8 @@ public static class DependencyInjection
         return services.AddProviders()
             .RegisterIdentity()
             .AddConfigurations(configuration)
-            .AddDatabase(configuration);
+            .AddDatabase(configuration)
+            .AddSeeding();
     }
 
     private static IServiceCollection AddProviders(this IServiceCollection services)
@@ -45,6 +48,7 @@ public static class DependencyInjection
     private static IServiceCollection AddConfigurations(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.JWT));
+        services.Configure<AdminOptions>(configuration.GetSection(AdminOptions.ADMIN));
 
         return services;
     }
@@ -59,6 +63,18 @@ public static class DependencyInjection
 
         DefaultTypeMap.MatchNamesWithUnderscores = true;
 
+        return services;
+    }
+
+    private static IServiceCollection AddSeeding(this IServiceCollection services)
+    {
+        services.AddSingleton<AccountsSeeder>();
+        services.AddScoped<AccountsSeederService>();
+        services.AddScoped<AdminAccountManager>();
+        services.AddScoped<PermissionManager>();
+        services.AddScoped<RoleManager>();
+        services.AddScoped<RolePermissionManager>();
+        
         return services;
     }
 }
