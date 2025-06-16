@@ -14,11 +14,10 @@ using PetFamily.Web.Extensions;
 using PetFamily.Web.Middlewares;
 using Serilog;
 
-//TODO Расшарить в Core namingConventions и logging
 DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
-
+var conf = builder.Configuration;
 builder.Services.AddWeb(builder.Configuration);
 
 builder.Services.AddAccountsPresentation() //DI Accounts
@@ -51,7 +50,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
-    await app.ApplyMigrations();
+    // await app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();
@@ -63,7 +62,5 @@ app.MapControllers();
 
 app.Run();
 
-namespace PetFamily.Web
-{
-    public partial class Program;
-}
+
+public partial class Program;

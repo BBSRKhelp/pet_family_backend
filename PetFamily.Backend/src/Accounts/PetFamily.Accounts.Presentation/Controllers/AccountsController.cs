@@ -35,10 +35,4 @@ public class AccountsController : ControllerBase
 
         return result.ToResponse();
     }
-    
-    [HttpPost("test")]
-    public IActionResult Test()
-    {
-        return Ok();
-    }
 }

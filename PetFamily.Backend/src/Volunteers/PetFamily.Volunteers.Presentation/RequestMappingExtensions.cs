@@ -1,3 +1,4 @@
+using PetFamily.Core.DTOs;
 using PetFamily.Core.Enums;
 using PetFamily.Volunteers.Application.Features.Commands.Pet.AddPet;
 using PetFamily.Volunteers.Application.Features.Commands.Pet.ChangePetsPosition;
@@ -6,12 +7,9 @@ using PetFamily.Volunteers.Application.Features.Commands.Pet.UpdateMainPetInfo;
 using PetFamily.Volunteers.Application.Features.Commands.Pet.UpdatePetStatus;
 using PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
 using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateMainInfo;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateRequisites;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateSocialNetworks;
 using PetFamily.Volunteers.Application.Features.Queries.Pet.GetFilteredPetsWithPagination;
 using PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 using PetFamily.Volunteers.Contracts.DTOs.Pet;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
 using PetFamily.Volunteers.Contracts.Requests;
 
 namespace PetFamily.Volunteers.Presentation;
@@ -27,12 +25,10 @@ public static class RequestMappingExtensions
             request.Email,
             request.Description,
             request.WorkExperience,
-            request.PhoneNumber,
-            request.SocialNetworks,
-            request.Requisites);
+            request.PhoneNumber);
     }
 
-    public static UpdateMainVolunteerInfoCommand ToCommand(this UpdateMainInfoVolunteerRequest request, Guid id)
+    public static UpdateMainVolunteerInfoCommand ToCommand(this UpdateMainVolunteerInfoRequest request, Guid id)
     {
         var fullName = new FullNameDto(request.FirstName, request.LastName, request.Patronymic);
 
@@ -43,18 +39,6 @@ public static class RequestMappingExtensions
             request.Description,
             request.WorkExperience,
             request.PhoneNumber);
-    }
-
-    public static UpdateRequisitesVolunteerCommand ToCommand(this UpdateRequisitesVolunteerRequest request, Guid id)
-    {
-        return new UpdateRequisitesVolunteerCommand(id, request.Requisite);
-    }
-
-    public static UpdateSocialNetworksVolunteerCommand ToCommand(
-        this UpdateSocialNetworksVolunteerRequest request,
-        Guid id)
-    {
-        return new UpdateSocialNetworksVolunteerCommand(id, request.SocialNetworks);
     }
 
     public static AddPetCommand ToCommand(this AddPetRequest request, Guid volunteerId)

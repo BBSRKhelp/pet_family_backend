@@ -1,8 +1,8 @@
 using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Shared.Application.IntegrationTests;
+using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
-using PetFamily.Volunteers.Domain.ValueObjects;
 using PetFamily.Volunteers.Infrastructure.Database;
 
 namespace PetFamily.Volunteer.Application.IntegrationTests;
@@ -29,9 +29,7 @@ public class VolunteerTestsBase : IClassFixture<VolunteerTestsWebFactory>, IAsyn
             Email.Create("test@test.com").Value,
             Description.Create("").Value,
             WorkExperience.Create(46).Value,
-            PhoneNumber.Create("89166666666").Value,
-            [],
-            []);
+            PhoneNumber.Create("89166666666").Value);
         
         await WriteDbContext.Volunteers.AddAsync(volunteer);
         await WriteDbContext.SaveChangesAsync();

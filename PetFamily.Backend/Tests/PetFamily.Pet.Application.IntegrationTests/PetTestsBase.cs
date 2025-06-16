@@ -1,6 +1,7 @@
 using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Enums;
+using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.SharedKernel.ValueObjects.Ids;
 using PetFamily.Species.Domain.Entities;
@@ -58,9 +59,7 @@ public class PetTestsBase : IClassFixture<PetTestsWebFactory>, IAsyncLifetime
             Email.Create("test@test.com").Value,
             Description.Create("").Value,
             WorkExperience.Create(46).Value,
-            PhoneNumber.Create("89166666666").Value,
-            [],
-            []);
+            PhoneNumber.Create("89166666666").Value);
         
         await VolunteerWriteDbContext.Volunteers.AddAsync(volunteer);
         await VolunteerWriteDbContext.SaveChangesAsync();

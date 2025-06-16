@@ -1,5 +1,6 @@
 using FluentAssertions;
 using PetFamily.Core.Enums;
+using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.SharedKernel.ValueObjects.Ids;
 using PetFamily.Volunteers.Domain.Entities;
@@ -238,17 +239,13 @@ public class VolunteerTests
         var description = Description.Create("TestDescription").Value;
         var workExperience = WorkExperience.Create(8).Value;
         var phoneNumber = PhoneNumber.Create("88888888888").Value;
-        IReadOnlyList<SocialNetwork> socialNetworks = [SocialNetwork.Create("TestSocialNetwork", "url").Value];
-        IReadOnlyList<Requisite> requisites = [Requisite.Create("TestRequisite", "TestRequisiteUrl").Value];
 
         return new Volunteers.Domain.Volunteer(
             fullname,
             email,
             description,
             workExperience,
-            phoneNumber,
-            socialNetworks,
-            requisites);
+            phoneNumber);
     }
 
     private Pet CreatePet()

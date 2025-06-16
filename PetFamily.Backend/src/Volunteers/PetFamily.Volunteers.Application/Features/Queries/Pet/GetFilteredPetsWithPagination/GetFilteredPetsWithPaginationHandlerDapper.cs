@@ -4,6 +4,7 @@ using Dapper;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstractions;
+using PetFamily.Core.DTOs;
 using PetFamily.Core.Extensions;
 using PetFamily.Core.Models;
 using PetFamily.SharedKernel;

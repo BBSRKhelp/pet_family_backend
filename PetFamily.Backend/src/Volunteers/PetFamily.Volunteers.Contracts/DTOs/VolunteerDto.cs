@@ -1,5 +1,4 @@
 using System.Text.Json.Serialization;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
 
 namespace PetFamily.Volunteers.Contracts.DTOs;
 
@@ -20,10 +19,6 @@ public record VolunteerDto
     public string PhoneNumber { get; init; } = null!;
 
     public string Email { get; init; } = null!;
-
-    public RequisiteDto[] Requisites { get; set; } = [];
-
-    public SocialNetworkDto[] SocialNetworks { get; set; } = [];
 
     [JsonIgnore] public bool IsDeleted { get; init; }
 }

@@ -24,7 +24,7 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
         IVolunteersRepository volunteersRepository,
         SpeciesAndBreedValidator speciesAndBreedValidator,
         IValidator<AddPetCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<AddPetHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

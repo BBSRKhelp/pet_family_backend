@@ -20,13 +20,11 @@ public class Volunteer : Entity<VolunteerId>, ISoftDeletable
     }
 
     public Volunteer(
-        FullName fullName,
+        FullName fullName, //TODO СПРОСИТЬ зачем если есть в Users?
         Email email,
         Description description,
         WorkExperience workExperience,
-        PhoneNumber phoneNumber,
-        IReadOnlyList<SocialNetwork> socialNetwork,
-        IReadOnlyList<Requisite> requisites)
+        PhoneNumber phoneNumber)
         : base(VolunteerId.NewId())
     {
         FullName = fullName;
@@ -34,8 +32,6 @@ public class Volunteer : Entity<VolunteerId>, ISoftDeletable
         Description = description;
         WorkExperience = workExperience;
         PhoneNumber = phoneNumber;
-        SocialNetworks = socialNetwork;
-        Requisites = requisites;
     }
 
     public FullName FullName { get; private set; } = null!;
@@ -43,8 +39,6 @@ public class Volunteer : Entity<VolunteerId>, ISoftDeletable
     public Description Description { get; private set; } = null!;
     public WorkExperience WorkExperience { get; private set; } = null!;
     public PhoneNumber PhoneNumber { get; private set; } = null!;
-    public IReadOnlyList<SocialNetwork> SocialNetworks { get; private set; } = [];
-    public IReadOnlyList<Requisite> Requisites { get; private set; } = [];
     public IReadOnlyList<Pet> Pets => _pets.AsReadOnly();
 
     public int PetsFoundHome() => _pets.Count(p => p.Status == Status.FoundHome);
@@ -63,16 +57,6 @@ public class Volunteer : Entity<VolunteerId>, ISoftDeletable
         Description = description;
         WorkExperience = workExperience;
         PhoneNumber = phoneNumber;
-    }
-
-    public void UpdateRequisite(IReadOnlyList<Requisite> requisites)
-    {
-        Requisites = requisites;
-    }
-
-    public void UpdateSocialNetwork(IReadOnlyList<SocialNetwork> socialNetworks)
-    {
-        SocialNetworks = socialNetworks;
     }
 
     public Result<Pet, Error> GetPetById(PetId id)

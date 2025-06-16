@@ -1,4 +1,3 @@
-using System.Text.Json;
 using CSharpFunctionalExtensions;
 using Dapper;
 using FluentValidation;
@@ -8,7 +7,6 @@ using PetFamily.Core.Extensions;
 using PetFamily.Core.Models;
 using PetFamily.SharedKernel;
 using PetFamily.Volunteers.Contracts.DTOs;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
 
 namespace PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 
@@ -51,7 +49,7 @@ public class GetFilteredVolunteersWithPaginationHandlerDapper :
         var countTemplate = builder.AddTemplate("SELECT COUNT(*) FROM volunteers /**where**/");
 
         var volunteersTemplate = builder.AddTemplate("""
-                                                     SELECT id, 
+                                                     SELECT id,
                                                      first_name, 
                                                      last_name, 
                                                      patronymic, 
@@ -59,8 +57,6 @@ public class GetFilteredVolunteersWithPaginationHandlerDapper :
                                                      work_experience,
                                                      phone_number,
                                                      email,
-                                                     requisites, 
-                                                     social_networks
                                                      FROM volunteers
                                                      /**where**/ 
                                                      /**orderby**/
@@ -97,16 +93,8 @@ public class GetFilteredVolunteersWithPaginationHandlerDapper :
 
         var totalCount = await connection.ExecuteScalarAsync<long>(countTemplate.RawSql, param);
 
-        var volunteers = await connection.QueryAsync<VolunteerDto, string, string, VolunteerDto>(
+        var volunteers = await connection.QueryAsync<VolunteerDto>(
             volunteersTemplate.RawSql,
-            (volunteer, jsonRequisites, jsonSocialNetwork) =>
-            {
-                volunteer.Requisites = JsonSerializer.Deserialize<RequisiteDto[]>(jsonRequisites)!;
-                volunteer.SocialNetworks = JsonSerializer.Deserialize<SocialNetworkDto[]>(jsonSocialNetwork)!;
-
-                return volunteer;
-            },
-            splitOn: "requisites,social_networks",
             param: param);
 
         _logger.LogInformation("Volunteers have been received");

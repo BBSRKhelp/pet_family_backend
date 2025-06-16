@@ -1,6 +1,5 @@
 using PetFamily.Core.Abstractions;
-using PetFamily.Volunteers.Contracts.DTOs;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
+using PetFamily.Core.DTOs;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
 
@@ -9,6 +8,4 @@ public record CreateVolunteerCommand(
     string Email,
     string? Description,
     byte WorkExperience,
-    string PhoneNumber,
-    IEnumerable<SocialNetworkDto>? SocialNetworks,
-    IEnumerable<RequisiteDto>? Requisites) : ICommand;
+    string PhoneNumber) : ICommand;

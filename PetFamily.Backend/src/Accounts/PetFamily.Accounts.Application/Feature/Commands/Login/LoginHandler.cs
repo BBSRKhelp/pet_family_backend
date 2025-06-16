@@ -11,18 +11,15 @@ namespace PetFamily.Accounts.Application.Feature.Commands.Login;
 public class LoginHandler : ICommandHandler<string, LoginCommand>
 {
     private readonly UserManager<User> _userManager;
-    private readonly RoleManager<Role> _roleManager;
     private readonly ITokenProvider _tokenProvider;
     private readonly ILogger<LoginHandler> _logger;
 
     public LoginHandler(
         UserManager<User> userManager, 
-        RoleManager<Role> roleManager,
         ITokenProvider tokenProvider,
         ILogger<LoginHandler> logger)
     {
         _userManager = userManager;
-        _roleManager = roleManager;
         _tokenProvider = tokenProvider;
         _logger = logger;
     }
@@ -46,12 +43,6 @@ public class LoginHandler : ICommandHandler<string, LoginCommand>
             _logger.LogInformation("User with email: {Email} not confirmed", command.Email);
             return (ErrorList)Errors.User.InvalidCredentials();
         }
-        
-        //TODO 51-54 mb refactoring
-        var rolesNames = await _userManager.GetRolesAsync(user);
-        var roles =  await Task.WhenAll(rolesNames.Select(_roleManager.FindByNameAsync));
-        
-        user.SetRoles(roles!);
         
         var token = _tokenProvider.GenerateAccessToken(user);
 

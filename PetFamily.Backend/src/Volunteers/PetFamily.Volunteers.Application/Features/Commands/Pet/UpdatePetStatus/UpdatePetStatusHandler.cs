@@ -18,7 +18,7 @@ public class UpdatePetStatusHandler : ICommandHandler<Guid, UpdatePetStatusComma
 
     public UpdatePetStatusHandler(IVolunteersRepository volunteersRepository,
         IValidator<UpdatePetStatusCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]
         IUnitOfWork unitOfWork,
         ILogger<UpdatePetStatusHandler> logger)
     {

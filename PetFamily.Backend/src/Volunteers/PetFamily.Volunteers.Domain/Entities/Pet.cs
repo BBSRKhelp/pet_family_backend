@@ -26,7 +26,7 @@ public class Pet : Entity<PetId>, ISoftDeletable
         PhoneNumber phoneNumber,
         DateOnly? birthDate,
         Status status,
-        IReadOnlyList<Requisite> requisites,
+        IReadOnlyList<Requisite> requisites, //TODO СПРОСИТЬ Зачем пету реквизиты и номер телефона?
         BreedAndSpeciesId breedAndSpeciesId)
         : base(PetId.NewId())
     {
@@ -49,7 +49,9 @@ public class Pet : Entity<PetId>, ISoftDeletable
     public PhoneNumber PhoneNumber { get; private set; } = null!;
     public DateOnly? BirthDate { get; private set; }
     public Status Status { get; private set; }
+
     public HealthDetails HealthDetails { get; private set; } = null!;
+
     public IReadOnlyList<Requisite> Requisites { get; private set; } = [];
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos.AsReadOnly();
     public Position Position { get; private set; } = null!;
@@ -102,9 +104,9 @@ public class Pet : Entity<PetId>, ISoftDeletable
         if (currentMainPhoto is not null)
         {
             _petPhotos.Remove(currentMainPhoto);
-            _petPhotos.Add(new PetPhoto(currentMainPhoto.PhotoPath, false));
+            _petPhotos.Add(new PetPhoto(currentMainPhoto.PhotoPath));
         }
-        
+
         _petPhotos.Remove(petPhoto);
         _petPhotos.Add(new PetPhoto(photoPath, true));
 

@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Accounts.Application.Interfaces;
+using PetFamily.Accounts.Application.Interfaces.Managers;
 using PetFamily.Accounts.Domain.DataModels;
+using PetFamily.Accounts.Infrastructure.Authorization.Managers;
+using PetFamily.Accounts.Infrastructure.Authorization.Seeding;
 using PetFamily.Accounts.Infrastructure.Database;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Accounts.Infrastructure.Providers;
-using PetFamily.Accounts.Infrastructure.Seeding;
-using PetFamily.Accounts.Infrastructure.Seeding.Managers;
 using PetFamily.Core;
 using PetFamily.Core.Abstractions;
 using PetFamily.SharedKernel;
@@ -25,6 +26,7 @@ public static class DependencyInjection
             .RegisterIdentity()
             .AddConfigurations(configuration)
             .AddDatabase(configuration)
+            .AddManagers()
             .AddSeeding();
     }
 
@@ -57,6 +59,8 @@ public static class DependencyInjection
     {
         services.AddScoped<AccountsDbContext>(_ =>
             new AccountsDbContext(configuration.GetConnectionString(Constants.DATABASE)!));
+        
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkContext.Accounts);
 
         services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>(_ =>
             new SqlConnectionFactory(configuration.GetConnectionString(Constants.DATABASE)!));
@@ -66,14 +70,22 @@ public static class DependencyInjection
         return services;
     }
 
+    private static IServiceCollection AddManagers(this IServiceCollection services)
+    {
+        services.AddScoped<AdminAccountManager>();
+        services.AddScoped<IParticipantAccountManager,ParticipantAccountManager>();
+        services.AddScoped<VolunteerAccountManager>();
+        services.AddScoped<PermissionManager>();
+        services.AddScoped<RoleManager>();
+        services.AddScoped<RolePermissionManager>();
+        
+        return services;
+    }
+
     private static IServiceCollection AddSeeding(this IServiceCollection services)
     {
         services.AddSingleton<AccountsSeeder>();
         services.AddScoped<AccountsSeederService>();
-        services.AddScoped<AdminAccountManager>();
-        services.AddScoped<PermissionManager>();
-        services.AddScoped<RoleManager>();
-        services.AddScoped<RolePermissionManager>();
         
         return services;
     }

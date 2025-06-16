@@ -1,4 +1,4 @@
-using PetFamily.Volunteers.Contracts.DTOs;
+using PetFamily.Core.DTOs;
 
 namespace PetFamily.Volunteers.Contracts.Requests;
 

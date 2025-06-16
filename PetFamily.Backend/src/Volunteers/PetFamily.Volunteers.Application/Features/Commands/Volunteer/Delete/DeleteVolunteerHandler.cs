@@ -20,7 +20,7 @@ public class DeleteVolunteerHandler : ICommandHandler<Guid, DeleteVolunteerComma
     public DeleteVolunteerHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<DeleteVolunteerCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<CreateVolunteerHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

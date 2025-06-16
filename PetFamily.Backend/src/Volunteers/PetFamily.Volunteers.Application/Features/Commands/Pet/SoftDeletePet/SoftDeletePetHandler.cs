@@ -19,7 +19,7 @@ public class SoftDeletePetHandler : ICommandHandler<Guid, SoftDeletePetCommand>
     public SoftDeletePetHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<SoftDeletePetCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<SoftDeletePetHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

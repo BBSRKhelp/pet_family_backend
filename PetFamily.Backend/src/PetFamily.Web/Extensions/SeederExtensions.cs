@@ -1,4 +1,4 @@
-using PetFamily.Accounts.Infrastructure.Seeding;
+using PetFamily.Accounts.Infrastructure.Authorization.Seeding;
 
 namespace PetFamily.Web.Extensions;
 

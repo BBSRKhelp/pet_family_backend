@@ -1,6 +1,3 @@
-using PetFamily.Volunteers.Contracts.DTOs;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
-
 namespace PetFamily.Volunteers.Contracts.Requests;
 
 public record CreateVolunteerRequest(
@@ -10,6 +7,4 @@ public record CreateVolunteerRequest(
     string Email,
     string? Description,
     byte WorkExperience,
-    string PhoneNumber,
-    IEnumerable<SocialNetworkDto>? SocialNetworks,
-    IEnumerable<RequisiteDto>? Requisites);
+    string PhoneNumber);

@@ -1,5 +1,5 @@
 using PetFamily.Core.Abstractions;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
+using PetFamily.Core.DTOs;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateMainInfo;
 

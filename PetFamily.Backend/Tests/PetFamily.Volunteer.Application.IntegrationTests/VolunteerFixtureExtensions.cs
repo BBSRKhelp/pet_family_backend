@@ -1,10 +1,8 @@
 using AutoFixture;
+using PetFamily.Core.DTOs;
 using PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
 using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateMainInfo;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateRequisites;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateSocialNetworks;
 using PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
 
 namespace PetFamily.Volunteer.Application.IntegrationTests;
 
@@ -30,26 +28,6 @@ public static class VolunteerFixtureExtensions
             .With(v => v.Email, "test2@test2.com2")
             .With(v => v.PhoneNumber, "89123456788")
             .With(v => v.WorkExperience, 98)
-            .Create();
-    }
-
-    public static UpdateRequisitesVolunteerCommand BuildUpdateRequisitesVolunteerCommand(
-        this Fixture fixture,
-        Guid volunteerId)
-    {
-        return fixture.Build<UpdateRequisitesVolunteerCommand>()
-            .With(v => v.Id, volunteerId)
-            .With(v => v.Requisites)
-            .Create();
-    }
-    
-    public static UpdateSocialNetworksVolunteerCommand BuildUpdateSocialNetworksVolunteerCommand(
-        this Fixture fixture,
-        Guid volunteerId)
-    {
-        return fixture.Build<UpdateSocialNetworksVolunteerCommand>()
-            .With(v => v.Id, volunteerId)
-            .With(v => v.SocialNetworks)
             .Create();
     }
 

@@ -1,12 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
-using PetFamily.Volunteers.Contracts.DTOs;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
 using PetFamily.Volunteers.Domain;
-using PetFamily.Volunteers.Domain.ValueObjects;
 using PetFamily.Volunteers.Domain.ValueObjects.Ids;
 
 namespace PetFamily.Volunteers.Infrastructure.Database.Configurations.Write;
@@ -25,19 +21,19 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 id => id.Value,
                 value => VolunteerId.Create(value));
 
-        builder.ComplexProperty(v => v.FullName, fb =>
+        builder.ComplexProperty(v => v.FullName, fnb =>
         {
-            fb.Property(f => f.FirstName)
+            fnb.Property(fn => fn.FirstName)
                 .IsRequired()
                 .HasColumnName("first_name")
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
-            fb.Property(f => f.LastName)
+            fnb.Property(fn => fn.LastName)
                 .IsRequired()
                 .HasColumnName("last_name")
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
-            fb.Property(f => f.Patronymic)
+            fnb.Property(fn => fn.Patronymic)
                 .IsRequired(false)
                 .HasColumnName("patronymic")
                 .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
@@ -74,19 +70,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("phone_number")
                 .HasMaxLength(PhoneNumber.MAX_LENGTH);
         });
-
-        builder.Property(v => v.SocialNetworks)
-            .IsRequired()
-            .ValueObjectsCollectionJsonConversion(
-                sn => new SocialNetworkDto(sn.Title, sn.Url),
-                dto => SocialNetwork.Create(dto.Title, dto.Url).Value);
-
-        builder.Property(v => v.Requisites)
-            .IsRequired()
-            .ValueObjectsCollectionJsonConversion(
-                r => new RequisiteDto(r.Title, r.Description),
-                dto => Requisite.Create(dto.Title, dto.Description).Value);
-
+        
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted");

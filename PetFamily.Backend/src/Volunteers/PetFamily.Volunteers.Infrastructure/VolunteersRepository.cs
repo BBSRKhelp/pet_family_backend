@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteers.Application.Interfaces;
-using PetFamily.Volunteers.Domain.ValueObjects;
 using PetFamily.Volunteers.Domain.ValueObjects.Ids;
 using PetFamily.Volunteers.Domain;
 using PetFamily.Volunteers.Infrastructure.Database;

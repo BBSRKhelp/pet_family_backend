@@ -485,5 +485,5 @@ $RECYCLE.BIN/
 
 # My ignore files
 .DS_Store
-PetFamily.Backend/src/PetFamily.Infrastructure/Migrations
+
 Migrations/

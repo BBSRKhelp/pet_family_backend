@@ -24,7 +24,7 @@ public class UpdateMainPetInfoHandler : ICommandHandler<Guid, UpdateMainPetInfoC
         IVolunteersRepository volunteersRepository,
         IValidator<UpdateMainPetInfoCommand> validator,
         SpeciesAndBreedValidator speciesAndBreedValidator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<UpdateMainPetInfoHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

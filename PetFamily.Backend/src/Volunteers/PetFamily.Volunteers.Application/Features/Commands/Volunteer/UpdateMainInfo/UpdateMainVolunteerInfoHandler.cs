@@ -6,7 +6,6 @@ using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
-using PetFamily.Volunteers.Domain.ValueObjects;
 using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateMainInfo;
@@ -21,7 +20,7 @@ public class UpdateMainVolunteerInfoHandler : ICommandHandler<Guid, UpdateMainVo
     public UpdateMainVolunteerInfoHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<UpdateMainVolunteerInfoCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<UpdateMainVolunteerInfoHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

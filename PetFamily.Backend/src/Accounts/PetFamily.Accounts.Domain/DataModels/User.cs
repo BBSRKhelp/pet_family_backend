@@ -1,36 +1,114 @@
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
+using PetFamily.SharedKernel;
+using PetFamily.SharedKernel.ValueObjects;
 
 namespace PetFamily.Accounts.Domain.DataModels;
 
-public class User : IdentityUser<Guid>
+public sealed class User : IdentityUser<Guid>
 {
-    private List<Role> _roles = [];
-
-    private User() { }
-    
-    public IReadOnlyList<Role> Roles => _roles;
-
-    public static User CreateUser(string userName, string email)
+    //ef core
+    private User()
     {
-        return new User
-        {
-            UserName = userName,
-            Email = email
-        };
     }
     
-    public static User CreateAdmin(string userName, string email, Role role)
+    private User(
+        string userName,
+        FullName fullName,
+        string email,
+        PhotoPath? photoPath,
+        IReadOnlyList<SocialNetwork> socialNetworks,
+        Role role)
     {
-        return new User
-        {
-            UserName = userName,
-            Email = email,
-            _roles = [role]
-        };
+        UserName = userName;
+        FullName = fullName;
+        Email = email;
+        PhotoPath = photoPath;
+        SocialNetworks = socialNetworks;
+        Roles = [role];
     }
 
-    public void SetRoles(IEnumerable<Role> roles)
+    public FullName FullName { get; private set; } = null!;
+    public PhotoPath? PhotoPath { get; private set; }
+    public IReadOnlyList<SocialNetwork> SocialNetworks { get; private set; } = null!;
+    public IReadOnlyList<Role> Roles { get; private set; } = null!;
+    public ParticipantAccount? ParticipantAccount { get; init; }
+    public VolunteerAccount? VolunteerAccount { get; init; }
+    public AdminAccount? AdminAccount { get; init; }
+
+    //TODO СПРОСИТЬ бесмысслено же делать кучу одинаковых методов. Да удобней читать будет в handelr`ах, но и все
+    public static Result<User, Error> CreateParticipant(
+        string userName,
+        FullName fullName,
+        string email,
+        PhotoPath? photoPath,
+        IReadOnlyList<SocialNetwork> socialNetworks,
+        Role role)
     {
-        _roles = roles.ToList();
+        if (role.NormalizedName is not ParticipantAccount.PARTICIPANT)
+            return Errors.General.IsInvalid(nameof(role));
+
+        return new User(
+            userName,
+            fullName,
+            email,
+            photoPath,
+            socialNetworks,
+            role);
+    }
+
+    public static Result<User, Error> CreateVolunteer(
+        string userName,
+        FullName fullName,
+        string email,
+        PhotoPath? photoPath,
+        IReadOnlyList<SocialNetwork> socialNetworks,
+        Role role)
+    {
+        if (role.NormalizedName is not VolunteerAccount.VOLUNTEER)
+            return Errors.General.IsInvalid(nameof(role));
+
+        return new User(
+            userName,
+            fullName,
+            email,
+            photoPath,
+            socialNetworks,
+            role);
+    }
+
+    public static Result<User, Error> CreateAdmin(
+        string userName,
+        FullName fullName,
+        string email,
+        PhotoPath? photoPath,
+        IReadOnlyList<SocialNetwork> socialNetworks,
+        Role role)
+    {
+        if (role.NormalizedName is not AdminAccount.ADMIN)
+            return Errors.General.IsInvalid(nameof(role));
+
+        return new User(
+            userName,
+            fullName,
+            email,
+            photoPath,
+            socialNetworks,
+            role);
+    }
+
+    public void ChangeRole(Role role)
+        => Roles = [role];
+
+    public void UpdateMainInfo(
+        string userName,
+        FullName fullName,
+        PhotoPath? photoPath,
+        IEnumerable<SocialNetwork> socialNetworks)
+    {
+        UserName = userName;
+        FullName = fullName;
+        PhotoPath = photoPath;
+        SocialNetworks = socialNetworks.ToList();
     }
 }

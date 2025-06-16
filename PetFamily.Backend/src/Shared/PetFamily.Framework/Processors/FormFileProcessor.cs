@@ -14,16 +14,28 @@ public class FormFileProcessor : IAsyncDisposable
             var stream = file.OpenReadStream();
 
             var fileName = Path.ChangeExtension(
-                Guid.NewGuid().ToString("N"), 
+                Guid.NewGuid().ToString("N"),
                 Path.GetExtension(file.FileName));
-            
+
             var fileDto = new UploadFileDto(stream, fileName);
-            
+
             _fileDtos.Add(fileDto);
         }
+
         return _fileDtos;
     }
-    
+
+    public UploadFileDto Process(IFormFile file)
+    {
+        var stream = file.OpenReadStream();
+
+        var fileName = Path.ChangeExtension(
+            Guid.NewGuid().ToString("N"),
+            Path.GetExtension(file.FileName));
+
+        return new UploadFileDto(stream, fileName);
+    }
+
     public async ValueTask DisposeAsync()
     {
         foreach (var file in _fileDtos)

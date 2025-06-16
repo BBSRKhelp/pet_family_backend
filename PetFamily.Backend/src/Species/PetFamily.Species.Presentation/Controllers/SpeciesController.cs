@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core.Models;
 using PetFamily.Framework;
@@ -17,7 +16,7 @@ namespace PetFamily.Species.Presentation.Controllers;
 [Route("[controller]")]
 public class SpeciesController : ControllerBase
 {
-    [Permission(Permissions.Accounts.SPECIES_CREATE)]
+    [Permission(Permissions.Species.CREATE)]
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateAsync(
         [FromServices] CreateSpeciesHandler handler,
@@ -31,6 +30,7 @@ public class SpeciesController : ControllerBase
         return result.ToResponse();
     }
 
+    [Permission(Permissions.Species.GET)]
     [HttpGet]
     public async Task<ActionResult<PagedList<SpeciesDto>>> GetAsync(
         [FromServices] GetFilteredSpeciesWithPaginationHandler handler,
@@ -44,7 +44,7 @@ public class SpeciesController : ControllerBase
         return result.ToResponse();
     }
 
-    [Authorize]
+    [Permission(Permissions.Species.DELETE)]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<Guid>> DeleteAsync(
         [FromServices] DeleteSpeciesHandler handler,
@@ -58,6 +58,7 @@ public class SpeciesController : ControllerBase
         return result.ToResponse();
     }
 
+    [Permission(Permissions.Species.BREED_ADD)]
     [HttpPost("{id:guid}/breeds")]
     public async Task<ActionResult<Guid>> AddBreedAsync(
         [FromServices] AddBreedHandler handler,
@@ -72,6 +73,7 @@ public class SpeciesController : ControllerBase
         return result.ToResponse();
     }
 
+    [Permission(Permissions.Species.BREED_DELETE)]
     [HttpDelete("{speciesId:guid}/breeds/{breedId:guid}")]
     public async Task<ActionResult<Guid>> DeleteBreedAsync(
         [FromServices] DeleteBreedHandler handler,

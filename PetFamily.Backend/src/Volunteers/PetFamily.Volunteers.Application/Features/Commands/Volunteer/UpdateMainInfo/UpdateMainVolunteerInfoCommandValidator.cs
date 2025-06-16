@@ -2,7 +2,6 @@ using FluentValidation;
 using PetFamily.Core.Validation;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
-using PetFamily.Volunteers.Domain.ValueObjects;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateMainInfo;
 

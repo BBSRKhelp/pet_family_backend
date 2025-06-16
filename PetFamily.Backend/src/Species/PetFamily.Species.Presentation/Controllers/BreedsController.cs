@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core.Models;
 using PetFamily.Framework;
+using PetFamily.Framework.Authorization;
 using PetFamily.Species.Application.Feature.Queries.GetBreedsByIdSpecies;
 using PetFamily.Species.Contracts.DTOs;
 using PetFamily.Species.Contracts.Requests;
@@ -11,6 +12,7 @@ namespace PetFamily.Species.Presentation.Controllers;
 [Route("[controller]")]
 public class BreedsController : ControllerBase
 {
+    [Permission(Permissions.Breeds.GET)]
     [HttpGet("{speciesId:guid}/breeds")]
     public async Task<ActionResult<PagedList<BreedDto>>> GetBreedAsync(
         [FromServices] GetBreedsByIdSpeciesHandler speciesHandler,

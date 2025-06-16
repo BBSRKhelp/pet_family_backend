@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using PetFamily.Core.DTOs;
 using PetFamily.Core.Enums;
 using PetFamily.Volunteers.Contracts.DTOs.Pet;
 

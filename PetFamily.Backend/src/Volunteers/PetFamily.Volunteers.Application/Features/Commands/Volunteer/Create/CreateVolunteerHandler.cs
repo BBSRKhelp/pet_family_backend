@@ -6,7 +6,6 @@ using PetFamily.Core.Abstractions;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
-using PetFamily.Volunteers.Domain.ValueObjects;
 using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
@@ -21,7 +20,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
     public CreateVolunteerHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<CreateVolunteerCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<CreateVolunteerHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
@@ -53,14 +52,6 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
 
         var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
 
-        var socialNetworks = command.SocialNetworks
-            ?.Select(x => SocialNetwork.Create(x.Title, x.Url).Value)
-            .ToArray() ?? [];
-
-        var requisites = command.Requisites
-            ?.Select(x => Requisite.Create(x.Title, x.Description).Value)
-            .ToArray() ?? [];
-
         var volunteerEmailResult = await _volunteersRepository.GetByEmailAsync(email, cancellationToken);
         if (volunteerEmailResult.IsSuccess)
         {
@@ -80,9 +71,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, CreateVolunteerComma
                 email,
                 description,
                 workExperience,
-                phoneNumber,
-                socialNetworks,
-                requisites);
+                phoneNumber);
 
         var result = await _volunteersRepository.AddAsync(volunteer, cancellationToken);
         

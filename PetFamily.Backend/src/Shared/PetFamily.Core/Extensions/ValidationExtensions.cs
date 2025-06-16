@@ -16,4 +16,7 @@ public static class ValidationExtensions
 
         return new ErrorList(errors);
     }
+    
+    public static ErrorList ToErrorList(this Error error) 
+        => new ErrorList([error]);
 }
