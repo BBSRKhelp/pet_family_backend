@@ -1,5 +1,5 @@
 using PetFamily.Core.Abstractions;
-using PetFamily.Volunteers.Contracts.DTOs;
+using PetFamily.Core.DTOs;
 using PetFamily.Volunteers.Contracts.DTOs.Pet;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.UpdateMainPetInfo;
@@ -11,8 +11,6 @@ public record UpdateMainPetInfoCommand(
     string? Description,
     AppearanceDetailsDto AppearanceDetails,
     AddressDto Address,
-    string PhoneNumber,
     DateOnly? BirthDate,
     HealthDetailsDto HealthDetails,
-    IEnumerable<RequisiteDto>? Requisites,
     BreedAndSpeciesIdDto BreedAndSpeciesId) : ICommand;

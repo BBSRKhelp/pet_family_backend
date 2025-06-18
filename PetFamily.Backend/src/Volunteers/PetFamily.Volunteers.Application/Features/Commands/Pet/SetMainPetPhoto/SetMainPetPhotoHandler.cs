@@ -20,7 +20,7 @@ public class SetMainPetPhotoHandler : ICommandHandler<Guid, SetMainPetPhotoComma
     public SetMainPetPhotoHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<SetMainPetPhotoCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<SetMainPetPhotoHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

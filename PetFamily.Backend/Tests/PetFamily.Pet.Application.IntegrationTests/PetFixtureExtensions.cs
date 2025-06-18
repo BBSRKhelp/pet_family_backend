@@ -26,7 +26,6 @@ public static class PetFixtureExtensions
             .With(p => p.AppearanceDetails, new AppearanceDetailsDto(Colour.Black, 12, 12))
             .With(p => p.HealthDetails, new HealthDetailsDto("test", true, true))
             .With(p => p.Address, new AddressDto("co", "ci", "st", null))
-            .With(p => p.PhoneNumber, "79169166666")
             .With(p => p.BreedAndSpeciesId, new BreedAndSpeciesIdDto(speciesId, breedId))
             .With(p => p.Status, Status.FoundHome)
             .Create();
@@ -50,8 +49,7 @@ public static class PetFixtureExtensions
         Guid volunteerId,
         Guid petId,
         SpeciesId speciesId,
-        Guid breedId,
-        string phoneNumber)
+        Guid breedId)
     {
         fixture.Customize(new DateOnlyCustomization());
         
@@ -60,7 +58,6 @@ public static class PetFixtureExtensions
             .With(p => p.PetId, petId)
             .With(p => p.AppearanceDetails, new AppearanceDetailsDto(Colour.Black, 12, 12))
             .With(p => p.Address, new AddressDto("co", "ci", "st", null))
-            .With(p => p.PhoneNumber, phoneNumber)
             .With(p => p.BirthDate, DateOnly.Parse("2023-12-01"))
             .With(p => p.HealthDetails, new HealthDetailsDto("test", true, true))
             .With(p => p.BreedAndSpeciesId, new BreedAndSpeciesIdDto(speciesId, breedId))

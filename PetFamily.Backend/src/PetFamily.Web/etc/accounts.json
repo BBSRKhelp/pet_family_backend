@@ -1,0 +1,75 @@
+{
+  "Permissions": {
+    "Volunteers": [
+      "volunteers.create",
+      "volunteers.get",
+      "volunteers.update.main_info",
+      "volunteers.delete",
+      "volunteers.pets.add",
+      "volunteers.pets.files.upload",
+      "volunteers.pets.main_photo.set",
+      "volunteers.pets.position.change",
+      "volunteers.pets.main_info.update",
+      "volunteers.pets.status.update",
+      "volunteers.pets.soft_delete",
+      "volunteers.pets.hard_delete"
+    ],
+    "Pets": [
+      "pets.get"
+    ],
+    "Species": [
+      "species.create",
+      "species.get",
+      "species.delete",
+      "species.breeds.add",
+      "species.breeds.delete"
+    ],
+    "Breeds": [
+      "breeds.get"
+    ]
+  },
+  "Roles": {
+    "Admin": [
+      "volunteers.create",
+      "volunteers.get",
+      "volunteers.update.main_info",
+      "volunteers.delete",
+      "volunteers.pets.add",
+      "volunteers.pets.files.upload",
+      "volunteers.pets.main_photo.set",
+      "volunteers.pets.position.change",
+      "volunteers.pets.main_info.update",
+      "volunteers.pets.status.update",
+      "volunteers.pets.soft_delete",
+      "volunteers.pets.hard_delete",
+      "pets.get",
+      "species.create",
+      "species.get",
+      "species.delete",
+      "species.breeds.add",
+      "species.breeds.delete",
+      "breeds.get"
+    ],
+    "Volunteer": [
+      "volunteers.get",
+      "volunteers.update.main_info",
+      "volunteers.pets.add",
+      "volunteers.pets.files.upload",
+      "volunteers.pets.main_photo.set",
+      "volunteers.pets.position.change",
+      "volunteers.pets.main_info.update",
+      "volunteers.pets.status.update",
+      "volunteers.pets.soft_delete",
+      "volunteers.pets.hard_delete",
+      "pets.get",
+      "species.get",
+      "breeds.get"
+    ],
+    "Participant": [
+      "volunteers.get",
+      "pets.get",
+      "species.get",
+      "breeds.get"
+    ]
+  }
+}

@@ -1,5 +1,3 @@
-using PetFamily.Volunteers.Contracts.DTOs;
-
 namespace PetFamily.Volunteers.Contracts.Requests;
 
 public record AddPetRequest(
@@ -15,9 +13,7 @@ public record AddPetRequest(
     string City,
     string Street,
     string? PostalCode,
-    string PhoneNumber,
     DateOnly? BirthDate,
     string Status,
-    IEnumerable<RequisiteDto>? Requisites,
     Guid SpeciesId,
     Guid BreedId);

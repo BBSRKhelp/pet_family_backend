@@ -5,7 +5,6 @@ using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.SharedKernel.ValueObjects.Ids;
-using PetFamily.Volunteers.Contracts.DTOs;
 using PetFamily.Volunteers.Contracts.DTOs.Pet;
 using PetFamily.Volunteers.Domain.Entities;
 using PetFamily.Volunteers.Domain.ValueObjects;
@@ -94,22 +93,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnOrder(10);
         });
 
-        builder.ComplexProperty(p => p.PhoneNumber, pb =>
-        {
-            pb.Property(pn => pn.Value)
-                .IsRequired()
-                .HasColumnName("phone_number")
-                .HasMaxLength(PhoneNumber.MAX_LENGTH)
-                .HasColumnOrder(11);
-        });
-
         builder.Property(p => p.BirthDate)
             .IsRequired(false)
-            .HasColumnOrder(12);
+            .HasColumnOrder(11);
 
         builder.Property(p => p.Status)
             .IsRequired()
-            .HasColumnOrder(13);
+            .HasColumnOrder(12);
 
         builder.ComplexProperty(p => p.HealthDetails, hdb =>
         {
@@ -117,19 +107,19 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .IsRequired()
                 .HasColumnName("health_information")
                 .HasMaxLength(Constants.MAX_MEDIUM_LOW_TEXT_LENGTH)
-                .HasColumnOrder(14);
+                .HasColumnOrder(13);
 
             hdb.Property(hd => hd.IsCastrated)
                 .IsRequired()
                 .HasColumnName("is_castrated")
                 .HasDefaultValue(false)
-                .HasColumnOrder(15);
+                .HasColumnOrder(14);
 
             hdb.Property(hd => hd.IsVaccinated)
                 .IsRequired()
                 .HasColumnName("is_vaccinated")
                 .HasDefaultValue(false)
-                .HasColumnOrder(16);
+                .HasColumnOrder(15);
         });
 
         builder.ComplexProperty(p => p.Position, snb =>
@@ -137,7 +127,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             snb.Property(sn => sn.Value)
                 .IsRequired()
                 .HasColumnName("position")
-                .HasColumnOrder(17);
+                .HasColumnOrder(16);
         });
 
         builder.ComplexProperty(p => p.BreedAndSpeciesId, bsb =>
@@ -148,31 +138,24 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasConversion(
                     id => id.Value,
                     value => SpeciesId.Create(value))
-                .HasColumnOrder(18);
+                .HasColumnOrder(17);
 
             bsb.Property(ad => ad.BreedId)
                 .IsRequired()
                 .HasColumnName("breed_id")
-                .HasColumnOrder(19);
+                .HasColumnOrder(18);
         });
-        
-        builder.Property(p => p.Requisites)
-            .IsRequired()
-            .ValueObjectsCollectionJsonConversion(
-                r => new RequisiteDto(r.Title, r.Description),
-                dto => Requisite.Create(dto.Title, dto.Description).Value)
-            .HasColumnOrder(21);
 
         builder.Property(p => p.PetPhotos)
             .IsRequired()
             .ValueObjectsCollectionJsonConversion(
                 pp => new PetPhotoDto(pp.PhotoPath.Path, pp.IsMainPhoto),
                 dto => new PetPhoto(PhotoPath.Create(dto.PhotoPath).Value, dto.IsMainPhoto))
-            .HasColumnOrder(22);
+            .HasColumnOrder(21);
 
         builder.Property<bool>("_isDeleted")
             .UsePropertyAccessMode(PropertyAccessMode.Field)
             .HasColumnName("is_deleted")
-            .HasColumnOrder(23);
+            .HasColumnOrder(22);
     }
 }

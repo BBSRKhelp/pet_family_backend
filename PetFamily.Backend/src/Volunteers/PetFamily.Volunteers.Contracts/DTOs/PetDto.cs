@@ -26,8 +26,6 @@ public record PetDto
 
     public string? PostalCode { get; init; }
 
-    public string PhoneNumber { get; init; } = null!;
-
     public DateTime BirthDate { get; init; }
 
     public Status Status { get; init; }
@@ -46,8 +44,6 @@ public record PetDto
     
     public Guid VolunteerId { get; init; }
     
-    public RequisiteDto[] Requisites { get; set; } = [];
-
     public PetPhotoDto[] PetPhotos { get; set; } = [];
 
     [JsonIgnore] public bool IsDeleted { get; init; }

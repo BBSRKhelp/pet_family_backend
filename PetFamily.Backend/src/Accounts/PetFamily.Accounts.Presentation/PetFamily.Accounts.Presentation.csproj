@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Shared\PetFamily.Framework\PetFamily.Framework.csproj" />
       <ProjectReference Include="..\PetFamily.Accounts.Application\PetFamily.Accounts.Application.csproj" />
+      <ProjectReference Include="..\PetFamily.Accounts.Infrastructure\PetFamily.Accounts.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

@@ -29,7 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IReadDbContext, ReadDbContext>(_ =>
             new ReadDbContext(configuration.GetConnectionString(Constants.DATABASE)!));
 
-        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkContext.Volunteer);
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkContext.Volunteers);
 
         services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>(_ =>
             new SqlConnectionFactory(configuration.GetConnectionString(Constants.DATABASE)!));

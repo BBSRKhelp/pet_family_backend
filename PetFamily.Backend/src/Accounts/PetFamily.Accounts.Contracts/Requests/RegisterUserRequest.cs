@@ -1,3 +1,12 @@
-﻿namespace PetFamily.Accounts.Contracts.Requests;
+﻿using PetFamily.Accounts.Contracts.DTOs;
 
-public record RegisterUserRequest(string Email, string UserName, string Password);
+namespace PetFamily.Accounts.Contracts.Requests;
+
+public record RegisterUserRequest(
+    string UserName,
+    string FirstName,
+    string LastName,
+    string? Patronymic,
+    string Email,
+    IEnumerable<SocialNetworkDto>? SocialNetworks,
+    string Password);

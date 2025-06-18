@@ -1,8 +1,6 @@
 using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Shared.Application.IntegrationTests;
-using PetFamily.SharedKernel.ValueObjects;
-using PetFamily.Volunteers.Domain.ValueObjects;
 using PetFamily.Volunteers.Infrastructure.Database;
 
 namespace PetFamily.Volunteer.Application.IntegrationTests;
@@ -24,14 +22,7 @@ public class VolunteerTestsBase : IClassFixture<VolunteerTestsWebFactory>, IAsyn
 
     protected async Task<Guid> SeedVolunteerAsync()
     {
-        var volunteer = new Volunteers.Domain.Volunteer(
-            FullName.Create("testname", "testlastname", "testpatronymic").Value,
-            Email.Create("test@test.com").Value,
-            Description.Create("").Value,
-            WorkExperience.Create(46).Value,
-            PhoneNumber.Create("89166666666").Value,
-            [],
-            []);
+        var volunteer = new Volunteers.Domain.Volunteer();
         
         await WriteDbContext.Volunteers.AddAsync(volunteer);
         await WriteDbContext.SaveChangesAsync();

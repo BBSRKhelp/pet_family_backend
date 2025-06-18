@@ -2,9 +2,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.SharedKernel;
-using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteers.Application.Interfaces;
-using PetFamily.Volunteers.Domain.ValueObjects;
 using PetFamily.Volunteers.Domain.ValueObjects.Ids;
 using PetFamily.Volunteers.Domain;
 using PetFamily.Volunteers.Infrastructure.Database;
@@ -52,43 +50,6 @@ public class VolunteersRepository : IVolunteersRepository
         }
 
         _logger.LogInformation("A volunteer with id = {volunteerId} has been found", volunteerId.Value);
-
-        return volunteer;
-    }
-
-    public async Task<Result<Volunteer, Error>> GetByPhoneAsync(PhoneNumber phoneNumber,
-        CancellationToken cancellationToken = default)
-    {
-        var volunteer = await _dbContext
-            .Volunteers
-            .FirstOrDefaultAsync(v => v.PhoneNumber == phoneNumber, cancellationToken);
-
-        if (volunteer is null)
-        {
-            _logger.LogInformation("A volunteer with phone = {phoneNumber} was not found", phoneNumber.Value);
-
-            return Errors.General.NotFound(nameof(phoneNumber));
-        }
-
-        _logger.LogInformation("A volunteer with phone = {phoneNumber} has been found", phoneNumber.Value);
-
-        return volunteer;
-    }
-
-    public async Task<Result<Volunteer, Error>> GetByEmailAsync(Email email, CancellationToken cancellationToken)
-    {
-        var volunteer = await _dbContext
-            .Volunteers
-            .FirstOrDefaultAsync(v => v.Email == email, cancellationToken);
-
-        if (volunteer is null)
-        {
-            _logger.LogInformation("A volunteer with email = {email} was not found", email.Value);
-
-            return Errors.General.NotFound(nameof(email));
-        }
-
-        _logger.LogInformation("A volunteer with email = {email} has been found", email.Value);
 
         return volunteer;
     }

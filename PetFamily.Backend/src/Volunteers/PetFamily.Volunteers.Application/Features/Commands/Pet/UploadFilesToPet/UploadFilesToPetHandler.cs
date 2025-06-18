@@ -16,19 +16,19 @@ namespace PetFamily.Volunteers.Application.Features.Commands.Pet.UploadFilesToPe
 
 public class UploadFilesToPetHandler : ICommandHandler<Guid, UploadFilesToPetCommand>
 {
+    private const string BUCKET_NAME = "pet_photos";
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IFileContract _fileContract;
     private readonly IValidator<UploadFilesToPetCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMessageQueue<IEnumerable<FileIdentifier>> _messageQueue;
     private readonly ILogger<UploadFilesToPetHandler> _logger;
-    private const string BUCKET_NAME = "photos";
 
     public UploadFilesToPetHandler(
         IVolunteersRepository volunteersRepository,
         IFileContract fileContract,
         IValidator<UploadFilesToPetCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         IMessageQueue<IEnumerable<FileIdentifier>> messageQueue,
         ILogger<UploadFilesToPetHandler> logger)
     {

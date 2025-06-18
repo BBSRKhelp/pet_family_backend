@@ -11,7 +11,6 @@ public record GetFilteredPetsWithPaginationRequest(
     string? City,
     string? Street,
     string? PostalCode,
-    string? PhoneNumber,
     DateTime? BirthDate,
     string? Status,
     bool? IsCastrated,

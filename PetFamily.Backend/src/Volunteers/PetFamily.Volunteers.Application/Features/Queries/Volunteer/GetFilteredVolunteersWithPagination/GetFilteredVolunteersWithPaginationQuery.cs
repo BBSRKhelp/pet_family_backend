@@ -5,9 +5,5 @@ namespace PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFiltere
 public record GetFilteredVolunteersWithPaginationQuery(
     int PageNumber,
     int PageSize,
-    string? FirstName,
-    string? LastName,
-    string? Patronymic,
-    byte? WorkExperience, 
     string SortBy,
     string SortDirection) : IQuery;

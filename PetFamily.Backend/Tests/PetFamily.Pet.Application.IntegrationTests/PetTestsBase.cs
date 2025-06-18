@@ -39,10 +39,8 @@ public class PetTestsBase : IClassFixture<PetTestsWebFactory>, IAsyncLifetime
             AppearanceDetails.Create(Colour.Black, 15, 15).Value,
             HealthDetails.Create("string.Empty", true, true).Value,
             Address.Create("string.Empty", "string.Empty", "string.Empty", "string.Empty").Value,
-            PhoneNumber.Create("89166666666").Value,
             DateOnly.Parse("2023-12-23"),
             Status.FoundHome,
-            [],
             BreedAndSpeciesId.Create(speciesId, breedId).Value);
         
         volunteer.AddPet(pet);
@@ -53,14 +51,7 @@ public class PetTestsBase : IClassFixture<PetTestsWebFactory>, IAsyncLifetime
     
     protected async Task<Volunteer> SeedVolunteerAsync()
     {
-        var volunteer = new Volunteer(
-            FullName.Create("testname", "testlastname", "testpatronymic").Value,
-            Email.Create("test@test.com").Value,
-            Description.Create("").Value,
-            WorkExperience.Create(46).Value,
-            PhoneNumber.Create("89166666666").Value,
-            [],
-            []);
+        var volunteer = new Volunteer();
         
         await VolunteerWriteDbContext.Volunteers.AddAsync(volunteer);
         await VolunteerWriteDbContext.SaveChangesAsync();

@@ -16,7 +16,7 @@ using SpeciesReadDbContext = PetFamily.Species.Infrastructure.Database.ReadDbCon
 
 
 namespace PetFamily.Shared.Application.IntegrationTests;
-
+//TODO РЕШИТЬ вопрос с тестами
 public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     protected readonly PostgreSqlContainer DbContainer = new PostgreSqlBuilder()
@@ -28,7 +28,7 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
 
     private Respawner _respawner = null!;
     private DbConnection _dbConnection = null!;
-
+    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(ConfigureDefaultServices);

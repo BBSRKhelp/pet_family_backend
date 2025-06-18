@@ -25,7 +25,7 @@ public class HardDeletePetHandler : ICommandHandler<Guid, HardDeletePetCommand>
         IVolunteersRepository volunteersRepository,
         IFileContract fileContract,
         IValidator<HardDeletePetCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<HardDeletePetHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

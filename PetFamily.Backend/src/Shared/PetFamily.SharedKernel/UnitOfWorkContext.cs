@@ -2,6 +2,7 @@ namespace PetFamily.SharedKernel;
 
 public enum UnitOfWorkContext
 {
-    Volunteer,
+    Accounts,
+    Volunteers,
     Species
 }

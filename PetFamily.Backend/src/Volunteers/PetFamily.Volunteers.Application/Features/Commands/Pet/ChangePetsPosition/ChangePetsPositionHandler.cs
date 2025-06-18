@@ -20,7 +20,7 @@ public class ChangePetsPositionHandler : ICommandHandler<ChangePetsPositionComma
     public ChangePetsPositionHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<ChangePetsPositionCommand> validator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<ChangePetsPositionHandler> logger)
     {
         _volunteersRepository = volunteersRepository;

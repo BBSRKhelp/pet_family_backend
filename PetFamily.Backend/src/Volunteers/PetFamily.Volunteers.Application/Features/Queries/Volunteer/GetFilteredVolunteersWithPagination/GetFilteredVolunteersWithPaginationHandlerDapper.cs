@@ -1,4 +1,3 @@
-using System.Text.Json;
 using CSharpFunctionalExtensions;
 using Dapper;
 using FluentValidation;
@@ -8,59 +7,38 @@ using PetFamily.Core.Extensions;
 using PetFamily.Core.Models;
 using PetFamily.SharedKernel;
 using PetFamily.Volunteers.Contracts.DTOs;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
 
 namespace PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 
-public class GetFilteredVolunteersWithPaginationHandlerDapper :
-    IQueryHandler<PagedList<VolunteerDto>, GetFilteredVolunteersWithPaginationQuery>
+public class GetFilteredVolunteersWithPaginationHandlerDapper(
+    ISqlConnectionFactory sqlConnectionFactory,
+    IValidator<GetFilteredVolunteersWithPaginationQuery> validator,
+    ILogger<GetFilteredVolunteersWithPaginationHandlerDapper> logger)
+    : IQueryHandler<PagedList<VolunteerDto>, GetFilteredVolunteersWithPaginationQuery>
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-    private readonly IValidator<GetFilteredVolunteersWithPaginationQuery> _validator;
-    private readonly ILogger<GetFilteredVolunteersWithPaginationHandlerDapper> _logger;
-
-    public GetFilteredVolunteersWithPaginationHandlerDapper(
-        ISqlConnectionFactory sqlConnectionFactory,
-        IValidator<GetFilteredVolunteersWithPaginationQuery> validator,
-        ILogger<GetFilteredVolunteersWithPaginationHandlerDapper> logger)
-    {
-        _sqlConnectionFactory = sqlConnectionFactory;
-        _validator = validator;
-        _logger = logger;
-    }
-
     public async Task<Result<PagedList<VolunteerDto>, ErrorList>> HandleAsync(
         GetFilteredVolunteersWithPaginationQuery query,
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Getting volunteers with pagination");
+        logger.LogInformation("Getting volunteers with pagination");
 
-        var validationResult = await _validator.ValidateAsync(query, cancellationToken);
+        var validationResult = await validator.ValidateAsync(query, cancellationToken);
         if (!validationResult.IsValid)
         {
-            _logger.LogWarning("Failed to get volunteers with pagination");
+            logger.LogWarning("Failed to get volunteers with pagination");
             return validationResult.ToErrorList();
         }
 
-        using var connection = _sqlConnectionFactory.GetConnection();
+        using var connection = sqlConnectionFactory.GetConnection();
 
-        _logger.LogInformation("Connection with database established");
+        logger.LogInformation("Connection with database established");
 
         var builder = new SqlBuilder();
 
         var countTemplate = builder.AddTemplate("SELECT COUNT(*) FROM volunteers /**where**/");
 
         var volunteersTemplate = builder.AddTemplate("""
-                                                     SELECT id, 
-                                                     first_name, 
-                                                     last_name, 
-                                                     patronymic, 
-                                                     description, 
-                                                     work_experience,
-                                                     phone_number,
-                                                     email,
-                                                     requisites, 
-                                                     social_networks
+                                                     SELECT id
                                                      FROM volunteers
                                                      /**where**/ 
                                                      /**orderby**/
@@ -69,47 +47,23 @@ public class GetFilteredVolunteersWithPaginationHandlerDapper :
 
         builder.Where("is_deleted = 'false'");
 
-        if (!string.IsNullOrWhiteSpace(query.FirstName))
-            builder.Where("first_name ILIKE @FirstName");
-
-        if (!string.IsNullOrWhiteSpace(query.LastName))
-            builder.Where("last_name ILIKE @LastName");
-
-        if (!string.IsNullOrWhiteSpace(query.Patronymic))
-            builder.Where("patronymic ILIKE @Patronymic");
-
-        if (query.WorkExperience.HasValue)
-            builder.Where("work_experience = @WorkExperience");
-
         builder.OrderBy($"{query.SortBy} {query.SortDirection}");
 
         var param = new
         {
             PageSize = query.PageSize,
             OffSet = (query.PageNumber - 1) * query.PageSize,
-            FirstName = '%' + query.FirstName + '%',
-            LastName = '%' + query.LastName + '%',
-            Patronymic = '%' + query.Patronymic + '%',
-            WorkExperience = query.WorkExperience,
             SortDirection = query.SortDirection,
             SortBy = query.SortBy
         };
 
         var totalCount = await connection.ExecuteScalarAsync<long>(countTemplate.RawSql, param);
 
-        var volunteers = await connection.QueryAsync<VolunteerDto, string, string, VolunteerDto>(
+        var volunteers = await connection.QueryAsync<VolunteerDto>(
             volunteersTemplate.RawSql,
-            (volunteer, jsonRequisites, jsonSocialNetwork) =>
-            {
-                volunteer.Requisites = JsonSerializer.Deserialize<RequisiteDto[]>(jsonRequisites)!;
-                volunteer.SocialNetworks = JsonSerializer.Deserialize<SocialNetworkDto[]>(jsonSocialNetwork)!;
-
-                return volunteer;
-            },
-            splitOn: "requisites,social_networks",
             param: param);
 
-        _logger.LogInformation("Volunteers have been received");
+        logger.LogInformation("Volunteers have been received");
 
         return new PagedList<VolunteerDto>
         {

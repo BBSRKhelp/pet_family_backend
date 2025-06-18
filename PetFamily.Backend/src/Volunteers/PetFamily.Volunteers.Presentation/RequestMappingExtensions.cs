@@ -4,59 +4,15 @@ using PetFamily.Volunteers.Application.Features.Commands.Pet.ChangePetsPosition;
 using PetFamily.Volunteers.Application.Features.Commands.Pet.SetMainPetPhoto;
 using PetFamily.Volunteers.Application.Features.Commands.Pet.UpdateMainPetInfo;
 using PetFamily.Volunteers.Application.Features.Commands.Pet.UpdatePetStatus;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateMainInfo;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateRequisites;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateSocialNetworks;
 using PetFamily.Volunteers.Application.Features.Queries.Pet.GetFilteredPetsWithPagination;
 using PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 using PetFamily.Volunteers.Contracts.DTOs.Pet;
-using PetFamily.Volunteers.Contracts.DTOs.Volunteer;
 using PetFamily.Volunteers.Contracts.Requests;
 
 namespace PetFamily.Volunteers.Presentation;
 
 public static class RequestMappingExtensions
-{
-    public static CreateVolunteerCommand ToCommand(this CreateVolunteerRequest request)
-    {
-        var fullName = new FullNameDto(request.FirstName, request.LastName, request.Patronymic);
-
-        return new CreateVolunteerCommand(
-            fullName,
-            request.Email,
-            request.Description,
-            request.WorkExperience,
-            request.PhoneNumber,
-            request.SocialNetworks,
-            request.Requisites);
-    }
-
-    public static UpdateMainVolunteerInfoCommand ToCommand(this UpdateMainInfoVolunteerRequest request, Guid id)
-    {
-        var fullName = new FullNameDto(request.FirstName, request.LastName, request.Patronymic);
-
-        return new UpdateMainVolunteerInfoCommand(
-            id,
-            fullName,
-            request.Email,
-            request.Description,
-            request.WorkExperience,
-            request.PhoneNumber);
-    }
-
-    public static UpdateRequisitesVolunteerCommand ToCommand(this UpdateRequisitesVolunteerRequest request, Guid id)
-    {
-        return new UpdateRequisitesVolunteerCommand(id, request.Requisite);
-    }
-
-    public static UpdateSocialNetworksVolunteerCommand ToCommand(
-        this UpdateSocialNetworksVolunteerRequest request,
-        Guid id)
-    {
-        return new UpdateSocialNetworksVolunteerCommand(id, request.SocialNetworks);
-    }
-
+{ 
     public static AddPetCommand ToCommand(this AddPetRequest request, Guid volunteerId)
     {
         var coloration = Enum.TryParse(request.Coloration, true, out Colour resultColour)
@@ -82,10 +38,8 @@ public static class RequestMappingExtensions
             appearanceDetails,
             healthDetails,
             address,
-            request.PhoneNumber,
             request.BirthDate,
             status,
-            request.Requisites,
             breedAndSpeciesId);
     }
 
@@ -122,10 +76,8 @@ public static class RequestMappingExtensions
             request.Description,
             appearanceDetails,
             address,
-            request.PhoneNumber,
             request.BirthDate,
             healthDetails,
-            request.Requisites,
             breedAndSpeciesId);
     }
 
@@ -149,10 +101,6 @@ public static class RequestMappingExtensions
         return new GetFilteredVolunteersWithPaginationQuery(
             request.PageNumber,
             request.PageSize,
-            request.FirstName,
-            request.LastName,
-            request.Patronymic,
-            request.WorkExperience,
             request.SortBy ?? "id",
             request.SortDirection ?? "ASC");
     }
@@ -178,7 +126,6 @@ public static class RequestMappingExtensions
             request.City,
             request.Street,
             request.PostalCode,
-            request.PhoneNumber,
             request.BirthDate,
             status,
             request.IsCastrated,

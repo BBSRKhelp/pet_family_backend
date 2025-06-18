@@ -4,6 +4,10 @@ namespace PetFamily.SharedKernel.ValueObjects;
 
 public record PhotoPath
 {
+    private PhotoPath()
+    {
+    }
+
     private PhotoPath(string path)
     {
         Path = path;

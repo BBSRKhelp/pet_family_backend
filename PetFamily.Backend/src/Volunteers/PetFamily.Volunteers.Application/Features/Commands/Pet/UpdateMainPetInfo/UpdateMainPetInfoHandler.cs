@@ -24,7 +24,7 @@ public class UpdateMainPetInfoHandler : ICommandHandler<Guid, UpdateMainPetInfoC
         IVolunteersRepository volunteersRepository,
         IValidator<UpdateMainPetInfoCommand> validator,
         SpeciesAndBreedValidator speciesAndBreedValidator,
-        [FromKeyedServices(UnitOfWorkContext.Volunteer)]IUnitOfWork unitOfWork,
+        [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         ILogger<UpdateMainPetInfoHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
@@ -84,16 +84,10 @@ public class UpdateMainPetInfoHandler : ICommandHandler<Guid, UpdateMainPetInfoC
             command.Address.Street,
             command.Address.PostalCode).Value;
 
-        var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
-
         var healthDetails = HealthDetails.Create(
             command.HealthDetails.HealthInformation,
             command.HealthDetails.IsCastrated,
             command.HealthDetails.IsVaccinated).Value;
-
-        var requisites = command
-            .Requisites
-            ?.Select(x => Requisite.Create(x.Title, x.Description).Value).ToArray() ?? [];
 
         var breedAndSpeciesId = BreedAndSpeciesId.Create(
             command.BreedAndSpeciesId.SpeciesId,
@@ -104,10 +98,8 @@ public class UpdateMainPetInfoHandler : ICommandHandler<Guid, UpdateMainPetInfoC
             description,
             appearanceDetails,
             address,
-            phoneNumber,
             command.BirthDate,
             healthDetails,
-            requisites,
             breedAndSpeciesId);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);

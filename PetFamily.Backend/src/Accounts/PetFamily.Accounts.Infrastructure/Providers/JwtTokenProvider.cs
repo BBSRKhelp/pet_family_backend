@@ -30,11 +30,13 @@ public class JwtTokenProvider : ITokenProvider
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
         var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-        Claim[] claims =
-        [
-            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email!)
-        ];
+        var roleClaims = user.Roles.Select(r => new Claim(ClaimTypes.Role, r.Name!));
+
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Email, user.Email!)
+        }.Concat(roleClaims);
 
         var jwtToken = new JwtSecurityToken(
             issuer: _jwtOptions.Issuer,
