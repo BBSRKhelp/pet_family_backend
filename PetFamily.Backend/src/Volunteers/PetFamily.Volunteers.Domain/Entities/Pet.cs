@@ -23,10 +23,8 @@ public class Pet : Entity<PetId>, ISoftDeletable
         AppearanceDetails appearanceDetails,
         HealthDetails healthDetails,
         Address address,
-        PhoneNumber phoneNumber,
         DateOnly? birthDate,
         Status status,
-        IReadOnlyList<Requisite> requisites, //TODO СПРОСИТЬ Зачем пету реквизиты и номер телефона?
         BreedAndSpeciesId breedAndSpeciesId)
         : base(PetId.NewId())
     {
@@ -35,10 +33,8 @@ public class Pet : Entity<PetId>, ISoftDeletable
         AppearanceDetails = appearanceDetails;
         HealthDetails = healthDetails;
         Address = address;
-        PhoneNumber = phoneNumber;
         BirthDate = birthDate;
         Status = status;
-        Requisites = requisites;
         BreedAndSpeciesId = breedAndSpeciesId;
     }
 
@@ -46,20 +42,13 @@ public class Pet : Entity<PetId>, ISoftDeletable
     public Description Description { get; private set; } = null!;
     public AppearanceDetails AppearanceDetails { get; private set; } = null!;
     public Address Address { get; private set; } = null!;
-    public PhoneNumber PhoneNumber { get; private set; } = null!;
     public DateOnly? BirthDate { get; private set; }
     public Status Status { get; private set; }
-
     public HealthDetails HealthDetails { get; private set; } = null!;
-
-    public IReadOnlyList<Requisite> Requisites { get; private set; } = [];
     public IReadOnlyList<PetPhoto> PetPhotos => _petPhotos.AsReadOnly();
     public Position Position { get; private set; } = null!;
     public BreedAndSpeciesId BreedAndSpeciesId { get; private set; } = null!;
     public static DateTime CreatedAt => DateTime.Now;
-
-    public void AddRequisite(IReadOnlyList<Requisite> requisites) =>
-        Requisites = requisites;
 
     public void AddPhotos(IEnumerable<PetPhoto> photos) =>
         _petPhotos.AddRange(photos);
@@ -72,20 +61,16 @@ public class Pet : Entity<PetId>, ISoftDeletable
         Description description,
         AppearanceDetails appearanceDetails,
         Address address,
-        PhoneNumber phoneNumber,
         DateOnly? birthday,
         HealthDetails healthDetails,
-        IReadOnlyList<Requisite> requisites,
         BreedAndSpeciesId breedAndSpeciesId)
     {
         Name = name;
         Description = description;
         AppearanceDetails = appearanceDetails;
         Address = address;
-        PhoneNumber = phoneNumber;
         BirthDate = birthday;
         HealthDetails = healthDetails;
-        Requisites = requisites;
         BreedAndSpeciesId = breedAndSpeciesId;
     }
 

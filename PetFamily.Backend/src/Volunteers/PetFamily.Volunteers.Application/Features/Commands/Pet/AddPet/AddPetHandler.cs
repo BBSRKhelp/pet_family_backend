@@ -74,11 +74,6 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
             command.Address.Street,
             command.Address.PostalCode).Value;
 
-        var phoneNumber = PhoneNumber.Create(command.PhoneNumber).Value;
-
-        var requisites = command.Requisites
-            ?.Select(x => Requisite.Create(x.Title, x.Description).Value).ToArray() ?? [];
-
         var speciesAndBreedExists = await _speciesAndBreedValidator
             .IsExist(command.BreedAndSpeciesId, cancellationToken);
         if (speciesAndBreedExists.IsFailure)
@@ -97,10 +92,8 @@ public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
             appearanceDetails,
             healthDetails,
             address,
-            phoneNumber,
             command.BirthDate,
             command.Status,
-            requisites,
             breedAndSpeciesId);
 
         var result = volunteerResult.Value.AddPet(pet);

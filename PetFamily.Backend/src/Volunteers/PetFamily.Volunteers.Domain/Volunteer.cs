@@ -1,63 +1,22 @@
 using CSharpFunctionalExtensions;
 using PetFamily.Core.Enums;
 using PetFamily.SharedKernel;
-using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteers.Domain.Entities;
 using PetFamily.Volunteers.Domain.ValueObjects;
 using PetFamily.Volunteers.Domain.ValueObjects.Ids;
 
 namespace PetFamily.Volunteers.Domain;
 
-public class Volunteer : Entity<VolunteerId>, ISoftDeletable
+public class Volunteer() : Entity<VolunteerId>(VolunteerId.NewId()), ISoftDeletable
 {
     private bool _isDeleted;
-
     private readonly List<Pet> _pets = [];
 
-    //ef core
-    private Volunteer() : base(VolunteerId.NewId())
-    {
-    }
-
-    public Volunteer(
-        FullName fullName, //TODO СПРОСИТЬ зачем если есть в Users?
-        Email email,
-        Description description,
-        WorkExperience workExperience,
-        PhoneNumber phoneNumber)
-        : base(VolunteerId.NewId())
-    {
-        FullName = fullName;
-        Email = email;
-        Description = description;
-        WorkExperience = workExperience;
-        PhoneNumber = phoneNumber;
-    }
-
-    public FullName FullName { get; private set; } = null!;
-    public Email Email { get; private set; } = null!;
-    public Description Description { get; private set; } = null!;
-    public WorkExperience WorkExperience { get; private set; } = null!;
-    public PhoneNumber PhoneNumber { get; private set; } = null!;
     public IReadOnlyList<Pet> Pets => _pets.AsReadOnly();
 
     public int PetsFoundHome() => _pets.Count(p => p.Status == Status.FoundHome);
     public int PetsLookingForHome() => _pets.Count(p => p.Status == Status.LookingForHome);
     public int PetsUndergoingTreatment() => _pets.Count(p => p.Status == Status.UndergoingTreatment);
-
-    public void UpdateMainInfo(
-        FullName fullName,
-        Email email,
-        Description description,
-        WorkExperience workExperience,
-        PhoneNumber phoneNumber)
-    {
-        FullName = fullName;
-        Email = email;
-        Description = description;
-        WorkExperience = workExperience;
-        PhoneNumber = phoneNumber;
-    }
 
     public Result<Pet, Error> GetPetById(PetId id)
     {

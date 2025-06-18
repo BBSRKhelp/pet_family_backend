@@ -16,7 +16,6 @@ public class ParticipantAccount
 
     public Guid Id { get; init; }
     public IReadOnlyList<Guid> FavoritePetIds => _favoritePetIds;
-
     public Guid UserId { get; init; }
     public User User { get; init; } = null!;
 

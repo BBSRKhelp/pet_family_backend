@@ -4,7 +4,6 @@ using Dapper;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstractions;
-using PetFamily.Core.DTOs;
 using PetFamily.Core.Extensions;
 using PetFamily.Core.Models;
 using PetFamily.SharedKernel;
@@ -62,7 +61,6 @@ public class GetFilteredPetsWithPaginationHandlerDapper :
                                                city,
                                                street,
                                                postal_code,
-                                               phone_number,
                                                birth_date,
                                                status,
                                                health_information,
@@ -72,7 +70,6 @@ public class GetFilteredPetsWithPaginationHandlerDapper :
                                                species_id,
                                                breed_id,
                                                volunteer_id,
-                                               requisites,
                                                pet_photos
                                                FROM pets
                                                /**where**/
@@ -89,7 +86,6 @@ public class GetFilteredPetsWithPaginationHandlerDapper :
             .AddCondition("city ILIKE @City", query.City)
             .AddCondition("street ILIKE @Street", query.Street)
             .AddCondition("postal_code ILIKE @PostalCode", query.PostalCode)
-            .AddCondition("phone_number ILIKE @PhoneNumber", query.PhoneNumber)
             .AddCondition("birth_date = @BirthDate", query.BirthDate)
             .AddCondition("status = @Status", query.Status)
             .AddCondition("is_castrated = @IsCastrated", query.IsCastrated)
@@ -113,7 +109,6 @@ public class GetFilteredPetsWithPaginationHandlerDapper :
             City = '%' + query.City + '%',
             Street = '%' + query.Street + '%',
             PostalCode = '%' + query.PostalCode + '%',
-            PhoneNumber = query.PhoneNumber + '%',
             BirthDate = query.BirthDate,
             Status = query.Status,
             IsCastrated = query.IsCastrated,
@@ -128,16 +123,15 @@ public class GetFilteredPetsWithPaginationHandlerDapper :
 
         var totalCount = await connection.ExecuteScalarAsync<long>(countTemplate.RawSql, param);
 
-        var pets = await connection.QueryAsync<PetDto, string, string, PetDto>(
+        var pets = await connection.QueryAsync<PetDto, string, PetDto>(
             petsTemplate.RawSql,
-            (pet, jsonRequisites, jsonPetPhotos) =>
+            (pet, jsonPetPhotos) =>
             {
-                pet.Requisites = JsonSerializer.Deserialize<RequisiteDto[]>(jsonRequisites)!;
                 pet.PetPhotos = JsonSerializer.Deserialize<PetPhotoDto[]>(jsonPetPhotos)!;
 
                 return pet;
             },
-            splitOn: "requisites,pet_photos",
+            splitOn: "pet_photos",
             param: param);
 
         _logger.LogInformation("Pets have been received");

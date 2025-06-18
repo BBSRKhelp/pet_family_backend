@@ -32,16 +32,6 @@ public class AddPetCommandValidator : AbstractValidator<AddPetCommand>
         RuleFor(c => c.Address)
             .MustBeValueObject(x => Address.Create(x.Country, x.City, x.Street, x.PostalCode));
 
-        RuleFor(c => c.PhoneNumber)
-            .MustBeValueObject(PhoneNumber.Create);
-
-        RuleFor(c => c.Status).IsInEnum()
-            .Must(x => x != Status.Unknown)
-            .WithError(Errors.General.IsInvalid("Status"));
-
-        RuleForEach(c => c.Requisites)
-            .MustBeValueObject(x => Requisite.Create(x.Title, x.Description));
-
         RuleFor(c => c.BreedAndSpeciesId)
             .MustBeValueObject(x => BreedAndSpeciesId.Create(x.SpeciesId, x.BreedId));
     }

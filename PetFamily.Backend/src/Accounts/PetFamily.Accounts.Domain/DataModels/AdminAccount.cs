@@ -14,7 +14,6 @@ public class AdminAccount
     }
 
     public Guid Id { get; init; }
-
     public Guid UserId { get; init; }
     public User User { get; init; } = null!;
 }

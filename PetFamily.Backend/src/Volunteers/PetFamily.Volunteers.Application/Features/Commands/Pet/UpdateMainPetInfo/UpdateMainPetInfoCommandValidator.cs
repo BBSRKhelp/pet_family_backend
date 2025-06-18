@@ -31,15 +31,6 @@ public class UpdateMainPetInfoCommandValidator : AbstractValidator<UpdateMainPet
         RuleFor(u => u.Address)
             .MustBeValueObject(x => Address.Create(x.Country, x.City, x.Street, x.PostalCode));
 
-        RuleFor(u => u.PhoneNumber)
-            .MustBeValueObject(PhoneNumber.Create);
-
-        RuleFor(u => u.HealthDetails)
-            .MustBeValueObject(x => HealthDetails.Create(x.HealthInformation, x.IsCastrated, x.IsVaccinated));
-
-        RuleForEach(u => u.Requisites)
-            .MustBeValueObject(x => Requisite.Create(x.Title, x.Description));
-
         RuleFor(u => u.BreedAndSpeciesId)
             .MustBeValueObject(x => BreedAndSpeciesId.Create(x.SpeciesId, x.BreedId));
     }

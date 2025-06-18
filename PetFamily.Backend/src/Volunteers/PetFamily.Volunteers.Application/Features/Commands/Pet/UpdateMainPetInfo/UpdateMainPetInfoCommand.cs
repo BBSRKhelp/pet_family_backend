@@ -11,8 +11,6 @@ public record UpdateMainPetInfoCommand(
     string? Description,
     AppearanceDetailsDto AppearanceDetails,
     AddressDto Address,
-    string PhoneNumber,
     DateOnly? BirthDate,
     HealthDetailsDto HealthDetails,
-    IEnumerable<RequisiteDto>? Requisites,
     BreedAndSpeciesIdDto BreedAndSpeciesId) : ICommand;

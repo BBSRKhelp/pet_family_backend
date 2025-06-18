@@ -1,5 +1,4 @@
 using PetFamily.Core.Abstractions;
-using PetFamily.Core.DTOs;
 using PetFamily.Core.Enums;
 using PetFamily.Volunteers.Contracts.DTOs.Pet;
 
@@ -12,8 +11,6 @@ public record AddPetCommand(
     AppearanceDetailsDto AppearanceDetails,
     HealthDetailsDto HealthDetails,
     AddressDto Address,
-    string PhoneNumber,
     DateOnly? BirthDate,
     Status Status,
-    IEnumerable<RequisiteDto>? Requisites,
     BreedAndSpeciesIdDto BreedAndSpeciesId) : ICommand;

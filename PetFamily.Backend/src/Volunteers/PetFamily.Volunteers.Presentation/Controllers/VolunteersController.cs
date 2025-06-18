@@ -14,7 +14,6 @@ using PetFamily.Volunteers.Application.Features.Commands.Pet.UpdatePetStatus;
 using PetFamily.Volunteers.Application.Features.Commands.Pet.UploadFilesToPet;
 using PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
 using PetFamily.Volunteers.Application.Features.Commands.Volunteer.Delete;
-using PetFamily.Volunteers.Application.Features.Commands.Volunteer.UpdateMainInfo;
 using PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 using PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetVolunteerById;
 using PetFamily.Volunteers.Contracts.DTOs;
@@ -30,12 +29,9 @@ public class VolunteersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateAsync(
         [FromServices] CreateVolunteerHandler handler,
-        [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
-        var command = request.ToCommand();
-
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await handler.HandleAsync(new CreateVolunteerCommand(), cancellationToken);
 
         return result.ToResponse();
     }
@@ -64,21 +60,6 @@ public class VolunteersController : ControllerBase
         var query = new GetVolunteerByIdQuery(id);
 
         var result = await handler.HandleAsync(query, cancellationToken);
-
-        return result.ToResponse();
-    }
-
-    [Permission(Permissions.Volunteers.UPDATE_MAIN_INFO)]
-    [HttpPut("{id:guid}/main-info")]
-    public async Task<ActionResult<Guid>> UpdateMainInfoAsync(
-        [FromServices] UpdateMainVolunteerInfoHandler handler,
-        [FromBody] UpdateMainVolunteerInfoRequest request,
-        [FromRoute] Guid id,
-        CancellationToken cancellationToken = default)
-    {
-        var command = request.ToCommand(id);
-
-        var result = await handler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }

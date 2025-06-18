@@ -18,7 +18,6 @@ public class GetFilteredPetsWithPaginationQueryValidator : AbstractValidator<Get
         "city",
         "street",
         "postal_code",
-        "phone_number",
         "birth_date",
         "status",
         "is_castrated",
@@ -50,9 +49,6 @@ public class GetFilteredPetsWithPaginationQueryValidator : AbstractValidator<Get
         RuleFor(g => g.Weight).Must(x => x is < 1000 or null).WithError(Errors.General.MaxLengthExceeded("Weight"));
 
         RuleFor(g => g.Height).Must(x => x is < 1000 or null).WithError(Errors.General.MaxLengthExceeded("Height"));
-
-        RuleFor(g => g.PhoneNumber).Must(x => x?.Length is <= 11 or null)
-            .WithError(Errors.General.IsInvalid("PhoneNumber"));
 
         RuleFor(g => g.BirthDate).Must(x => x?.Year is > 1990 or null)
             .WithError(Errors.General.MaxLengthExceeded("BirthDate"));

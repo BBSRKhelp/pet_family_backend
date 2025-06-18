@@ -1,6 +1,5 @@
 using FluentAssertions;
 using PetFamily.Core.Enums;
-using PetFamily.SharedKernel;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.SharedKernel.ValueObjects.Ids;
 using PetFamily.Volunteers.Domain.Entities;
@@ -232,21 +231,7 @@ public class VolunteerTests
         sixthPet.Position.Value.Should().Be(5);
     }
 
-    private Volunteers.Domain.Volunteer CreateVolunteer()
-    {
-        var fullname = FullName.Create("TestJohn", "TestSmith", "TestPetrov").Value;
-        var email = Email.Create("TestJohn@TestSmith.com").Value;
-        var description = Description.Create("TestDescription").Value;
-        var workExperience = WorkExperience.Create(8).Value;
-        var phoneNumber = PhoneNumber.Create("88888888888").Value;
-
-        return new Volunteers.Domain.Volunteer(
-            fullname,
-            email,
-            description,
-            workExperience,
-            phoneNumber);
-    }
+    private Volunteers.Domain.Volunteer CreateVolunteer() => new Volunteers.Domain.Volunteer();
 
     private Pet CreatePet()
     {
@@ -255,10 +240,8 @@ public class VolunteerTests
         var appearanceDetails = AppearanceDetails.Create(Colour.Orange, 10, 100).Value;
         var healthDetails = HealthDetails.Create("test", true, true).Value;
         var address = Address.Create("test", "test", "test", "test").Value;
-        var phoneNumber = PhoneNumber.Create("88888888888").Value;
         var birthday = DateOnly.Parse("2023-12-23");
         var status = Status.LookingForHome;
-        IReadOnlyList<Requisite> requisites = [Requisite.Create("TestRequisite", "TestRequisiteUrl").Value];
         var breedAndSpeciesId = BreedAndSpeciesId.Create(SpeciesId.NewId(), Guid.NewGuid()).Value;
 
         return new Pet(
@@ -267,10 +250,8 @@ public class VolunteerTests
             appearanceDetails,
             healthDetails,
             address,
-            phoneNumber,
             birthday,
             status,
-            requisites,
             breedAndSpeciesId);
     }
 

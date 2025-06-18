@@ -23,14 +23,11 @@ public class UpdateMainPetInfoTests : PetTestsBase
         var breedId = await SeedBreedAsync(species);
         var pet = await SeedPetAsync(volunteer, species.Id, breedId);
         
-        const string PHONE_NUMBER = "89999990000";
-        
         var command = Fixture.BuildUpdateMainPetInfoCommand(
             volunteer.Id.Value,
             pet.Id.Value, 
             species.Id,
-            breedId,
-            PHONE_NUMBER);
+            breedId);
         
         //Act
         var result = await _sut.HandleAsync(command);
@@ -45,7 +42,6 @@ public class UpdateMainPetInfoTests : PetTestsBase
             .Pets.FirstOrDefault();
         
         petFromDb.Should().NotBeNull();
-        petFromDb.PhoneNumber.Value.Should().Be(PHONE_NUMBER);
     }
 
     [Fact]
@@ -57,14 +53,11 @@ public class UpdateMainPetInfoTests : PetTestsBase
         var breedId = await SeedBreedAsync(species);
         var pet = await SeedPetAsync(volunteer, species.Id, breedId);
         
-        const string PHONE_NUMBER = "989999990000";
-        
         var command = Fixture.BuildUpdateMainPetInfoCommand(
             volunteer.Id.Value,
             pet.Id.Value, 
             species.Id,
-            breedId,
-            PHONE_NUMBER);
+            breedId);
         
         //Act
         var result = await _sut.HandleAsync(command);

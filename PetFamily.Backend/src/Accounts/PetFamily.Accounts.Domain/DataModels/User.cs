@@ -36,7 +36,6 @@ public sealed class User : IdentityUser<Guid>
     public VolunteerAccount? VolunteerAccount { get; init; }
     public AdminAccount? AdminAccount { get; init; }
 
-    //TODO СПРОСИТЬ бесмысслено же делать кучу одинаковых методов. Да удобней читать будет в handelr`ах, но и все
     public static Result<User, Error> CreateParticipant(
         string userName,
         FullName fullName,

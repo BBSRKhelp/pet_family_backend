@@ -13,6 +13,7 @@ using PetFamily.Web;
 using PetFamily.Web.Extensions;
 using PetFamily.Web.Middlewares;
 using Serilog;
+using SwaggerThemes;
 
 DotNetEnv.Env.Load();
 
@@ -48,7 +49,7 @@ app.UseSerilogRequestLogging();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(Theme.UniversalDark);
 
     // await app.ApplyMigrations();
 }
@@ -63,4 +64,7 @@ app.MapControllers();
 app.Run();
 
 
-public partial class Program;
+namespace PetFamily.Web
+{
+    public partial class Program;
+}

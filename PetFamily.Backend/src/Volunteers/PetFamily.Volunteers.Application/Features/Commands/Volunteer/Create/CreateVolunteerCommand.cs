@@ -1,11 +1,5 @@
-using PetFamily.Core.Abstractions;
-using PetFamily.Core.DTOs;
+﻿using PetFamily.Core.Abstractions;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
 
-public record CreateVolunteerCommand(
-    FullNameDto FullName,
-    string Email,
-    string? Description,
-    byte WorkExperience,
-    string PhoneNumber) : ICommand;
+public record CreateVolunteerCommand : ICommand;

@@ -15,12 +15,14 @@ public class VolunteerAccount
     }
 
     public VolunteerAccount(
+        Description description,
         WorkExperience workExperience,
         IReadOnlyList<Requisite> requisites,
         IReadOnlyList<Certificate> certificates,
         User user)
     {
         Id = Guid.NewGuid();
+        Description = description;
         WorkExperience = workExperience;
         Requisites = requisites;
         _certificates = certificates;
@@ -28,12 +30,10 @@ public class VolunteerAccount
     }
 
     public Guid Id { get; init; }
+    public Description Description { get; init; } = null!;
     public WorkExperience WorkExperience { get; init; } = null!;
     public IReadOnlyList<Requisite> Requisites { get; private set; } = null!;
-
-    public IReadOnlyList<Certificate> Certificates =>
-        _certificates; //TODO СПРОСИТЬ через private set или через выделение нового private поля 
-
+    public IReadOnlyList<Certificate> Certificates => _certificates;
     public Guid UserId { get; init; }
     public User User { get; init; } = null!;
 
