@@ -32,7 +32,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddProviders(this IServiceCollection services)
     {
-        services.AddTransient<ITokenProvider, JwtTokenProvider>();
+        services.AddTransient<ITokenProvider, TokenProvider>();
 
         return services;
     }
@@ -51,6 +51,7 @@ public static class DependencyInjection
     {
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.JWT));
         services.Configure<AdminOptions>(configuration.GetSection(AdminOptions.ADMIN));
+        services.Configure<RefreshOptions>(configuration.GetSection(RefreshOptions.REFRESH));
 
         return services;
     }
@@ -78,6 +79,7 @@ public static class DependencyInjection
         services.AddScoped<PermissionManager>();
         services.AddScoped<RoleManager>();
         services.AddScoped<RolePermissionManager>();
+        services.AddScoped<IRefreshSessionManager, RefreshSessionManager>();
         
         return services;
     }

@@ -34,5 +34,29 @@ public static class Errors
     {
         public static Error InvalidCredentials() =>
             Error.Validation("credentials.is.invalid", "your credentials are invalid");
+        
+        public static Error AccountLocked() =>
+            Error.Failure("account.locked", "user account is locked");
+    }
+
+    public static class Authorization
+    {
+        public static Error ExpiredRefreshToken() =>
+            Error.Unauthorized("token.refresh.expired", "Refresh token has expired");
+        
+        public static Error InvalidRefreshToken() =>
+            Error.Validation("token.refresh.invalid", "Refresh token is invalid");
+        
+        public static Error MissingRefreshToken() =>
+            Error.Validation("token.refresh.missing", "Refresh token is required");
+        
+        public static Error ExpiredAccessToken() =>
+            Error.Unauthorized("token.access.expired", "Access token has expired");
+        
+        public static Error InvalidAccessToken() =>
+            Error.Validation("token.access.invalid", "Access token is invalid");
+        
+        public static Error TokenMismatch() =>
+        Error.Unauthorized("token.mismatch", "Refresh and access tokens don't match");
     }
 }

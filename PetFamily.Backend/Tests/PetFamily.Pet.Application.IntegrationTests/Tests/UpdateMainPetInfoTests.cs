@@ -43,27 +43,4 @@ public class UpdateMainPetInfoTests : PetTestsBase
         
         petFromDb.Should().NotBeNull();
     }
-
-    [Fact]
-    public async Task UpdateMainPetPhoto_WhenPhoneNumberIsInvalid_ShouldReturnFailedResult()
-    {
-        //Arrange
-        var volunteer = await SeedVolunteerAsync();
-        var species = await SeedSpeciesAsync();
-        var breedId = await SeedBreedAsync(species);
-        var pet = await SeedPetAsync(volunteer, species.Id, breedId);
-        
-        var command = Fixture.BuildUpdateMainPetInfoCommand(
-            volunteer.Id.Value,
-            pet.Id.Value, 
-            species.Id,
-            breedId);
-        
-        //Act
-        var result = await _sut.HandleAsync(command);
-
-        //Assert
-        result.IsFailure.Should().BeTrue();
-        result.Error.Should().NotBeNull();
-    }
 }

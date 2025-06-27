@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
-using PetFamily.Species.Application.Feature.Commands.Species.Delete;
+using PetFamily.Species.Application.Features.Commands.Species.Delete;
 
 namespace PetFamily.Species.Application.IntegrationTests.Tests;
 

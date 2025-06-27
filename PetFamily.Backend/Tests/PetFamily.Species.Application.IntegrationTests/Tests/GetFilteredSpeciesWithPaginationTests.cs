@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Models;
-using PetFamily.Species.Application.Feature.Queries.GetFilteredSpeciesWithPagination;
+using PetFamily.Species.Application.Features.Queries.GetFilteredSpeciesWithPagination;
 using PetFamily.Species.Contracts.DTOs;
 
 namespace PetFamily.Species.Application.IntegrationTests.Tests;

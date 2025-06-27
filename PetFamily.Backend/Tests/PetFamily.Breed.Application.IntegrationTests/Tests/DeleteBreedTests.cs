@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
-using PetFamily.Species.Application.Feature.Commands.Breed.DeleteBreed;
+using PetFamily.Species.Application.Features.Commands.Breed.DeleteBreed;
 
 namespace PetFamily.Breed.Application.IntegrationTests.Tests;
 

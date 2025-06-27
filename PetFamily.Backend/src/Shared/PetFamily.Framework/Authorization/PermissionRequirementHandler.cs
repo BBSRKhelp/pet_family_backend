@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Accounts.Contracts;
+using PetFamily.Core.Models;
 
 namespace PetFamily.Framework.Authorization;
 
@@ -23,7 +23,7 @@ public class PermissionRequirementHandler : AuthorizationHandler<PermissionAttri
         var accountsContract = scope.ServiceProvider.GetRequiredService<IAccountsContract>();
         
         var userIdString = context.User.Claims
-            .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            .FirstOrDefault(c => c.Type == CustomClaims.NAME_IDENTIFIER)?.Value;
 
         if (!Guid.TryParse(userIdString, out var userId))
         {

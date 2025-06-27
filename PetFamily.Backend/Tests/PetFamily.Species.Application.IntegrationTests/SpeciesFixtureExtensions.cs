@@ -1,5 +1,5 @@
 using AutoFixture;
-using PetFamily.Species.Application.Feature.Queries.GetFilteredSpeciesWithPagination;
+using PetFamily.Species.Application.Features.Queries.GetFilteredSpeciesWithPagination;
 
 namespace PetFamily.Species.Application.IntegrationTests;
 

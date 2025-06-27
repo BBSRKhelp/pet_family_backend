@@ -13,6 +13,7 @@ public class AccountsDbContext(string connectionString) : IdentityDbContext<User
     public DbSet<ParticipantAccount> ParticipantAccounts => Set<ParticipantAccount>();
     public DbSet<VolunteerAccount> VolunteerAccounts => Set<VolunteerAccount>();
     public DbSet<AdminAccount> AdminAccounts => Set<AdminAccount>();
+    public DbSet<RefreshSession> RefreshSessions => Set<RefreshSession>();
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
