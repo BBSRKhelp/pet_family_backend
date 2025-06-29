@@ -18,7 +18,6 @@ using SwaggerThemes;
 DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
-var conf = builder.Configuration;
 builder.Services.AddWeb(builder.Configuration);
 
 builder.Services.AddAccountsPresentation() //DI Accounts
@@ -40,7 +39,10 @@ builder.Services.AddVolunteersPresentation() //DI Volunteers
 
 var app = builder.Build();
 
-await app.UseAccountsSeederAsync();
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    await app.UseAccountsSeederAsync();
+}
 
 app.UseExceptionMiddleware();
 

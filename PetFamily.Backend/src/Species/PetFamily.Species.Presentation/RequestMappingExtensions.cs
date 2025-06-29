@@ -1,7 +1,7 @@
-using PetFamily.Species.Application.Feature.Commands.Breed.AddBreed;
-using PetFamily.Species.Application.Feature.Commands.Species.Create;
-using PetFamily.Species.Application.Feature.Queries.GetBreedsByIdSpecies;
-using PetFamily.Species.Application.Feature.Queries.GetFilteredSpeciesWithPagination;
+using PetFamily.Species.Application.Features.Commands.Breed.AddBreed;
+using PetFamily.Species.Application.Features.Commands.Species.Create;
+using PetFamily.Species.Application.Features.Queries.GetBreedsByIdSpecies;
+using PetFamily.Species.Application.Features.Queries.GetFilteredSpeciesWithPagination;
 using PetFamily.Species.Contracts.Requests;
 
 namespace PetFamily.Species.Presentation;

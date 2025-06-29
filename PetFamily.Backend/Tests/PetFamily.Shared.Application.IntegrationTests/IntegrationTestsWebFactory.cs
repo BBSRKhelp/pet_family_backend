@@ -2,6 +2,8 @@ using System.Data.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using PetFamily.Web;
@@ -16,7 +18,7 @@ using SpeciesReadDbContext = PetFamily.Species.Infrastructure.Database.ReadDbCon
 
 
 namespace PetFamily.Shared.Application.IntegrationTests;
-//TODO РЕШИТЬ вопрос с тестами
+//TODO подтянуть secretes.json
 public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     protected readonly PostgreSqlContainer DbContainer = new PostgreSqlBuilder()
@@ -31,6 +33,7 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment("Testing");
         builder.ConfigureTestServices(ConfigureDefaultServices);
     }
 
@@ -106,8 +109,8 @@ public class IntegrationTestsWebFactory : WebApplicationFactory<Program>, IAsync
         using var scope = Services.CreateScope();
         var volunteerDbContext = scope.ServiceProvider.GetRequiredService<VolunteerWriteDbContext>();
         var speciesDbContext = scope.ServiceProvider.GetRequiredService<SpeciesWriteDbContext>();
-        await volunteerDbContext.Database.EnsureCreatedAsync();
-        await speciesDbContext.Database.EnsureCreatedAsync();
+        await volunteerDbContext.Database.MigrateAsync();
+        await speciesDbContext.Database.MigrateAsync();
 
         _dbConnection = new NpgsqlConnection(DbContainer.GetConnectionString());
         await InitializeRespawner();

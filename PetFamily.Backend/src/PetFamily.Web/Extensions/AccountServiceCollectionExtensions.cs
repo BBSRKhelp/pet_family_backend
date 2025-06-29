@@ -1,7 +1,6 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.IdentityModel.Tokens;
+using PetFamily.Accounts.Infrastructure.Extensions;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Framework.Authorization;
 
@@ -27,17 +26,7 @@ public static class AccountServiceCollectionExtensions
                 var jwtOptions = configuration.GetSection("Jwt").Get<JwtOptions>() ?? 
                                  throw new NullReferenceException("JWT configuration section not found");
 
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = jwtOptions.Issuer,
-                    ValidAudience = jwtOptions.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Key)),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ClockSkew = TimeSpan.Zero
-                };
+                options.TokenValidationParameters = TokenValidationParametersFactory.CreateWithLifeTime(jwtOptions);
             });
 
         return services;

@@ -30,6 +30,9 @@ public record Error
 
     public static Error Conflict(string code, string message) =>
         new Error(code, message, ErrorType.Conflict);
+    
+    public static Error Unauthorized(string code, string message) =>
+        new Error(code, message, ErrorType.Unauthorized);
 
     public string Serialize()
     {

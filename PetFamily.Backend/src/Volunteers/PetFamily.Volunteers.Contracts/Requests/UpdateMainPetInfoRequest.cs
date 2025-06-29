@@ -1,5 +1,3 @@
-using PetFamily.Core.DTOs;
-
 namespace PetFamily.Volunteers.Contracts.Requests;
 
 public record UpdateMainPetInfoRequest(

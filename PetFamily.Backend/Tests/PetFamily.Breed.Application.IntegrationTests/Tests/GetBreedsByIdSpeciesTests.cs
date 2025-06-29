@@ -2,7 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstractions;
 using PetFamily.Core.Models;
-using PetFamily.Species.Application.Feature.Queries.GetBreedsByIdSpecies;
+using PetFamily.Species.Application.Features.Queries.GetBreedsByIdSpecies;
 using PetFamily.Species.Contracts.DTOs;
 using Xunit.Abstractions;
 

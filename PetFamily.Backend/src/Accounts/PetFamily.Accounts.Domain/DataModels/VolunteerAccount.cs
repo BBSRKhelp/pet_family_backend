@@ -34,6 +34,7 @@ public class VolunteerAccount
     public WorkExperience WorkExperience { get; init; } = null!;
     public IReadOnlyList<Requisite> Requisites { get; private set; } = null!;
     public IReadOnlyList<Certificate> Certificates => _certificates;
+    
     public Guid UserId { get; init; }
     public User User { get; init; } = null!;
 

@@ -1,5 +1,5 @@
 using AutoFixture;
-using PetFamily.Species.Application.Feature.Queries.GetBreedsByIdSpecies;
+using PetFamily.Species.Application.Features.Queries.GetBreedsByIdSpecies;
 
 namespace PetFamily.Breed.Application.IntegrationTests;
 

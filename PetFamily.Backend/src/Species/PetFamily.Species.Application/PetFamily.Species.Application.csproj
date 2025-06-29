@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Feature\" />
+      <Folder Include="Features\" />
     </ItemGroup>
 
 </Project>
