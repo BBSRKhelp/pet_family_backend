@@ -12,17 +12,17 @@ using PetFamily.Volunteers.Contracts.DTOs.Pet;
 
 namespace PetFamily.Volunteers.Application.Features.Queries.Pet.GetFilteredPetsWithPagination;
 
-public class GetFilteredPetsWithPaginationHandlerDapper :
+public class GetFilteredPetsWithPaginationQueryHandlerDapper :
     IQueryHandler<PagedList<PetDto>, GetFilteredPetsWithPaginationQuery>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
     private readonly IValidator<GetFilteredPetsWithPaginationQuery> _validator;
-    private readonly ILogger<GetFilteredPetsWithPaginationHandlerDapper> _logger;
+    private readonly ILogger<GetFilteredPetsWithPaginationQueryHandlerDapper> _logger;
 
-    public GetFilteredPetsWithPaginationHandlerDapper(
+    public GetFilteredPetsWithPaginationQueryHandlerDapper(
         ISqlConnectionFactory sqlConnectionFactory,
         IValidator<GetFilteredPetsWithPaginationQuery> validator,
-        ILogger<GetFilteredPetsWithPaginationHandlerDapper> logger)
+        ILogger<GetFilteredPetsWithPaginationQueryHandlerDapper> logger)
     {
         _sqlConnectionFactory = sqlConnectionFactory;
         _validator = validator;

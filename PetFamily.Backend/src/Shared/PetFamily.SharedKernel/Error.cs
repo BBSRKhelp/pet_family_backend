@@ -10,14 +10,14 @@ public record Error
     {
         Code = code;
         Message = message;
-        InvalidField = invalidField;
         Type = type;
+        InvalidField = invalidField;
     }
 
     public string Code { get; }
     public string Message { get; }
-    public string? InvalidField { get; }
     [JsonIgnore] public ErrorType Type { get; }
+    public string? InvalidField { get; }
 
     public static Error Validation(string code, string message, string? invalidField = null) =>
         new Error(code, message, ErrorType.Validation, invalidField);

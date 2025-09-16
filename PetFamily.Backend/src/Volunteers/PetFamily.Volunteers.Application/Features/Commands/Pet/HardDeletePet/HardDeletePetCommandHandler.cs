@@ -11,22 +11,22 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.HardDeletePet;
 
-public class HardDeletePetHandler : ICommandHandler<Guid, HardDeletePetCommand>
+public class HardDeletePetCommandHandler : ICommandHandler<Guid, HardDeletePetCommand>
 {
     
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IFileContract _fileContract;
     private readonly IValidator<HardDeletePetCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<HardDeletePetHandler> _logger;
+    private readonly ILogger<HardDeletePetCommandHandler> _logger;
     private const string BUCKET_NAME = "photos";
 
-    public HardDeletePetHandler(
+    public HardDeletePetCommandHandler(
         IVolunteersRepository volunteersRepository,
         IFileContract fileContract,
         IValidator<HardDeletePetCommand> validator,
         [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
-        ILogger<HardDeletePetHandler> logger)
+        ILogger<HardDeletePetCommandHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _fileContract = fileContract;

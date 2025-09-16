@@ -13,26 +13,26 @@ public class AccountsController : ControllerBase
 {
     [HttpPost("registration")]
     public async Task<ActionResult> Register(
-        [FromServices] RegisterHandler handler,
+        [FromServices] RegisterCommandHandler commandHandler,
         [FromBody] RegisterUserRequest request,
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand();
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
 
-    [HttpPost("login")]
+    [HttpPost("authorization")]
     public async Task<ActionResult<string>> Login(
-        [FromServices] LoginHandler handler,
+        [FromServices] LoginCommandHandler commandHandler,
         [FromBody] LoginRequest request,
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand();
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
 
@@ -44,12 +44,12 @@ public class AccountsController : ControllerBase
     [HttpPost("refresh")]
     public async Task<ActionResult<string>> Refresh(
         [FromBody] RefreshTokensRequest request,
-        [FromServices] RefreshTokensHandler handler,
+        [FromServices] RefreshTokensCommandHandler commandHandler,
         CancellationToken cancellationToken = default)
     { 
         var command = request.ToCommand();
         
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
         if (result.IsFailure)
             return result.Error.ToResponse();
 

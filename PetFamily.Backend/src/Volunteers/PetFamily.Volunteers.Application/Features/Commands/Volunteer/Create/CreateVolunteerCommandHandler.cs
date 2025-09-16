@@ -7,11 +7,11 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Volunteer.Create;
 
-public class CreateVolunteerHandler(
+public class CreateVolunteerCommandHandler(
     IVolunteersRepository volunteersRepository,
     [FromKeyedServices(UnitOfWorkContext.Volunteers)]
     IUnitOfWork unitOfWork,
-    ILogger<CreateVolunteerHandler> logger)
+    ILogger<CreateVolunteerCommandHandler> logger)
     : ICommandHandler<Guid, CreateVolunteerCommand>
 {
     public async Task<Result<Guid, ErrorList>> HandleAsync(CreateVolunteerCommand command,

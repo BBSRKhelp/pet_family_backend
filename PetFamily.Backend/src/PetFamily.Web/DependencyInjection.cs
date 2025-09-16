@@ -1,4 +1,8 @@
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Serilog;
 using Serilog.Events;
 
@@ -8,7 +12,13 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddWeb(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddControllers();
+        services.AddControllers(options =>
+                options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer())))
+            .AddNewtonsoftJson(o => o.SerializerSettings.Converters.Add(
+                new StringEnumConverter { NamingStrategy = new CamelCaseNamingStrategy() }))
+            .AddJsonOptions(options =>
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())
+            );
 
         services.AddEndpointsApiExplorer()
             .AddSwaggerGen()
@@ -77,5 +87,13 @@ public static class DependencyInjection
         });
 
         return services;
+    }
+    
+    /// <summary>
+    /// Трансформер для преобразования названий эндпоинтов к нижнему регистру
+    /// </summary>
+    private class SlugifyParameterTransformer : IOutboundParameterTransformer
+    {
+        public string TransformOutbound(object? value) => value!.ToString()!.ToLowerInvariant();
     }
 }

@@ -28,19 +28,19 @@ public class Species : Entity<SpeciesId>
     {
         if (_breeds.Any(b => b.Name == breed.Name))
             return Errors.General.IsExisted(nameof(breed));
-        
+
         _breeds.Add(breed);
-        
+
         return Result.Success<Error>();
     }
 
     public Result<Breed, Error> GetBreedById(BreedId id)
     {
         var breed = _breeds.FirstOrDefault(b => b.Id == id);
-        
+
         if (breed is null)
             return Errors.General.NotFound(nameof(breed));
-        
+
         return breed;
     }
 

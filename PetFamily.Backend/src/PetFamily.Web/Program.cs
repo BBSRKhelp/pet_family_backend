@@ -50,16 +50,26 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(Theme.UniversalDark);
-
-    // await app.ApplyMigrations();
 }
 
-app.UseHttpsRedirection();
+app.UseCors(config =>
+{
+    config.WithOrigins("http://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// app.MapGet("/api/users", () => //TODO тест
+// {
+//     List<string> users = ["first", "second", "third"];
+//     return Results.Ok(users);
+// });
 
 app.Run();
 

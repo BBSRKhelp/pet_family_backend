@@ -12,20 +12,20 @@ using PetFamily.Volunteers.Application.Validation;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.UpdateMainPetInfo;
 
-public class UpdateMainPetInfoHandler : ICommandHandler<Guid, UpdateMainPetInfoCommand>
+public class UpdateMainPetInfoCommandHandler : ICommandHandler<Guid, UpdateMainPetInfoCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IValidator<UpdateMainPetInfoCommand> _validator;
     private readonly SpeciesAndBreedValidator _speciesAndBreedValidator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<UpdateMainPetInfoHandler> _logger;
+    private readonly ILogger<UpdateMainPetInfoCommandHandler> _logger;
 
-    public UpdateMainPetInfoHandler(
+    public UpdateMainPetInfoCommandHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<UpdateMainPetInfoCommand> validator,
         SpeciesAndBreedValidator speciesAndBreedValidator,
         [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
-        ILogger<UpdateMainPetInfoHandler> logger)
+        ILogger<UpdateMainPetInfoCommandHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _validator = validator;

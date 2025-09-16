@@ -10,16 +10,16 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Queries.Pet.GetPetById;
 
-public class GetPetByIdHandler : IQueryHandler<PetDto, GetPetByIdQuery>
+public class GetPetByIdQueryHandler : IQueryHandler<PetDto, GetPetByIdQuery>
 {
     private readonly IReadDbContext _readDbContext;
     private readonly IValidator<GetPetByIdQuery> _validator;
-    private readonly ILogger<GetPetByIdHandler> _logger;
+    private readonly ILogger<GetPetByIdQueryHandler> _logger;
 
-    public GetPetByIdHandler(
+    public GetPetByIdQueryHandler(
         IReadDbContext readDbContext,
         IValidator<GetPetByIdQuery> validator,
-        ILogger<GetPetByIdHandler> logger)
+        ILogger<GetPetByIdQueryHandler> logger)
     {
         _readDbContext = readDbContext;
         _validator = validator;

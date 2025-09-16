@@ -12,5 +12,5 @@ public enum Colour
     Purple,
     Brown,
     Orange,
-    Multicoloured
+    Multicolored
 }

@@ -12,20 +12,20 @@ using PetFamily.Volunteers.Application.Validation;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.AddPet;
 
-public class AddPetHandler : ICommandHandler<Guid, AddPetCommand>
+public class AddPetCommandHandler : ICommandHandler<Guid, AddPetCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly SpeciesAndBreedValidator _speciesAndBreedValidator;
     private readonly IValidator<AddPetCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<AddPetHandler> _logger;
+    private readonly ILogger<AddPetCommandHandler> _logger;
 
-    public AddPetHandler(
+    public AddPetCommandHandler(
         IVolunteersRepository volunteersRepository,
         SpeciesAndBreedValidator speciesAndBreedValidator,
         IValidator<AddPetCommand> validator,
         [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
-        ILogger<AddPetHandler> logger)
+        ILogger<AddPetCommandHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _speciesAndBreedValidator = speciesAndBreedValidator;

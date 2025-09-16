@@ -10,10 +10,10 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetVolunteerById;
 
-public class GetVolunteerByIdHandler(
+public class GetVolunteerByIdQueryHandler(
     IReadDbContext readDbContext,
     IValidator<GetVolunteerByIdQuery> validator,
-    ILogger<GetVolunteerByIdHandler> logger)
+    ILogger<GetVolunteerByIdQueryHandler> logger)
     : IQueryHandler<VolunteerDto, GetVolunteerByIdQuery>
 {
     public async Task<Result<VolunteerDto, ErrorList>> HandleAsync(

@@ -26,6 +26,6 @@ public class ReadDbContext(string connectionString) : DbContext, IReadDbContext
             type => type.FullName?.Contains("Configurations.Read") ?? false);
     }
 
-    private ILoggerFactory CreateLoggerFactory() =>
+    private static ILoggerFactory CreateLoggerFactory() =>
         LoggerFactory.Create(builder => { builder.AddConsole(); });
 }

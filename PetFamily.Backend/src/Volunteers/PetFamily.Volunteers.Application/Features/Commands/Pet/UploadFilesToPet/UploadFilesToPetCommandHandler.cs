@@ -14,7 +14,7 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.UploadFilesToPet;
 
-public class UploadFilesToPetHandler : ICommandHandler<Guid, UploadFilesToPetCommand>
+public class UploadFilesToPetCommandHandler : ICommandHandler<Guid, UploadFilesToPetCommand>
 {
     private const string BUCKET_NAME = "pet_photos";
     private readonly IVolunteersRepository _volunteersRepository;
@@ -22,15 +22,15 @@ public class UploadFilesToPetHandler : ICommandHandler<Guid, UploadFilesToPetCom
     private readonly IValidator<UploadFilesToPetCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMessageQueue<IEnumerable<FileIdentifier>> _messageQueue;
-    private readonly ILogger<UploadFilesToPetHandler> _logger;
+    private readonly ILogger<UploadFilesToPetCommandHandler> _logger;
 
-    public UploadFilesToPetHandler(
+    public UploadFilesToPetCommandHandler(
         IVolunteersRepository volunteersRepository,
         IFileContract fileContract,
         IValidator<UploadFilesToPetCommand> validator,
         [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
         IMessageQueue<IEnumerable<FileIdentifier>> messageQueue,
-        ILogger<UploadFilesToPetHandler> logger)
+        ILogger<UploadFilesToPetCommandHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _fileContract = fileContract;

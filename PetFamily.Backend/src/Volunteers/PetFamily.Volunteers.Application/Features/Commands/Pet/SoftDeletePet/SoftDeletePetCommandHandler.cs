@@ -9,12 +9,12 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.SoftDeletePet;
 
-public class SoftDeletePetHandler(
+public class SoftDeletePetCommandHandler(
     IVolunteersRepository volunteersRepository,
     IValidator<SoftDeletePetCommand> validator,
     [FromKeyedServices(UnitOfWorkContext.Volunteers)]
     IUnitOfWork unitOfWork,
-    ILogger<SoftDeletePetHandler> logger)
+    ILogger<SoftDeletePetCommandHandler> logger)
     : ICommandHandler<Guid, SoftDeletePetCommand>
 {
     public async Task<Result<Guid, ErrorList>> HandleAsync(

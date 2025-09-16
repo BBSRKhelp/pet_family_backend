@@ -10,18 +10,18 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.ChangePetsPosition;
 
-public class ChangePetsPositionHandler : ICommandHandler<ChangePetsPositionCommand>
+public class ChangePetsPositionCommandHandler : ICommandHandler<ChangePetsPositionCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IValidator<ChangePetsPositionCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<ChangePetsPositionHandler> _logger;
+    private readonly ILogger<ChangePetsPositionCommandHandler> _logger;
 
-    public ChangePetsPositionHandler(
+    public ChangePetsPositionCommandHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<ChangePetsPositionCommand> validator,
         [FromKeyedServices(UnitOfWorkContext.Volunteers)]IUnitOfWork unitOfWork,
-        ILogger<ChangePetsPositionHandler> logger)
+        ILogger<ChangePetsPositionCommandHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _validator = validator;

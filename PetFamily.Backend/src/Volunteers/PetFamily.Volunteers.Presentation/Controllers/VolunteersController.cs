@@ -28,10 +28,10 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.CREATE)]
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateAsync(
-        [FromServices] CreateVolunteerHandler handler,
+        [FromServices] CreateVolunteerCommandHandler commandHandler,
         CancellationToken cancellationToken = default)
     {
-        var result = await handler.HandleAsync(new CreateVolunteerCommand(), cancellationToken);
+        var result = await commandHandler.HandleAsync(new CreateVolunteerCommand(), cancellationToken);
 
         return result.ToResponse();
     }
@@ -39,13 +39,13 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.GET)]
     [HttpGet]
     public async Task<ActionResult<PagedList<VolunteerDto>>> GetAsync(
-        [FromServices] GetFilteredVolunteersWithPaginationHandlerDapper handler,
+        [FromServices] GetFilteredVolunteersWithPaginationQueryHandlerDapper queryHandler,
         [FromQuery] GetFilteredVolunteersWithPaginationRequest request,
         CancellationToken cancellationToken = default)
     {
         var query = request.ToQuery();
 
-        var result = await handler.HandleAsync(query, cancellationToken);
+        var result = await queryHandler.HandleAsync(query, cancellationToken);
 
         return result.ToResponse();
     }
@@ -53,13 +53,13 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.GET)]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<VolunteerDto>> GetByIdAsync(
-        [FromServices] GetVolunteerByIdHandler handler,
+        [FromServices] GetVolunteerByIdQueryHandler queryHandler,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
         var query = new GetVolunteerByIdQuery(id);
 
-        var result = await handler.HandleAsync(query, cancellationToken);
+        var result = await queryHandler.HandleAsync(query, cancellationToken);
 
         return result.ToResponse();
     }
@@ -67,13 +67,13 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.DELETE)]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<Guid>> DeleteAsync(
-        [FromServices] DeleteVolunteerHandler handler,
+        [FromServices] DeleteVolunteerCommandHandler commandHandler,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
         var command = new DeleteVolunteerCommand(id);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -81,14 +81,14 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.PET_ADD)]
     [HttpPost("{id:guid}/pets")]
     public async Task<ActionResult<Guid>> AddPetAsync(
-        [FromServices] AddPetHandler handler,
+        [FromServices] AddPetCommandHandler commandHandler,
         [FromBody] AddPetRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand(id);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -96,7 +96,7 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.PET_FILES_UPLOAD)]
     [HttpPost("{volunteerId:guid}/pets/{petId:guid}/photos")]
     public async Task<ActionResult<Guid>> UploadFilesToPetAsync(
-        [FromServices] UploadFilesToPetHandler handler,
+        [FromServices] UploadFilesToPetCommandHandler commandHandler,
         [FromForm] IFormFileCollection files,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -107,7 +107,7 @@ public class VolunteersController : ControllerBase
 
         var command = new UploadFilesToPetCommand(volunteerId, petId, fileDtos);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -115,7 +115,7 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.PET_MAIN_PHOTO_SET)]
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-photo")]
     public async Task<ActionResult<Guid>> SetMainPetPhotoAsync(
-        [FromServices] SetMainPetPhotoHandler handler,
+        [FromServices] SetMainPetPhotoCommandHandler commandHandler,
         [FromBody] SetMainPetPhotoRequest request,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -123,7 +123,7 @@ public class VolunteersController : ControllerBase
     {
         var command = request.ToCommand(volunteerId, petId);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -131,7 +131,7 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.PET_POSITION_CHANGE)]
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}/position")]
     public async Task<ActionResult> ChangePetsPosition(
-        [FromServices] ChangePetsPositionHandler handler,
+        [FromServices] ChangePetsPositionCommandHandler commandHandler,
         [FromBody] ChangePetsPositionRequest request,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -139,7 +139,7 @@ public class VolunteersController : ControllerBase
     {
         var command = request.ToCommand(volunteerId, petId);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -147,7 +147,7 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.PET_MAIN_INFO_UPDATE)]
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdateMainPetInfoAsync(
-        [FromServices] UpdateMainPetInfoHandler handler,
+        [FromServices] UpdateMainPetInfoCommandHandler commandHandler,
         [FromBody] UpdateMainPetInfoRequest request,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -155,7 +155,7 @@ public class VolunteersController : ControllerBase
     {
         var command = request.ToCommand(volunteerId, petId);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -163,7 +163,7 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.PET_STATUS_UPDATE)]
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}/status")]
     public async Task<ActionResult<Guid>> UpdatePetStatusAsync(
-        [FromServices] UpdatePetStatusHandler handler,
+        [FromServices] UpdatePetStatusCommandHandler commandHandler,
         [FromBody] UpdatePetStatusRequest request,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
@@ -171,7 +171,7 @@ public class VolunteersController : ControllerBase
     {
         var command = request.ToCommand(volunteerId, petId);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -179,14 +179,14 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.PET_SOFT_DELETE)]
     [HttpDelete("{volunteerId:guid}/pets/{petId:guid}/soft")]
     public async Task<ActionResult<Guid>> SoftDeletePetAsync(
-        [FromServices] SoftDeletePetHandler handler,
+        [FromServices] SoftDeletePetCommandHandler commandHandler,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
         CancellationToken cancellationToken = default)
     {
         var command = new SoftDeletePetCommand(volunteerId, petId);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -194,14 +194,14 @@ public class VolunteersController : ControllerBase
     [Permission(Permissions.Volunteers.PET_HARD_DELETE)]
     [HttpDelete("{volunteerId:guid}/pets/{petId:guid}/hard")]
     public async Task<ActionResult<Guid>> HardDeletePetAsync(
-        [FromServices] HardDeletePetHandler handler,
+        [FromServices] HardDeletePetCommandHandler commandHandler,
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
         CancellationToken cancellationToken = default)
     {
         var command = new HardDeletePetCommand(volunteerId, petId);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }

@@ -9,18 +9,18 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.UpdatePetStatus;
 
-public class UpdatePetStatusHandler : ICommandHandler<Guid, UpdatePetStatusCommand>
+public class UpdatePetStatusCommandHandler : ICommandHandler<Guid, UpdatePetStatusCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IValidator<UpdatePetStatusCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<UpdatePetStatusHandler> _logger;
+    private readonly ILogger<UpdatePetStatusCommandHandler> _logger;
 
-    public UpdatePetStatusHandler(IVolunteersRepository volunteersRepository,
+    public UpdatePetStatusCommandHandler(IVolunteersRepository volunteersRepository,
         IValidator<UpdatePetStatusCommand> validator,
         [FromKeyedServices(UnitOfWorkContext.Volunteers)]
         IUnitOfWork unitOfWork,
-        ILogger<UpdatePetStatusHandler> logger)
+        ILogger<UpdatePetStatusCommandHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _validator = validator;

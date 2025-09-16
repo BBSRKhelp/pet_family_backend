@@ -10,19 +10,19 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Pet.SetMainPetPhoto;
 
-public class SetMainPetPhotoHandler : ICommandHandler<Guid, SetMainPetPhotoCommand>
+public class SetMainPetPhotoCommandHandler : ICommandHandler<Guid, SetMainPetPhotoCommand>
 {
     private readonly IVolunteersRepository _volunteersRepository;
     private readonly IValidator<SetMainPetPhotoCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<SetMainPetPhotoHandler> _logger;
+    private readonly ILogger<SetMainPetPhotoCommandHandler> _logger;
 
-    public SetMainPetPhotoHandler(
+    public SetMainPetPhotoCommandHandler(
         IVolunteersRepository volunteersRepository,
         IValidator<SetMainPetPhotoCommand> validator,
         [FromKeyedServices(UnitOfWorkContext.Volunteers)]
         IUnitOfWork unitOfWork,
-        ILogger<SetMainPetPhotoHandler> logger)
+        ILogger<SetMainPetPhotoCommandHandler> logger)
     {
         _volunteersRepository = volunteersRepository;
         _validator = validator;

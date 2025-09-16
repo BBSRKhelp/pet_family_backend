@@ -10,10 +10,10 @@ using PetFamily.Volunteers.Contracts.DTOs;
 
 namespace PetFamily.Volunteers.Application.Features.Queries.Volunteer.GetFilteredVolunteersWithPagination;
 
-public class GetFilteredVolunteersWithPaginationHandlerDapper(
+public class GetFilteredVolunteersWithPaginationQueryHandlerDapper(
     ISqlConnectionFactory sqlConnectionFactory,
     IValidator<GetFilteredVolunteersWithPaginationQuery> validator,
-    ILogger<GetFilteredVolunteersWithPaginationHandlerDapper> logger)
+    ILogger<GetFilteredVolunteersWithPaginationQueryHandlerDapper> logger)
     : IQueryHandler<PagedList<VolunteerDto>, GetFilteredVolunteersWithPaginationQuery>
 {
     public async Task<Result<PagedList<VolunteerDto>, ErrorList>> HandleAsync(

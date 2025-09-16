@@ -25,6 +25,6 @@ public class WriteDbContext(string connectionString) : DbContext
         modelBuilder.HasDefaultSchema("public");
     }
 
-    private ILoggerFactory CreateLoggerFactory() =>
+    private static ILoggerFactory CreateLoggerFactory() =>
         LoggerFactory.Create(builder => { builder.AddConsole(); });
 }

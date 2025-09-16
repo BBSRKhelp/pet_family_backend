@@ -41,7 +41,7 @@ public class AccountsDbContext(string connectionString) : IdentityDbContext<User
         modelBuilder.HasDefaultSchema("accounts");
     }
 
-    private ILoggerFactory CreateLoggerFactory() =>
+    private static ILoggerFactory CreateLoggerFactory() =>
         LoggerFactory.Create(builder =>
         {
             builder

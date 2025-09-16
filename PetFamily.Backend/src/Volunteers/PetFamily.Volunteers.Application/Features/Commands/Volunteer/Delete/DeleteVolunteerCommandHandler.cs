@@ -10,11 +10,11 @@ using PetFamily.Volunteers.Application.Interfaces;
 
 namespace PetFamily.Volunteers.Application.Features.Commands.Volunteer.Delete;
 
-public class DeleteVolunteerHandler(
+public class DeleteVolunteerCommandHandler(
     IVolunteersRepository volunteersRepository,
     IValidator<DeleteVolunteerCommand> validator,
     [FromKeyedServices(UnitOfWorkContext.Volunteers)] IUnitOfWork unitOfWork,
-    ILogger<CreateVolunteerHandler> logger)
+    ILogger<CreateVolunteerCommandHandler> logger)
     : ICommandHandler<Guid, DeleteVolunteerCommand>
 {
     public async Task<Result<Guid, ErrorList>> HandleAsync(

@@ -5,7 +5,7 @@ using PetFamily.Core.Abstractions;
 
 namespace PetFamily.Accounts.Infrastructure;
 
-public class UnitOfWork(AccountsDbContext dbContext) : IUnitOfWork
+internal class UnitOfWork(AccountsDbContext dbContext) : IUnitOfWork
 {
     public async Task<IDbTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {

@@ -11,16 +11,16 @@ using PetFamily.Species.Contracts.DTOs;
 
 namespace PetFamily.Species.Application.Features.Queries.GetBreedsByIdSpecies;
 
-public class GetBreedsByIdSpeciesHandler : IQueryHandler<PagedList<BreedDto>, GetBreedsByIdSpeciesQuery>
+public class GetBreedsByIdSpeciesQueryHandler : IQueryHandler<PagedList<BreedDto>, GetBreedsByIdSpeciesQuery>
 {
     private readonly IReadDbContext _readDbContext;
     private readonly IValidator<GetBreedsByIdSpeciesQuery> _validator;
-    private readonly ILogger<GetBreedsByIdSpeciesHandler> _logger;
+    private readonly ILogger<GetBreedsByIdSpeciesQueryHandler> _logger;
 
-    public GetBreedsByIdSpeciesHandler(
+    public GetBreedsByIdSpeciesQueryHandler(
         IReadDbContext readDbContext,
         IValidator<GetBreedsByIdSpeciesQuery> validator,
-        ILogger<GetBreedsByIdSpeciesHandler> logger)
+        ILogger<GetBreedsByIdSpeciesQueryHandler> logger)
     {
         _readDbContext = readDbContext;
         _validator = validator;

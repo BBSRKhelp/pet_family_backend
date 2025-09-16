@@ -5,7 +5,7 @@ using PetFamily.Volunteers.Infrastructure.Database;
 
 namespace PetFamily.Volunteers.Infrastructure;
 
-public class UnitOfWork(WriteDbContext dbContext) : IUnitOfWork
+internal class UnitOfWork(WriteDbContext dbContext) : IUnitOfWork
 {
     public async Task<IDbTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
     {

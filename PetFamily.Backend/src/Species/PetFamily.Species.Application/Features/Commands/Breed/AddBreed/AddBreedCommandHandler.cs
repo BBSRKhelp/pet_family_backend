@@ -10,18 +10,18 @@ using PetFamily.Species.Application.Interfaces;
 
 namespace PetFamily.Species.Application.Features.Commands.Breed.AddBreed;
 
-public class AddBreedHandler : ICommandHandler<Guid, AddBreedCommand>
+public class AddBreedCommandHandler : ICommandHandler<Guid, AddBreedCommand>
 {
     private readonly ISpeciesRepository _speciesRepository;
     private readonly IValidator<AddBreedCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<AddBreedHandler> _logger;
+    private readonly ILogger<AddBreedCommandHandler> _logger;
 
-    public AddBreedHandler(
+    public AddBreedCommandHandler(
         ISpeciesRepository speciesRepository,
         IValidator<AddBreedCommand> validator,
         [FromKeyedServices(UnitOfWorkContext.Species)]IUnitOfWork unitOfWork, 
-        ILogger<AddBreedHandler> logger)
+        ILogger<AddBreedCommandHandler> logger)
     {
         _speciesRepository = speciesRepository;
         _validator = validator;
@@ -29,7 +29,9 @@ public class AddBreedHandler : ICommandHandler<Guid, AddBreedCommand>
         _logger = logger;
     }
 
-    public async Task<Result<Guid, ErrorList>> HandleAsync(AddBreedCommand command, CancellationToken cancellationToken)
+    public async Task<Result<Guid, ErrorList>> HandleAsync(
+        AddBreedCommand command,
+        CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Adding Breed");
         

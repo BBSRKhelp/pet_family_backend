@@ -11,17 +11,17 @@ using PetFamily.Species.Contracts.DTOs;
 
 namespace PetFamily.Species.Application.Features.Queries.GetFilteredSpeciesWithPagination;
 
-public class GetFilteredSpeciesWithPaginationHandler :
+public class GetFilteredSpeciesWithPaginationQueryHandler :
     IQueryHandler<PagedList<SpeciesDto>, GetFilteredSpeciesWithPaginationQuery>
 {
     private readonly IReadDbContext _readDbContext;
     private readonly IValidator<GetFilteredSpeciesWithPaginationQuery> _validator;
-    private readonly ILogger<GetFilteredSpeciesWithPaginationHandler> _logger;
+    private readonly ILogger<GetFilteredSpeciesWithPaginationQueryHandler> _logger;
 
-    public GetFilteredSpeciesWithPaginationHandler(
+    public GetFilteredSpeciesWithPaginationQueryHandler(
         IReadDbContext readDbContext,
         IValidator<GetFilteredSpeciesWithPaginationQuery> validator,
-        ILogger<GetFilteredSpeciesWithPaginationHandler> logger)
+        ILogger<GetFilteredSpeciesWithPaginationQueryHandler> logger)
     {
         _readDbContext = readDbContext;
         _validator = validator;

@@ -11,19 +11,19 @@ using PetFamily.SharedKernel;
 
 namespace PetFamily.Accounts.Application.Features.Commands.RefreshToken;
 
-public class RefreshTokensHandler : ICommandHandler<LoginResponse, RefreshTokensCommand>
+public class RefreshTokensCommandHandler : ICommandHandler<LoginResponse, RefreshTokensCommand>
 {
     private readonly IRefreshSessionManager _refreshSessionManager;
     private readonly ITokenProvider _tokenProvider;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<RefreshTokensHandler> _logger;
+    private readonly ILogger<RefreshTokensCommandHandler> _logger;
 
-    public RefreshTokensHandler(
+    public RefreshTokensCommandHandler(
         IRefreshSessionManager refreshSessionManager,
         ITokenProvider tokenProvider,
         [FromKeyedServices(UnitOfWorkContext.Accounts)]
         IUnitOfWork unitOfWork,
-        ILogger<RefreshTokensHandler> logger)
+        ILogger<RefreshTokensCommandHandler> logger)
     {
         _refreshSessionManager = refreshSessionManager;
         _tokenProvider = tokenProvider;

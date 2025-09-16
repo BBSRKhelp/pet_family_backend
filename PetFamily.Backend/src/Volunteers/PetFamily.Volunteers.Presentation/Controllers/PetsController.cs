@@ -16,13 +16,13 @@ public class PetsController : ControllerBase
     [Permission(Permissions.Pets.GET)]
     [HttpGet]
     public async Task<ActionResult<PagedList<PetDto>>> GetPetsAsync(
-        [FromServices] GetFilteredPetsWithPaginationHandlerDapper handler,
+        [FromServices] GetFilteredPetsWithPaginationQueryHandlerDapper queryHandler,
         [FromQuery] GetFilteredPetsWithPaginationRequest request,
         CancellationToken cancellationToken = default)
     {
         var query = request.ToQuery();
 
-        var result = await handler.HandleAsync(query, cancellationToken);
+        var result = await queryHandler.HandleAsync(query, cancellationToken);
 
         return result.ToResponse();
     }
@@ -30,13 +30,13 @@ public class PetsController : ControllerBase
     [Permission(Permissions.Pets.GET)]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<PetDto>> GetPetByIdAsync(
-        [FromServices] GetPetByIdHandler handler,
+        [FromServices] GetPetByIdQueryHandler queryHandler,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
         var query = new GetPetByIdQuery(id);
 
-        var result = await handler.HandleAsync(query, cancellationToken);
+        var result = await queryHandler.HandleAsync(query, cancellationToken);
 
         return result.ToResponse();
     }

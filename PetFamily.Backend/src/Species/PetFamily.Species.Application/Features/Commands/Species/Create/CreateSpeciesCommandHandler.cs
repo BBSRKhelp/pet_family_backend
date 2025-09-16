@@ -10,18 +10,18 @@ using PetFamily.Species.Application.Interfaces;
 
 namespace PetFamily.Species.Application.Features.Commands.Species.Create;
 
-public class CreateSpeciesHandler : ICommandHandler<Guid, CreateSpeciesCommand>
+public class CreateSpeciesCommandHandler : ICommandHandler<Guid, CreateSpeciesCommand>
 {
     private readonly ISpeciesRepository _speciesRepository;
     private readonly IValidator<CreateSpeciesCommand> _validator;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<CreateSpeciesHandler> _logger;
+    private readonly ILogger<CreateSpeciesCommandHandler> _logger;
 
-    public CreateSpeciesHandler(
+    public CreateSpeciesCommandHandler(
         ISpeciesRepository speciesRepository,
         IValidator<CreateSpeciesCommand> validator,
         [FromKeyedServices(UnitOfWorkContext.Species)]IUnitOfWork unitOfWork,
-        ILogger<CreateSpeciesHandler> logger)
+        ILogger<CreateSpeciesCommandHandler> logger)
     {
         _speciesRepository = speciesRepository;
         _validator = validator;

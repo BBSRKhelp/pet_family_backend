@@ -19,13 +19,13 @@ public class SpeciesController : ControllerBase
     [Permission(Permissions.Species.CREATE)]
     [HttpPost]
     public async Task<ActionResult<Guid>> CreateAsync(
-        [FromServices] CreateSpeciesHandler handler,
+        [FromServices] CreateSpeciesCommandHandler commandHandler,
         [FromBody] CreateSpeciesRequest request,
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand();
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -33,13 +33,13 @@ public class SpeciesController : ControllerBase
     [Permission(Permissions.Species.GET)]
     [HttpGet]
     public async Task<ActionResult<PagedList<SpeciesDto>>> GetAsync(
-        [FromServices] GetFilteredSpeciesWithPaginationHandler handler,
+        [FromServices] GetFilteredSpeciesWithPaginationQueryHandler queryHandler,
         [FromQuery] GetFilteredSpeciesWithPaginationRequest request,
         CancellationToken cancellationToken = default)
     {
         var query = request.ToQuery();
 
-        var result = await handler.HandleAsync(query, cancellationToken);
+        var result = await queryHandler.HandleAsync(query, cancellationToken);
 
         return result.ToResponse();
     }
@@ -47,13 +47,13 @@ public class SpeciesController : ControllerBase
     [Permission(Permissions.Species.DELETE)]
     [HttpDelete("{id:guid}")]
     public async Task<ActionResult<Guid>> DeleteAsync(
-        [FromServices] DeleteSpeciesHandler handler,
+        [FromServices] DeleteSpeciesCommandHandler commandHandler,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
         var command = new DeleteSpeciesCommand(id);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -61,14 +61,14 @@ public class SpeciesController : ControllerBase
     [Permission(Permissions.Species.BREED_ADD)]
     [HttpPost("{id:guid}/breeds")]
     public async Task<ActionResult<Guid>> AddBreedAsync(
-        [FromServices] AddBreedHandler handler,
+        [FromServices] AddBreedCommandHandler commandHandler,
         [FromBody] AddBreedRequest request,
         [FromRoute] Guid id,
         CancellationToken cancellationToken = default)
     {
         var command = request.ToCommand(id);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }
@@ -76,14 +76,14 @@ public class SpeciesController : ControllerBase
     [Permission(Permissions.Species.BREED_DELETE)]
     [HttpDelete("{speciesId:guid}/breeds/{breedId:guid}")]
     public async Task<ActionResult<Guid>> DeleteBreedAsync(
-        [FromServices] DeleteBreedHandler handler,
+        [FromServices] DeleteBreedCommandHandler commandHandler,
         [FromRoute] Guid speciesId,
         [FromRoute] Guid breedId,
         CancellationToken cancellationToken = default)
     {
         var command = new DeleteBreedCommand(speciesId, breedId);
 
-        var result = await handler.HandleAsync(command, cancellationToken);
+        var result = await commandHandler.HandleAsync(command, cancellationToken);
 
         return result.ToResponse();
     }

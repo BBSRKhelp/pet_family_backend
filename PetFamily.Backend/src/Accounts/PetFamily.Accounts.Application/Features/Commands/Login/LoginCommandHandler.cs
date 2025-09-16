@@ -12,20 +12,20 @@ using PetFamily.SharedKernel;
 
 namespace PetFamily.Accounts.Application.Features.Commands.Login;
 
-public class LoginHandler : ICommandHandler<LoginResponse, LoginCommand>
+public class LoginCommandHandler : ICommandHandler<LoginResponse, LoginCommand>
 {
     private readonly UserManager<User> _userManager;
     private readonly ITokenProvider _tokenProvider;
     private readonly IRefreshSessionManager _refreshSessionManager;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<LoginHandler> _logger;
+    private readonly ILogger<LoginCommandHandler> _logger;
 
-    public LoginHandler(
+    public LoginCommandHandler(
         UserManager<User> userManager,
         ITokenProvider tokenProvider,
         IRefreshSessionManager refreshSessionManager,
         [FromKeyedServices(UnitOfWorkContext.Accounts)]IUnitOfWork unitOfWork,
-        ILogger<LoginHandler> logger)
+        ILogger<LoginCommandHandler> logger)
     {
         _userManager = userManager;
         _tokenProvider = tokenProvider;

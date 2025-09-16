@@ -231,7 +231,7 @@ public class VolunteerTests
         sixthPet.Position.Value.Should().Be(5);
     }
 
-    private Volunteers.Domain.Volunteer CreateVolunteer() => new Volunteers.Domain.Volunteer();
+    private Volunteers.Domain.Volunteer CreateVolunteer() => new();
 
     private Pet CreatePet()
     {
