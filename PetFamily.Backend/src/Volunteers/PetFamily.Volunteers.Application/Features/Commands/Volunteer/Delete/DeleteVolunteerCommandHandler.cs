@@ -31,7 +31,7 @@ public class DeleteVolunteerCommandHandler(
         if (volunteerResult.IsFailure)
         {
             logger.LogWarning("Volunteer delete failed");
-            return (ErrorList)volunteerResult.Error;
+            return volunteerResult.Error.ToErrorList();
         }
 
         volunteerResult.Value.SoftDelete();

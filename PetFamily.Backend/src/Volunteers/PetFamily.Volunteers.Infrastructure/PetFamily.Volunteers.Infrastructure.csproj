@@ -13,9 +13,5 @@
     <ItemGroup>
       <ProjectReference Include="..\PetFamily.Volunteers.Application\PetFamily.Volunteers.Application.csproj" />
     </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
 
 </Project>

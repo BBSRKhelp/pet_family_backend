@@ -15,8 +15,7 @@ public class Species : Entity<SpeciesId>
     {
     }
 
-    public Species(Name name)
-        : base(SpeciesId.NewId())
+    public Species(Name name) : base(SpeciesId.NewId())
     {
         Name = name;
     }

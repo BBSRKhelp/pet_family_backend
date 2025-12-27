@@ -12,7 +12,7 @@ public record Envelope
 
     public object? Result { get; }
     public ErrorList? Errors { get; }
-    public DateTimeOffset Execute => DateTimeOffset.UtcNow;
+    public DateTime Execute => DateTime.UtcNow;
 
     public static Envelope Ok(object? result = null) =>
         new(result, null);

@@ -15,7 +15,7 @@ namespace PetFamily.Volunteers.Infrastructure;
 public static class DependencyInjection
 {
     public static IServiceCollection AddVolunteerInfrastructure(
-        this IServiceCollection services,
+        this IServiceCollection services, 
         IConfiguration configuration)
     {
         return services.AddDatabase(configuration)
@@ -24,9 +24,7 @@ public static class DependencyInjection
             .AddConfigurations(configuration);
     }
 
-    private static IServiceCollection AddDatabase(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<WriteDbContext>(_ =>
             new WriteDbContext(configuration.GetConnectionString(Constants.DATABASE)!));
